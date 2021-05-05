@@ -5,6 +5,36 @@ class SettingsView: UIView {
     
     var onSetupButtonTapped: (() -> Void)?
     
+    private let settingsView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 10
+        view.backgroundColor = Colors.settingsViewBackgroundColor
+        view.layer.zPosition = 1
+        return view
+    }()
+    
+    private let cloudTopImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "cloudTop")
+        return imageView
+    }()
+    
+    private let cloudMiddleImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "cloudMiddle")
+        return imageView
+    }()
+    
+    private let cloudBottomImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "cloudBottom")
+        return imageView
+    }()
+    
     private let settingsLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -100,7 +130,7 @@ class SettingsView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = Colors.settingsViewBackgroundColor
+        backgroundColor = Colors.mainColor
         
         setupLayout()
         
@@ -147,55 +177,79 @@ class SettingsView: UIView {
     }
     
     private func setupLayout() {
-        addSubview(settingsLabel)
-        addSubview(temperatureLabel)
-        addSubview(windSpeedLabel)
-        addSubview(timeFormatLabel)
-        addSubview(notificationLabel)
-        addSubview(setupButton)
-        addSubview(temperatureCustomSwitch)
-        addSubview(windSpeedCustomSwitch)
-        addSubview(timeFormatCustomSwitch)
-        addSubview(notificationCustomSwitch)
+        addSubview(settingsView)
+        addSubview(cloudTopImageView)
+        addSubview(cloudMiddleImageView)
+        addSubview(cloudBottomImageView)
+        settingsView.addSubview(settingsLabel)
+        settingsView.addSubview(temperatureLabel)
+        settingsView.addSubview(windSpeedLabel)
+        settingsView.addSubview(timeFormatLabel)
+        settingsView.addSubview(notificationLabel)
+        settingsView.addSubview(setupButton)
+        settingsView.addSubview(temperatureCustomSwitch)
+        settingsView.addSubview(windSpeedCustomSwitch)
+        settingsView.addSubview(timeFormatCustomSwitch)
+        settingsView.addSubview(notificationCustomSwitch)
         
         let constraints = [
-            settingsLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 25),
-            settingsLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            settingsView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            settingsView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            settingsView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            settingsView.heightAnchor.constraint(equalToConstant: 330),
+            
+            cloudTopImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 35),
+            cloudTopImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            cloudTopImageView.widthAnchor.constraint(equalToConstant: 250),
+            cloudTopImageView.heightAnchor.constraint(equalToConstant: 60),
+            
+            cloudMiddleImageView.topAnchor.constraint(equalTo: cloudTopImageView.bottomAnchor, constant: 25),
+            cloudMiddleImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            cloudMiddleImageView.widthAnchor.constraint(equalToConstant: 180),
+            cloudMiddleImageView.heightAnchor.constraint(equalToConstant: 95),
+            
+            cloudBottomImageView.topAnchor.constraint(equalTo: settingsView.bottomAnchor, constant: 80),
+            cloudBottomImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            cloudBottomImageView.widthAnchor.constraint(equalToConstant: 215),
+            cloudBottomImageView.heightAnchor.constraint(equalToConstant: 65),
+            
+            settingsLabel.topAnchor.constraint(equalTo: settingsView.topAnchor, constant: 25),
+            settingsLabel.leadingAnchor.constraint(equalTo: settingsView.leadingAnchor, constant: 20),
             
             temperatureLabel.topAnchor.constraint(equalTo: settingsLabel.bottomAnchor, constant: 20),
-            temperatureLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            temperatureLabel.leadingAnchor.constraint(equalTo: settingsView.leadingAnchor, constant: 20),
             
             windSpeedLabel.topAnchor.constraint(equalTo: temperatureLabel.bottomAnchor, constant: 25),
-            windSpeedLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            windSpeedLabel.leadingAnchor.constraint(equalTo: settingsView.leadingAnchor, constant: 20),
             
             timeFormatLabel.topAnchor.constraint(equalTo: windSpeedLabel.bottomAnchor, constant: 25),
-            timeFormatLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            timeFormatLabel.leadingAnchor.constraint(equalTo: settingsView.leadingAnchor, constant: 20),
             
             notificationLabel.topAnchor.constraint(equalTo: timeFormatLabel.bottomAnchor, constant: 25),
-            notificationLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            notificationLabel.leadingAnchor.constraint(equalTo: settingsView.leadingAnchor, constant: 20),
             
-            setupButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 35),
-            setupButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -35),
+            setupButton.leadingAnchor.constraint(equalTo: settingsView.leadingAnchor, constant: 35),
+            setupButton.trailingAnchor.constraint(equalTo: settingsView.trailingAnchor, constant: -35),
             setupButton.heightAnchor.constraint(equalToConstant: 40),
-            setupButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15),
+            setupButton.bottomAnchor.constraint(equalTo: settingsView.bottomAnchor, constant: -15),
             
             temperatureCustomSwitch.centerYAnchor.constraint(equalTo: temperatureLabel.centerYAnchor),
-            temperatureCustomSwitch.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -30),
+            temperatureCustomSwitch.trailingAnchor.constraint(equalTo: settingsView.trailingAnchor, constant: -30),
             temperatureCustomSwitch.widthAnchor.constraint(equalToConstant: 80),
             temperatureCustomSwitch.heightAnchor.constraint(equalToConstant: 30),
             
             windSpeedCustomSwitch.centerYAnchor.constraint(equalTo: windSpeedLabel.centerYAnchor),
-            windSpeedCustomSwitch.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -30),
+            windSpeedCustomSwitch.trailingAnchor.constraint(equalTo: settingsView.trailingAnchor, constant: -30),
             windSpeedCustomSwitch.widthAnchor.constraint(equalToConstant: 80),
             windSpeedCustomSwitch.heightAnchor.constraint(equalToConstant: 30),
             
             timeFormatCustomSwitch.centerYAnchor.constraint(equalTo: timeFormatLabel.centerYAnchor),
-            timeFormatCustomSwitch.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -30),
+            timeFormatCustomSwitch.trailingAnchor.constraint(equalTo: settingsView.trailingAnchor, constant: -30),
             timeFormatCustomSwitch.widthAnchor.constraint(equalToConstant: 80),
             timeFormatCustomSwitch.heightAnchor.constraint(equalToConstant: 30),
             
             notificationCustomSwitch.centerYAnchor.constraint(equalTo: notificationLabel.centerYAnchor),
-            notificationCustomSwitch.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -30),
+            notificationCustomSwitch.trailingAnchor.constraint(equalTo: settingsView.trailingAnchor, constant: -30),
             notificationCustomSwitch.widthAnchor.constraint(equalToConstant: 80),
             notificationCustomSwitch.heightAnchor.constraint(equalToConstant: 30),
             
