@@ -14,19 +14,30 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupNavigationBar()
         setupLayout()
         onSetupButtonTapped()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        navigationController?.navigationBar.isHidden = false
         coordinator?.didFinishSettings()
     }
     
+    private func setupNavigationBar() {
+        navigationController?.navigationBar.isHidden = true
+    }
+    
     private func onSetupButtonTapped() {
-        if let settingsCoordinator = coordinator {
+        if let coordinator = coordinator {
             settingsView.onSetupButtonTapped = {
-                settingsCoordinator.pushWeatherViewController()
+                if UserDefaults.standard.bool(forKey: Keys.isOnboardingCompleteBoolKey.rawValue) {
+                    coordinator.closeSettingsViewController()
+                } else {
+                    coordinator.pushWeatherViewController()
+                    UserDefaults.standard.setValue(true, forKey: Keys.isOnboardingCompleteBoolKey.rawValue)
+                }
             }
         }
     }

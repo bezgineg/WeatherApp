@@ -18,10 +18,13 @@ class SettingsCoordinator: Coordinator {
     func pushWeatherViewController() {
         let weatherCoordinator = WeatherCoordinator()
         weatherCoordinator.navigationController = navigationController
-        childCoordinators.append(weatherCoordinator)
+        //childCoordinators.append(weatherCoordinator)
         weatherCoordinator.parentCoordinator = self
         weatherCoordinator.start()
-        UserDefaults.standard.setValue(true, forKey: Keys.isSecondLaunchBoolKey.rawValue)
+    }
+    
+    func closeSettingsViewController() {
+        parentCoordinator?.navigationController?.popViewController(animated: true)
     }
     
     func didFinishSettings() {

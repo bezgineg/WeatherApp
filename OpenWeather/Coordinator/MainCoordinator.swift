@@ -7,12 +7,13 @@ class MainCoordinator: Coordinator {
     var childCoordinators = [Coordinator]()
     
     func start() {
-        if UserDefaults.standard.bool(forKey: Keys.isSecondLaunchBoolKey.rawValue) {
+        if UserDefaults.standard.bool(forKey: Keys.isOnboardingCompleteBoolKey.rawValue) {
             let weatherCoordinator = WeatherCoordinator()
             weatherCoordinator.navigationController = navigationController
             weatherCoordinator.start()
             childCoordinators.append(weatherCoordinator)
             weatherCoordinator.parentCoordinator = self
+            //UserDefaults.standard.setValue(true, forKey: Keys.isCityAdded.rawValue)
         } else {
             let onboardingCoordinator = OnboardingCoordinator()
             onboardingCoordinator.navigationController = navigationController

@@ -4,6 +4,25 @@ import UIKit
 class WeatherViewController: UIViewController {
 
     var coordinator: WeatherCoordinator?
+    
+    //private let tableView = UITableView(frame: .zero, style: .grouped)
+    
+    private let mainInformationView: MainInformationView = {
+        let view = MainInformationView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 5
+        return view
+    }()
+    
+    private let plusView: PlusView = {
+        let view = PlusView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+//    private var MainInformationReuseID: String {
+//        return String(describing: MainInformationTableViewCell.self)
+//    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -11,7 +30,7 @@ class WeatherViewController: UIViewController {
         view.backgroundColor = .white
         
         setupNavigationBar()
-        setupLayout()
+        setupViews()
         
     }
     
@@ -20,17 +39,56 @@ class WeatherViewController: UIViewController {
 //        coordinator?.didFinishWeather()
 //    }
     
+    private func createTimer() {
+        let timer = Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(updateMainInformationView), userInfo: nil, repeats: true)
+        timer.tolerance = 0.1
+        RunLoop.current.add(timer, forMode: .common)
+    }
+    
+    @objc private func updateMainInformationView() {
+        configureMainInformationView()
+    }
+    
     @objc private func openSettings() {
-        print("1")
+        if let coordinator = coordinator {
+            coordinator.pushSettingsViewController()
+        }
     }
     
     @objc private func addCity() {
-        print("2")
+        coordinator?.showAlert()
     }
+    
+    private func setupViews() {
+        if UserDefaults.standard.bool(forKey: Keys.isCityAdded.rawValue) {
+            //setupTableView()
+            configureMainInformationView()
+            setupLayout()
+            createTimer()
+        } else {
+            setupPlusView()
+        }
+    }
+    
+    private func configureMainInformationView() {
+        NetworkManager.jsonDecodeWeather { weather in
+            DispatchQueue.main.async {
+                self.mainInformationView.configure(with: weather)
+                self.navigationItem.title = weather.timezone
+            }
+        }
+    }
+    
+//    private func setupTableView() {
+//        tableView.translatesAutoresizingMaskIntoConstraints = false
+//        tableView.dataSource = self
+//        tableView.delegate = self
+//        tableView.register(MainInformationTableViewCell.self, forCellReuseIdentifier: MainInformationReuseID)
+//    }
     
     private func setupNavigationBar() {
         navigationController?.navigationBar.backgroundColor = .white
-        navigationController?.navigationBar.isHidden = false
+        //navigationController?.navigationBar.isHidden = false
         navigationItem.hidesBackButton = true
         
         let settingsButtonImage = UIImage(named: "burger")
@@ -44,17 +102,103 @@ class WeatherViewController: UIViewController {
         navigationItem.rightBarButtonItem?.tintColor = .black
     }
     
-    private func setupLayout() {
-//        view.addSubview(settingsView)
-//
-//        let constraints = [
-//            settingsView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-//            settingsView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-//            settingsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-//            settingsView.heightAnchor.constraint(equalToConstant: 330)
+    private func setupTableViewLayout() {
+//        view.addSubview(tableView)
+//        let constratints = [
+//            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+//            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 //        ]
-//        NSLayoutConstraint.activate(constraints)
-    }
+//
+//        NSLayoutConstraint.activate(constratints)
 
+    }
+    
+    private func setupLayout() {
+        view.addSubview(mainInformationView)
+
+        let constraints = [
+            mainInformationView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
+            mainInformationView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+            mainInformationView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            mainInformationView.heightAnchor.constraint(equalToConstant: 215)
+            //mainInformationView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            //plusView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    private func setupPlusView() {
+        view.addSubview(plusView)
+
+        let constraints = [
+            plusView.topAnchor.constraint(equalTo: view.topAnchor),
+            plusView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            plusView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            plusView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
 }
 
+//extension WeatherViewController: UITableViewDataSource {
+//
+//    func numberOfSections(in tableView: UITableView) -> Int {
+//        return 3
+//    }
+//
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        switch section {
+//        case 0:
+//            return 1
+//        case 1:
+//            return 0
+//        case 2:
+//            return 0
+//        default:
+//            return 0
+//        }
+//    }
+//
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        switch indexPath.section {
+//        case 0:
+//            let mainInformationCell: MainInformationTableViewCell = tableView.dequeueReusableCell(withIdentifier: MainInformationReuseID, for: indexPath) as! MainInformationTableViewCell
+//            return mainInformationCell
+//        default:
+//            let mainInformationCell: MainInformationTableViewCell = tableView.dequeueReusableCell(withIdentifier: MainInformationReuseID, for: indexPath) as! MainInformationTableViewCell
+//            return mainInformationCell
+//        }
+//    }
+//
+//
+//}
+//
+//extension WeatherViewController: UITableViewDelegate {
+//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//        switch section {
+//        case 0:
+//            return 0
+//        case 1:
+//            return 0
+//        case 2:
+//            return 0
+//        default:
+//            return 0
+//        }
+//    }
+//
+//    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+//        switch section {
+//        case 0:
+//            return 0
+//        case 1:
+//            return 0
+//        case 2:
+//            return 0
+//        default:
+//            return 0
+//        }
+//    }
+//}

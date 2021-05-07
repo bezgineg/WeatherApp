@@ -74,7 +74,6 @@ class SettingsView: UIView {
     
     private var temperatureCustomSwitch: CustomSwitch = {
         let customSwitch = CustomSwitch()
-        customSwitch.isOn = true
         customSwitch.myCustomSwitchSetup()
         customSwitch.labelOn.text = "C"
         customSwitch.labelOff.text = "F"
@@ -84,7 +83,6 @@ class SettingsView: UIView {
     
     private var windSpeedCustomSwitch: CustomSwitch = {
         let customSwitch = CustomSwitch()
-        customSwitch.isOn = true
         customSwitch.myCustomSwitchSetup()
         customSwitch.labelOn.text = "Km"
         customSwitch.labelOff.text = "Mi"
@@ -94,7 +92,6 @@ class SettingsView: UIView {
     
     private var timeFormatCustomSwitch: CustomSwitch = {
         let customSwitch = CustomSwitch()
-        customSwitch.isOn = true
         customSwitch.myCustomSwitchSetup()
         customSwitch.labelOn.text = "24"
         customSwitch.labelOff.text = "12"
@@ -104,7 +101,6 @@ class SettingsView: UIView {
     
     private var notificationCustomSwitch: CustomSwitch = {
         let customSwitch = CustomSwitch()
-        customSwitch.isOn = false
         customSwitch.myCustomSwitchSetup()
         customSwitch.labelOn.text = "On"
         customSwitch.labelOff.text = "Off"
@@ -132,12 +128,48 @@ class SettingsView: UIView {
         
         backgroundColor = Colors.mainColor
         
+        setupSwitchControls()
+        setupThumbLabelColor()
         setupLayout()
         
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupSwitchControls() {
+        if UserDefaults.standard.bool(forKey: Keys.isOnboardingCompleteBoolKey.rawValue) {
+            setupSwitchControlValue(temperatureCustomSwitch, for: Keys.isCelsiusChosenBoolKey.rawValue)
+            setupSwitchControlValue(windSpeedCustomSwitch, for: Keys.isKmChosenBoolKey.rawValue)
+            setupSwitchControlValue(timeFormatCustomSwitch, for: Keys.is24TimeFormalChosenBoolKey.rawValue)
+            setupSwitchControlValue(notificationCustomSwitch, for: Keys.isNotifyBoolKey.rawValue)
+        } else {
+            temperatureCustomSwitch.isOn = true
+            windSpeedCustomSwitch.isOn = true
+            timeFormatCustomSwitch.isOn = true
+            notificationCustomSwitch.isOn = false
+            UserDefaults.standard.setValue(true, forKey: Keys.isCelsiusChosenBoolKey.rawValue)
+            UserDefaults.standard.setValue(true, forKey: Keys.isKmChosenBoolKey.rawValue)
+            UserDefaults.standard.setValue(true, forKey: Keys.is24TimeFormalChosenBoolKey.rawValue)
+            UserDefaults.standard.setValue(false, forKey: Keys.isNotifyBoolKey.rawValue)
+        }
+    }
+    
+    private func setupSwitchControlValue(_ switchControl: CustomSwitch, for key: String) {
+        let boolValue = UserDefaults.standard.bool(forKey: key)
+        if boolValue {
+            switchControl.isOn = true
+        } else {
+            switchControl.isOn = false
+        }
+    }
+    
+    private func setupThumbLabelColor() {
+        temperatureCustomSwitch.setupLabelColor()
+        windSpeedCustomSwitch.setupLabelColor()
+        timeFormatCustomSwitch.setupLabelColor()
+        notificationCustomSwitch.setupLabelColor()
     }
     
     @objc private func temperatureSwitchChanged(_ sender: UISwitch) {

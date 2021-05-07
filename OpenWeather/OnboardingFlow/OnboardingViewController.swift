@@ -35,19 +35,19 @@ class OnboardingViewController: UIViewController {
     }
     
     private func onAcceptButtonTapSetup() {
-        if let onboardingCoordinator = coordinator {
+        if let coordinator = coordinator {
             onboardingView.onAcceptButtonTap = {
                 UserDefaults.standard.setValue(true, forKey: Keys.isTrackingBoolKey.rawValue)
-                onboardingCoordinator.pushSettingsViewController()
+                coordinator.pushSettingsViewController()
             }
         }
     }
     
     private func onDeclineButtonTapSetup() {
-        if let onboardingCoordinator = coordinator {
+        if let coordinator = coordinator {
             onboardingView.onDeclineButtonTap = {
                 UserDefaults.standard.setValue(false, forKey: Keys.isTrackingBoolKey.rawValue)
-                onboardingCoordinator.pushSettingsViewController()
+                coordinator.pushSettingsViewController()
             }
         }
     }

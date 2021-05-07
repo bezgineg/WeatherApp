@@ -366,6 +366,9 @@ extension CustomSwitch {
         self.thumbShadowOffset = CGSize(width: 0, height: 0)
         self.thumbShaddowRadius = 0
         self.thumbShaddowOppacity = 0
+    }
+    
+    public func setupLabelColor() {
         if self.isOn {
             self.labelOff.textColor = UIColor.black
             self.labelOn.textColor = UIColor.white
