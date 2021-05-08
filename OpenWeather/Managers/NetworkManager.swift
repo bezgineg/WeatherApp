@@ -54,15 +54,19 @@ struct NetworkManager {
         let jsonDecoder = JSONDecoder()
         
         NetworkManager.getJson(with: url) { data in
-            if let data = data,
-               let weather = try? jsonDecoder.decode(WeatherData.self, from: data) {
+            if let data = data {
+               do {
+                let weather = try jsonDecoder.decode(WeatherData.self, from: data)
                 completion(weather)
+               } catch let error as NSError {
+                print(error.debugDescription)
+               }
             }
         }
     }
     
     static func dataTask(with url: URL, completion: @escaping (String?) -> Void) {
-        let task = session.dataTask(with: url) { data, response, error in
+        let task = NetworkManager.session.dataTask(with: url) { data, response, error in
             
             guard error == nil else {
                 print(error.debugDescription)
@@ -77,7 +81,7 @@ struct NetworkManager {
     }
     
     static func getJson(with url: URL, completion: @escaping (Data?) -> Void) {
-        let task = session.dataTask(with: url) { data, response, error in
+        let task = NetworkManager.session.dataTask(with: url) { data, response, error in
             
             guard error == nil else {
                 print(error.debugDescription)
@@ -85,6 +89,7 @@ struct NetworkManager {
             }
             
             if let data = data {
+                print(String(data: data, encoding: .utf8)!)
                 completion(data)
             }
             

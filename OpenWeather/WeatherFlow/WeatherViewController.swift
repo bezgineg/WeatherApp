@@ -20,6 +20,20 @@ class WeatherViewController: UIViewController {
         return view
     }()
     
+    private lazy var detailsButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.masksToBounds = true
+        button.setTitleColor(.black, for: .normal)
+        button.setTitle("Подробнее на 24 часа", for: .normal)
+        button.contentHorizontalAlignment = .right
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        button.backgroundColor = UIColor(red: 0.898, green: 0.898, blue: 0.898, alpha: 0.0)
+        button.addTarget(self, action: #selector(detailsButtonTapped), for: .touchUpInside)
+        button.underline()
+        return button
+    }()
+    
 //    private var MainInformationReuseID: String {
 //        return String(describing: MainInformationTableViewCell.self)
 //    }
@@ -40,13 +54,17 @@ class WeatherViewController: UIViewController {
 //    }
     
     private func createTimer() {
-        let timer = Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(updateMainInformationView), userInfo: nil, repeats: true)
+        let timer = Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(updateData), userInfo: nil, repeats: true)
         timer.tolerance = 0.1
         RunLoop.current.add(timer, forMode: .common)
     }
     
-    @objc private func updateMainInformationView() {
+    @objc private func updateData() {
         configureMainInformationView()
+    }
+    
+    @objc private func detailsButtonTapped() {
+        print("did Tap")
     }
     
     @objc private func openSettings() {
@@ -117,12 +135,20 @@ class WeatherViewController: UIViewController {
     
     private func setupLayout() {
         view.addSubview(mainInformationView)
+        view.addSubview(detailsButton)
 
         let constraints = [
             mainInformationView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
             mainInformationView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
             mainInformationView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-            mainInformationView.heightAnchor.constraint(equalToConstant: 215)
+            mainInformationView.heightAnchor.constraint(equalToConstant: 215),
+            
+            detailsButton.topAnchor.constraint(equalTo: mainInformationView.bottomAnchor, constant: 30),
+            detailsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            
+            
+            
+            
             //mainInformationView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             //plusView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ]
