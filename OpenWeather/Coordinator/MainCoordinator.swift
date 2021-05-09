@@ -7,6 +7,12 @@ class MainCoordinator: Coordinator {
     var childCoordinators = [Coordinator]()
     
     func start() {
+//        NetworkManager.jsonDecodeWeather { weather in
+//            let weather = WeatherData(current: weather.current, timezone: weather.timezone, daily: weather.daily, hourly: weather.hourly)
+//            for hour in weather.hourly {
+//                HourlyWeatherStorage.weather.append(hour)
+//            }
+//        }
         if UserDefaults.standard.bool(forKey: Keys.isOnboardingCompleteBoolKey.rawValue) {
             let weatherCoordinator = WeatherCoordinator()
             weatherCoordinator.navigationController = navigationController

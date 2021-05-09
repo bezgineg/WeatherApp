@@ -5,22 +5,47 @@ struct WeatherData: Decodable {
     let current: Current
     let timezone: String
     let daily: [Daily]
+    let hourly: [Current]
 }
 
 struct Current: Decodable {
-    let temp: Double
-    let sunrise: Int
-    let sunset: Int
-    let humidity: Int
+    let dt: Int
+    let sunrise, sunset: Int?
+    let temp, feelsLike: Double
+    let pressure, humidity: Int
+    let dewPoint, uvi: Double
+    let clouds, visibility: Int
     let windSpeed: Double
-    let clouds: Int
-    let weather: [WeatherElement]
+    let windDeg: Int
+    let weather: [Weather]
+    let rain: Rain?
+    let windGust, pop: Double?
     
     enum CodingKeys: String, CodingKey {
-            case sunrise, sunset, temp, humidity, clouds, weather
-            case windSpeed = "wind_speed"
+        case dt, sunrise, sunset, temp
+        case feelsLike = "feels_like"
+        case pressure, humidity
+        case dewPoint = "dew_point"
+        case uvi, clouds, visibility
+        case windSpeed = "wind_speed"
+        case windDeg = "wind_deg"
+        case weather, rain
+        case windGust = "wind_gust"
+        case pop
     }
-    
+}
+
+struct Weather: Decodable {
+    let id: Int
+    let main: Main
+    let weatherDescription: Description
+    //let icon: Icon
+
+    enum CodingKeys: String, CodingKey {
+        case id, main
+        case weatherDescription = "description"
+        //case icon
+    }
 }
 
 struct WeatherElement: Decodable {
@@ -28,6 +53,14 @@ struct WeatherElement: Decodable {
     
     enum CodingKeys: String, CodingKey {
             case weatherDescription = "description"
+    }
+}
+
+struct Rain: Decodable {
+    let the1H: Double
+
+    enum CodingKeys: String, CodingKey {
+        case the1H = "1h"
     }
 }
 
@@ -48,4 +81,11 @@ enum Description: String, Decodable {
     case пасмурно = "пасмурно"
     case ясно = "ясно"
     case сильныйДождь = "сильный дождь"
+    case переменнаяОблачность = "переменная облачность"
+}
+
+enum Main: String, Decodable {
+    case clear = "Clear"
+    case clouds = "Clouds"
+    case rain = "Rain"
 }

@@ -14,6 +14,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let mainCoordinator = MainCoordinator()
         mainCoordinator.navigationController = UINavigationController()
         
+        NetworkManager.jsonDecodeWeather { weather in
+            let weather = WeatherData(current: weather.current, timezone: weather.timezone, daily: weather.daily, hourly: weather.hourly)
+            for hour in weather.hourly {
+                HourlyWeatherStorage.weather.append(hour)
+            }
+        }
+        
 
         window.rootViewController = mainCoordinator.navigationController
         mainCoordinator.start()

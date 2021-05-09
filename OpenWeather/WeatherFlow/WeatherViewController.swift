@@ -34,6 +34,19 @@ class WeatherViewController: UIViewController {
         return button
     }()
     
+    private lazy var hourlyCollectionView : UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.backgroundColor = .white
+        cv.register(HourlyCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: HourlyCollectionViewCell.self))
+        cv.dataSource = self
+        cv.delegate = self
+        cv.showsHorizontalScrollIndicator = false
+        return cv
+    }()
+    
 //    private var MainInformationReuseID: String {
 //        return String(describing: MainInformationTableViewCell.self)
 //    }
@@ -61,6 +74,13 @@ class WeatherViewController: UIViewController {
     
     @objc private func updateData() {
         configureMainInformationView()
+        hourlyCollectionView.reloadData()
+    }
+    
+    private func createCollectionViewLoadTimer() {
+        let timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateData), userInfo: nil, repeats: false)
+        timer.tolerance = 0.1
+        RunLoop.current.add(timer, forMode: .common)
     }
     
     @objc private func detailsButtonTapped() {
@@ -83,6 +103,7 @@ class WeatherViewController: UIViewController {
             configureMainInformationView()
             setupLayout()
             createTimer()
+            createCollectionViewLoadTimer()
         } else {
             setupPlusView()
         }
@@ -90,6 +111,10 @@ class WeatherViewController: UIViewController {
     
     private func configureMainInformationView() {
         NetworkManager.jsonDecodeWeather { weather in
+            let weather = WeatherData(current: weather.current, timezone: weather.timezone, daily: weather.daily, hourly: weather.hourly)
+            for hour in weather.hourly {
+                HourlyWeatherStorage.weather.append(hour)
+            }
             DispatchQueue.main.async {
                 self.mainInformationView.configure(with: weather)
                 self.navigationItem.title = weather.timezone
@@ -136,6 +161,7 @@ class WeatherViewController: UIViewController {
     private func setupLayout() {
         view.addSubview(mainInformationView)
         view.addSubview(detailsButton)
+        view.addSubview(hourlyCollectionView)
 
         let constraints = [
             mainInformationView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
@@ -145,6 +171,11 @@ class WeatherViewController: UIViewController {
             
             detailsButton.topAnchor.constraint(equalTo: mainInformationView.bottomAnchor, constant: 30),
             detailsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            
+            hourlyCollectionView.topAnchor.constraint(equalTo: detailsButton.bottomAnchor),
+            hourlyCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            hourlyCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            hourlyCollectionView.heightAnchor.constraint(equalToConstant: 103)
             
             
             
@@ -165,6 +196,56 @@ class WeatherViewController: UIViewController {
             plusView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
+    }
+}
+
+extension WeatherViewController: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return HourlyWeatherStorage.weather.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: HourlyCollectionViewCell.self), for: indexPath) as! HourlyCollectionViewCell
+        
+        let weather: Current = HourlyWeatherStorage.weather[indexPath.item]
+
+        cell.configure(with: weather)
+        
+        return cell
+    }
+    
+}
+
+
+extension WeatherViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        return CGSize(width: 42, height: 83)
+    }
+    
+    //MARK: - Доделать
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! HourlyCollectionViewCell
+        if cell.isSelected {
+            cell.configureSelectedItem()
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath) as? HourlyCollectionViewCell {
+            if !cell.isSelected {
+                cell.configureUnselectedItem()
+            }
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
     }
 }
 
