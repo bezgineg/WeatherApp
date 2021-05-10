@@ -47,7 +47,6 @@ class WeatherCoordinator: Coordinator {
         }
             
         let cancelAction = UIAlertAction(title: "Отменить", style: .cancel) { _ in
-            print(HourlyWeatherStorage.weather.count)
         }
         
             

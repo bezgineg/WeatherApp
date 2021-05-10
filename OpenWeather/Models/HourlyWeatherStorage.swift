@@ -2,5 +2,6 @@
 import Foundation
 
 struct HourlyWeatherStorage {
-    static var weather = [Current]()
+    static var hourlyWeather = [Current]()
+    static var dailyWeather = [Daily]()
 }

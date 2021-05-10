@@ -5,7 +5,7 @@ class WeatherViewController: UIViewController {
 
     var coordinator: WeatherCoordinator?
     
-    //private let tableView = UITableView(frame: .zero, style: .grouped)
+    private let everyDayTableView = UITableView(frame: .zero, style: .plain)
     
     private let mainInformationView: MainInformationView = {
         let view = MainInformationView()
@@ -47,9 +47,18 @@ class WeatherViewController: UIViewController {
         return cv
     }()
     
-//    private var MainInformationReuseID: String {
-//        return String(describing: MainInformationTableViewCell.self)
-//    }
+    private let everyDayLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        label.text = "Ежедневный прогноз"
+        return label
+    }()
+    
+    private var everyDayReuseID: String {
+        return String(describing: EveryDayTableViewCell.self)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,6 +84,7 @@ class WeatherViewController: UIViewController {
     @objc private func updateData() {
         configureMainInformationView()
         hourlyCollectionView.reloadData()
+        everyDayTableView.reloadData()
     }
     
     private func createCollectionViewLoadTimer() {
@@ -99,8 +109,8 @@ class WeatherViewController: UIViewController {
     
     private func setupViews() {
         if UserDefaults.standard.bool(forKey: Keys.isCityAdded.rawValue) {
-            //setupTableView()
             configureMainInformationView()
+            setupEveryDayTableView()
             setupLayout()
             createTimer()
             createCollectionViewLoadTimer()
@@ -109,12 +119,15 @@ class WeatherViewController: UIViewController {
         }
     }
     
+    //MARK: - Доделать
     private func configureMainInformationView() {
         NetworkManager.jsonDecodeWeather { weather in
-            let weather = WeatherData(current: weather.current, timezone: weather.timezone, daily: weather.daily, hourly: weather.hourly)
-            for hour in weather.hourly {
-                HourlyWeatherStorage.weather.append(hour)
-            }
+            //let weather = WeatherData(current: weather.current, timezone: weather.timezone, daily: weather.daily, hourly: weather.hourly)
+            HourlyWeatherStorage.hourlyWeather = weather.hourly
+            HourlyWeatherStorage.dailyWeather = weather.daily
+//            for hour in weather.hourly {
+//                HourlyWeatherStorage.weather.append(hour)
+//            }
             DispatchQueue.main.async {
                 self.mainInformationView.configure(with: weather)
                 self.navigationItem.title = weather.timezone
@@ -122,12 +135,15 @@ class WeatherViewController: UIViewController {
         }
     }
     
-//    private func setupTableView() {
-//        tableView.translatesAutoresizingMaskIntoConstraints = false
-//        tableView.dataSource = self
-//        tableView.delegate = self
-//        tableView.register(MainInformationTableViewCell.self, forCellReuseIdentifier: MainInformationReuseID)
-//    }
+    private func setupEveryDayTableView() {
+        everyDayTableView.translatesAutoresizingMaskIntoConstraints = false
+        everyDayTableView.backgroundColor = .white
+        everyDayTableView.dataSource = self
+        everyDayTableView.delegate = self
+        everyDayTableView.showsVerticalScrollIndicator = false
+        everyDayTableView.separatorStyle = .none
+        everyDayTableView.register(EveryDayTableViewCell.self, forCellReuseIdentifier: everyDayReuseID)
+    }
     
     private func setupNavigationBar() {
         navigationController?.navigationBar.backgroundColor = .white
@@ -145,23 +161,12 @@ class WeatherViewController: UIViewController {
         navigationItem.rightBarButtonItem?.tintColor = .black
     }
     
-    private func setupTableViewLayout() {
-//        view.addSubview(tableView)
-//        let constratints = [
-//            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-//            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-//        ]
-//
-//        NSLayoutConstraint.activate(constratints)
-
-    }
-    
     private func setupLayout() {
         view.addSubview(mainInformationView)
         view.addSubview(detailsButton)
         view.addSubview(hourlyCollectionView)
+        view.addSubview(everyDayLabel)
+        view.addSubview(everyDayTableView)
 
         let constraints = [
             mainInformationView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
@@ -175,13 +180,15 @@ class WeatherViewController: UIViewController {
             hourlyCollectionView.topAnchor.constraint(equalTo: detailsButton.bottomAnchor),
             hourlyCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             hourlyCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            hourlyCollectionView.heightAnchor.constraint(equalToConstant: 103)
+            hourlyCollectionView.heightAnchor.constraint(equalToConstant: 103),
             
+            everyDayLabel.topAnchor.constraint(equalTo: hourlyCollectionView.bottomAnchor, constant: 30),
+            everyDayLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
             
-            
-            
-            //mainInformationView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            //plusView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            everyDayTableView.topAnchor.constraint(equalTo: everyDayLabel.bottomAnchor),
+            everyDayTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+            everyDayTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            everyDayTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -205,21 +212,19 @@ extension WeatherViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return HourlyWeatherStorage.weather.count
+        return HourlyWeatherStorage.hourlyWeather.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: HourlyCollectionViewCell.self), for: indexPath) as! HourlyCollectionViewCell
         
-        let weather: Current = HourlyWeatherStorage.weather[indexPath.item]
+        let weather: Current = HourlyWeatherStorage.hourlyWeather[indexPath.item]
 
         cell.configure(with: weather)
         
         return cell
     }
-    
 }
-
 
 extension WeatherViewController: UICollectionViewDelegateFlowLayout {
     
@@ -249,63 +254,37 @@ extension WeatherViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-//extension WeatherViewController: UITableViewDataSource {
-//
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        return 3
-//    }
-//
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        switch section {
-//        case 0:
-//            return 1
-//        case 1:
-//            return 0
-//        case 2:
-//            return 0
-//        default:
-//            return 0
-//        }
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        switch indexPath.section {
-//        case 0:
-//            let mainInformationCell: MainInformationTableViewCell = tableView.dequeueReusableCell(withIdentifier: MainInformationReuseID, for: indexPath) as! MainInformationTableViewCell
-//            return mainInformationCell
-//        default:
-//            let mainInformationCell: MainInformationTableViewCell = tableView.dequeueReusableCell(withIdentifier: MainInformationReuseID, for: indexPath) as! MainInformationTableViewCell
-//            return mainInformationCell
-//        }
-//    }
-//
-//
-//}
-//
-//extension WeatherViewController: UITableViewDelegate {
-//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        switch section {
-//        case 0:
-//            return 0
-//        case 1:
-//            return 0
-//        case 2:
-//            return 0
-//        default:
-//            return 0
-//        }
-//    }
-//
-//    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-//        switch section {
-//        case 0:
-//            return 0
-//        case 1:
-//            return 0
-//        case 2:
-//            return 0
-//        default:
-//            return 0
-//        }
-//    }
-//}
+extension WeatherViewController: UITableViewDataSource {
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return HourlyWeatherStorage.dailyWeather.count
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let everyDayCell: EveryDayTableViewCell = tableView.dequeueReusableCell(withIdentifier: everyDayReuseID, for: indexPath) as! EveryDayTableViewCell
+        
+        let weather: Daily = HourlyWeatherStorage.dailyWeather[indexPath.section]
+        everyDayCell.configure(with: weather)
+        
+        return everyDayCell
+    }
+
+
+}
+
+extension WeatherViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView()
+        view.backgroundColor = .white
+        return view
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 10
+    }
+}

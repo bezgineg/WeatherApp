@@ -9,7 +9,7 @@ class SettingsView: UIView {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 10
-        view.backgroundColor = Colors.settingsViewBackgroundColor
+        view.backgroundColor = Colors.customBackgroundColor
         view.layer.zPosition = 1
         return view
     }()
