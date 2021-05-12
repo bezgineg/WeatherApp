@@ -7,7 +7,6 @@ class SettingsView: UIView {
     
     private let settingsView: UIView = {
         let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 10
         view.backgroundColor = Colors.customBackgroundColor
         view.layer.zPosition = 1
@@ -16,28 +15,24 @@ class SettingsView: UIView {
     
     private let cloudTopImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(named: "cloudTop")
         return imageView
     }()
     
     private let cloudMiddleImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(named: "cloudMiddle")
         return imageView
     }()
     
     private let cloudBottomImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(named: "cloudBottom")
         return imageView
     }()
     
     private let settingsLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Настройки"
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
@@ -110,7 +105,6 @@ class SettingsView: UIView {
     
     private lazy var setupButton: UIButton = {
         let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 10
         button.setTitleColor(.white, for: .normal)
@@ -209,20 +203,9 @@ class SettingsView: UIView {
     }
     
     private func setupLayout() {
-        addSubview(settingsView)
-        addSubview(cloudTopImageView)
-        addSubview(cloudMiddleImageView)
-        addSubview(cloudBottomImageView)
-        settingsView.addSubview(settingsLabel)
-        settingsView.addSubview(temperatureLabel)
-        settingsView.addSubview(windSpeedLabel)
-        settingsView.addSubview(timeFormatLabel)
-        settingsView.addSubview(notificationLabel)
-        settingsView.addSubview(setupButton)
-        settingsView.addSubview(temperatureCustomSwitch)
-        settingsView.addSubview(windSpeedCustomSwitch)
-        settingsView.addSubview(timeFormatCustomSwitch)
-        settingsView.addSubview(notificationCustomSwitch)
+        
+        addSubviews(settingsView, cloudTopImageView, cloudMiddleImageView, cloudBottomImageView)
+        settingsView.addSubviews(settingsLabel, temperatureLabel, windSpeedLabel, timeFormatLabel, notificationLabel, setupButton, temperatureCustomSwitch, windSpeedCustomSwitch, timeFormatCustomSwitch, notificationCustomSwitch)
         
         let constraints = [
             settingsView.centerYAnchor.constraint(equalTo: self.centerYAnchor),

@@ -11,6 +11,9 @@
 		A3348523264807EF00FA7A76 /* HourlyCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3348522264807EF00FA7A76 /* HourlyCollectionViewCell.swift */; };
 		A3348527264813C600FA7A76 /* HourlyWeatherStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3348526264813C500FA7A76 /* HourlyWeatherStorage.swift */; };
 		A334852B2649370800FA7A76 /* EveryDayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A334852A2649370800FA7A76 /* EveryDayTableViewCell.swift */; };
+		A334852F264C32EF00FA7A76 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A334852E264C32EF00FA7A76 /* UIViewExtension.swift */; };
+		A3348532264C59E600FA7A76 /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3348531264C59E600FA7A76 /* Direction.swift */; };
+		A3348535264C6C3500FA7A76 /* SunAndMoonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3348534264C6C3400FA7A76 /* SunAndMoonTableViewCell.swift */; };
 		A344ED29263D11BD00BD7307 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A344ED28263D11BD00BD7307 /* AppDelegate.swift */; };
 		A344ED2B263D11BD00BD7307 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A344ED2A263D11BD00BD7307 /* SceneDelegate.swift */; };
 		A344ED32263D11C100BD7307 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A344ED31263D11C100BD7307 /* Assets.xcassets */; };
@@ -48,6 +51,9 @@
 		A3348522264807EF00FA7A76 /* HourlyCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyCollectionViewCell.swift; sourceTree = "<group>"; };
 		A3348526264813C500FA7A76 /* HourlyWeatherStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyWeatherStorage.swift; sourceTree = "<group>"; };
 		A334852A2649370800FA7A76 /* EveryDayTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EveryDayTableViewCell.swift; sourceTree = "<group>"; };
+		A334852E264C32EF00FA7A76 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		A3348531264C59E600FA7A76 /* Direction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
+		A3348534264C6C3400FA7A76 /* SunAndMoonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunAndMoonTableViewCell.swift; sourceTree = "<group>"; };
 		A344ED25263D11BD00BD7307 /* OpenWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A344ED28263D11BD00BD7307 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A344ED2A263D11BD00BD7307 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -186,6 +192,8 @@
 				A344ED78264174BF00BD7307 /* CustomSwitch.swift */,
 				A344ED7B2641752E00BD7307 /* CustomThumbView.swift */,
 				A334851E2646E0BD00FA7A76 /* StringExtension.swift */,
+				A334852E264C32EF00FA7A76 /* UIViewExtension.swift */,
+				A3348531264C59E600FA7A76 /* Direction.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -225,8 +233,9 @@
 			children = (
 				BBEF5A92264AB73D007B8983 /* DayCoordinator.swift */,
 				BBEF5A96264AB77D007B8983 /* DayViewController.swift */,
-				BB92431F264BF36D0053C6F2 /* PeriodsOfTimeTableViewCell.swift */,
 				BB924322264BF9490053C6F2 /* DayCollectionViewCell.swift */,
+				BB92431F264BF36D0053C6F2 /* PeriodsOfTimeTableViewCell.swift */,
+				A3348534264C6C3400FA7A76 /* SunAndMoonTableViewCell.swift */,
 			);
 			path = DayFlow;
 			sourceTree = "<group>";
@@ -315,6 +324,7 @@
 				A344EDC726455E8600BD7307 /* MainInformationWeather.swift in Sources */,
 				A344ED79264174BF00BD7307 /* CustomSwitch.swift in Sources */,
 				A344ED43263D12BC00BD7307 /* OnboardingCoordinator.swift in Sources */,
+				A3348532264C59E600FA7A76 /* Direction.swift in Sources */,
 				A344EDBF2645505100BD7307 /* NetworkManager.swift in Sources */,
 				A344ED4A263D130200BD7307 /* Coordinator.swift in Sources */,
 				A334851F2646E0BD00FA7A76 /* StringExtension.swift in Sources */,
@@ -332,12 +342,14 @@
 				A344ED54263D185E00BD7307 /* OnboardingView.swift in Sources */,
 				A344ED5D263D2D6700BD7307 /* Keys.swift in Sources */,
 				A344ED6E263D421E00BD7307 /* UILabelExtension.swift in Sources */,
+				A334852F264C32EF00FA7A76 /* UIViewExtension.swift in Sources */,
 				A344ED842641914600BD7307 /* WeatherCoordinator.swift in Sources */,
 				A3348527264813C600FA7A76 /* HourlyWeatherStorage.swift in Sources */,
 				A344ED57263D1C6B00BD7307 /* Colors.swift in Sources */,
 				BB924323264BF9490053C6F2 /* DayCollectionViewCell.swift in Sources */,
 				BB924320264BF36D0053C6F2 /* PeriodsOfTimeTableViewCell.swift in Sources */,
 				A344ED72264171AD00BD7307 /* UIButtonExtension.swift in Sources */,
+				A3348535264C6C3500FA7A76 /* SunAndMoonTableViewCell.swift in Sources */,
 				A344ED65263D2FFC00BD7307 /* SettingsView.swift in Sources */,
 				A344ED68263D300D00BD7307 /* SettingsViewController.swift in Sources */,
 			);

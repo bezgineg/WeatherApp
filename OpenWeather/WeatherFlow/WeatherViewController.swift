@@ -9,20 +9,17 @@ class WeatherViewController: UIViewController {
     
     private let mainInformationView: MainInformationView = {
         let view = MainInformationView()
-        view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 5
         return view
     }()
     
     private let plusView: PlusView = {
         let view = PlusView()
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     private lazy var detailsButton: UIButton = {
         let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.masksToBounds = true
         button.setTitleColor(.black, for: .normal)
         button.setTitle("Подробнее на 24 часа", for: .normal)
@@ -38,7 +35,6 @@ class WeatherViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.translatesAutoresizingMaskIntoConstraints = false
         cv.backgroundColor = .white
         cv.register(HourlyCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: HourlyCollectionViewCell.self))
         cv.dataSource = self
@@ -49,7 +45,6 @@ class WeatherViewController: UIViewController {
     
     private let everyDayLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         label.text = "Ежедневный прогноз"
@@ -136,7 +131,6 @@ class WeatherViewController: UIViewController {
     }
     
     private func setupEveryDayTableView() {
-        everyDayTableView.translatesAutoresizingMaskIntoConstraints = false
         everyDayTableView.backgroundColor = .white
         everyDayTableView.dataSource = self
         everyDayTableView.delegate = self
@@ -162,11 +156,8 @@ class WeatherViewController: UIViewController {
     }
     
     private func setupLayout() {
-        view.addSubview(mainInformationView)
-        view.addSubview(detailsButton)
-        view.addSubview(hourlyCollectionView)
-        view.addSubview(everyDayLabel)
-        view.addSubview(everyDayTableView)
+        
+        view.addSubviews(mainInformationView, detailsButton, hourlyCollectionView, everyDayLabel, everyDayTableView)
 
         let constraints = [
             mainInformationView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
@@ -182,7 +173,7 @@ class WeatherViewController: UIViewController {
             hourlyCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             hourlyCollectionView.heightAnchor.constraint(equalToConstant: 103),
             
-            everyDayLabel.topAnchor.constraint(equalTo: hourlyCollectionView.bottomAnchor, constant: 30),
+            everyDayLabel.topAnchor.constraint(equalTo: hourlyCollectionView.bottomAnchor),
             everyDayLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
             
             everyDayTableView.topAnchor.constraint(equalTo: everyDayLabel.bottomAnchor),
@@ -194,7 +185,8 @@ class WeatherViewController: UIViewController {
     }
     
     private func setupPlusView() {
-        view.addSubview(plusView)
+        
+        view.addSubviews(plusView)
 
         let constraints = [
             plusView.topAnchor.constraint(equalTo: view.topAnchor),

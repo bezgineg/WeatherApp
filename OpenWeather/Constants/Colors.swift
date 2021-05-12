@@ -8,5 +8,6 @@ struct Colors {
     static let customBackgroundColor = UIColor(red: 233/255, green: 238/255, blue: 250/255, alpha: 1)
     static let settingsLabelColor = UIColor(red: 137/255, green: 131/255, blue: 131/255, alpha: 1)
     static let hourlyCvBorderColor = UIColor(red: 0.671, green: 0.737, blue: 0.918, alpha: 1)
-    static let separatorColor = UIColor(red: 32/255, green: 78/255, blue: 199/255, alpha: 1)
+    static let dividerColor = UIColor(red: 32/255, green: 78/255, blue: 199/255, alpha: 1)
+    static let moonPhaseColor = UIColor(red: 0.125, green: 0.306, blue: 0.78, alpha: 1)
 }

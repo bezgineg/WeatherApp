@@ -7,7 +7,6 @@ class SettingsViewController: UIViewController {
     
     private let settingsView: SettingsView = {
         let view = SettingsView()
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
@@ -43,7 +42,8 @@ class SettingsViewController: UIViewController {
     }
     
     private func setupLayout() {
-        view.addSubview(settingsView)
+        
+        view.addSubviews(settingsView)
 
         let constraints = [
             settingsView.centerYAnchor.constraint(equalTo: view.centerYAnchor),

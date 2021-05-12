@@ -5,7 +5,6 @@ class HourlyCollectionViewCell: UICollectionViewCell {
     
     private let timeLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .gray
         label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         return label
@@ -13,7 +12,6 @@ class HourlyCollectionViewCell: UICollectionViewCell {
     
     private let temperatureLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         return label
@@ -21,7 +19,6 @@ class HourlyCollectionViewCell: UICollectionViewCell {
     
     private let weatherImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
@@ -41,6 +38,7 @@ class HourlyCollectionViewCell: UICollectionViewCell {
         temperatureLabel.text = "\(Int(object.temp))°"
         setupTimeLabel(time: object.dt)
         setupWeatherImage(weather: object.weather.first?.main.rawValue)
+        configureUnselectedItem()
     }
     
     func configureSelectedItem() {
@@ -83,9 +81,8 @@ class HourlyCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupLayout() {
-        contentView.addSubview(timeLabel)
-        contentView.addSubview(temperatureLabel)
-        contentView.addSubview(weatherImage)
+        
+        contentView.addSubviews(timeLabel, temperatureLabel, weatherImage)
         
         let constraints = [
             timeLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),

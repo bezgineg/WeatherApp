@@ -5,7 +5,6 @@ class EveryDayTableViewCell: UITableViewCell {
     
     private let dayLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "17/04"
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.textColor = .gray
@@ -14,13 +13,11 @@ class EveryDayTableViewCell: UITableViewCell {
     
     private let weatherImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
     private let humidityLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Colors.mainColor
         label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         return label
@@ -28,7 +25,6 @@ class EveryDayTableViewCell: UITableViewCell {
     
     private let descriptionLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
@@ -37,7 +33,6 @@ class EveryDayTableViewCell: UITableViewCell {
     
     private let temperatureLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         return label
@@ -45,7 +40,6 @@ class EveryDayTableViewCell: UITableViewCell {
     
     private let vectorImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(named: "vector")
         return imageView
     }()
@@ -94,12 +88,7 @@ class EveryDayTableViewCell: UITableViewCell {
     
     private func setupLayout() {
 
-        contentView.addSubview(dayLabel)
-        contentView.addSubview(weatherImage)
-        contentView.addSubview(humidityLabel)
-        contentView.addSubview(descriptionLabel)
-        contentView.addSubview(temperatureLabel)
-        contentView.addSubview(vectorImage)
+        contentView.addSubviews(dayLabel, weatherImage, humidityLabel, descriptionLabel, temperatureLabel, vectorImage)
         
         let constraints = [
             dayLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),

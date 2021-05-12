@@ -5,7 +5,6 @@ class DayCollectionViewCell: UICollectionViewCell {
     
     private let dateLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         return label
@@ -28,7 +27,8 @@ class DayCollectionViewCell: UICollectionViewCell {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ru_RU")
         formatter.dateFormat = "dd/MM E"
-        dateLabel.text = formatter.string(from: date as Date)
+        dateLabel.text = formatter.string(from: date as Date).uppercased()
+        configureUnselectedItem()
     }
     
     func configureSelectedItem() {
@@ -47,7 +47,7 @@ class DayCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupLayout() {
-        contentView.addSubview(dateLabel)
+        contentView.addSubviews(dateLabel)
         
         let constraints = [
             dateLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 7),

@@ -7,13 +7,11 @@ class OnboardingViewController: UIViewController {
     
     private let onboardingView: OnboardingView = {
         let view = OnboardingView()
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.showsVerticalScrollIndicator = true
         return scrollView
     }()
@@ -57,8 +55,9 @@ class OnboardingViewController: UIViewController {
     }
     
     private func setupLayout() {
-        view.addSubview(scrollView)
-        scrollView.addSubview(onboardingView)
+        
+        view.addSubviews(scrollView)
+        scrollView.addSubviews(onboardingView)
         
         let constraints = [
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),

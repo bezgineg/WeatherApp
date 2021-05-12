@@ -10,7 +10,6 @@ class DayViewController: UIViewController {
     
     private let cityLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         return label
@@ -20,7 +19,6 @@ class DayViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.translatesAutoresizingMaskIntoConstraints = false
         cv.backgroundColor = .white
         cv.register(DayCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: DayCollectionViewCell.self))
         cv.dataSource = self
@@ -29,9 +27,14 @@ class DayViewController: UIViewController {
         return cv
     }()
     
-    private var reuseID: String {
+    private var periodsOfTimeReuseID: String {
         return String(describing: PeriodsOfTimeTableViewCell.self)
     }
+    
+    private var sunAndMoonReuseId: String {
+        return String(describing: SunAndMoonTableViewCell.self)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -85,19 +88,18 @@ class DayViewController: UIViewController {
     }
     
     private func setupTableView() {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = .white
         tableView.dataSource = self
         tableView.delegate = self
         tableView.showsVerticalScrollIndicator = false
         tableView.separatorStyle = .none
-        tableView.register(PeriodsOfTimeTableViewCell.self, forCellReuseIdentifier: reuseID)
+        tableView.register(PeriodsOfTimeTableViewCell.self, forCellReuseIdentifier: periodsOfTimeReuseID)
+        tableView.register(SunAndMoonTableViewCell.self, forCellReuseIdentifier: sunAndMoonReuseId)
     }
     
     private func setupLayout() {
-        view.addSubview(cityLabel)
-        view.addSubview(collectionView)
-        view.addSubview(tableView)
+        
+        view.addSubviews(cityLabel, collectionView, tableView)
         
         let constraints = [
             cityLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
@@ -108,7 +110,7 @@ class DayViewController: UIViewController {
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.heightAnchor.constraint(equalToConstant: 36),
             
-            tableView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 40),
+            tableView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 10),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -168,7 +170,7 @@ extension DayViewController: UICollectionViewDelegateFlowLayout {
 extension DayViewController: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 3
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -176,13 +178,28 @@ extension DayViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: PeriodsOfTimeTableViewCell = tableView.dequeueReusableCell(withIdentifier: reuseID, for: indexPath) as! PeriodsOfTimeTableViewCell
         
-        let weather: Daily = HourlyWeatherStorage.dailyWeather[indexPath.section]
+        //let weather: Daily = HourlyWeatherStorage.dailyWeather[indexPath.section]
         
-        cell.configureDay(with: detailsDay!)
-        
-        return cell
+        switch indexPath.section {
+        case 0:
+            let cell: PeriodsOfTimeTableViewCell = tableView.dequeueReusableCell(withIdentifier: periodsOfTimeReuseID, for: indexPath) as! PeriodsOfTimeTableViewCell
+            guard let detailsDay = detailsDay else { return UITableViewCell() }
+            cell.configureDay(with: detailsDay)
+            return cell
+        case 1:
+            let cell: PeriodsOfTimeTableViewCell = tableView.dequeueReusableCell(withIdentifier: periodsOfTimeReuseID, for: indexPath) as! PeriodsOfTimeTableViewCell
+            guard let detailsDay = detailsDay else { return UITableViewCell() }
+            cell.configureNight(with: detailsDay)
+            return cell
+        case 2:
+            let cell: SunAndMoonTableViewCell = tableView.dequeueReusableCell(withIdentifier: sunAndMoonReuseId, for: indexPath) as! SunAndMoonTableViewCell
+            guard let detailsDay = detailsDay else { return UITableViewCell() }
+            cell.configure(with: detailsDay)
+            return cell
+        default:
+            return UITableViewCell()
+        }
     }
 
 }

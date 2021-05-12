@@ -4,7 +4,6 @@ class MainInformationView: UIView {
     
     private let dailyTemperatureLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         return label
@@ -12,7 +11,6 @@ class MainInformationView: UIView {
     
     private let currentTemperatureLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 36, weight: .medium)
         return label
@@ -20,7 +18,6 @@ class MainInformationView: UIView {
     
     private let descriptionLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         return label
@@ -28,14 +25,12 @@ class MainInformationView: UIView {
     
     private let cloudyImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(named: "облачность")
         return imageView
     }()
     
     private let cloudyLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         return label
@@ -43,14 +38,12 @@ class MainInformationView: UIView {
     
     private let windSpeedImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(named: "скорость ветра")
         return imageView
     }()
     
     private let windSpeedLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         return label
@@ -58,14 +51,12 @@ class MainInformationView: UIView {
     
     private let humidityImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(named: "осадки")
         return imageView
     }()
     
     private let humidityLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         return label
@@ -73,14 +64,12 @@ class MainInformationView: UIView {
     
     private let sunriseImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(named: "восход")?.withTintColor(.yellow)
         return imageView
     }()
     
     private let sunriseLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         return label
@@ -88,14 +77,12 @@ class MainInformationView: UIView {
     
     private let sunsetImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(named: "закат")?.withTintColor(.yellow)
         return imageView
     }()
     
     private let sunsetLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         return label
@@ -103,7 +90,6 @@ class MainInformationView: UIView {
     
     private let dateLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .yellow
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         return label
@@ -162,21 +148,8 @@ class MainInformationView: UIView {
     }
     
     private func setupLayout() {
-
-        addSubview(currentTemperatureLabel)
-        addSubview(dailyTemperatureLabel)
-        addSubview(descriptionLabel)
-        addSubview(cloudyImage)
-        addSubview(cloudyLabel)
-        addSubview(windSpeedImage)
-        addSubview(windSpeedLabel)
-        addSubview(humidityImage)
-        addSubview(humidityLabel)
-        addSubview(sunriseImage)
-        addSubview(sunriseLabel)
-        addSubview(sunsetImage)
-        addSubview(sunsetLabel)
-        addSubview(dateLabel)
+        
+        addSubviews(dailyTemperatureLabel, currentTemperatureLabel, descriptionLabel, cloudyImage, cloudyLabel, windSpeedImage, windSpeedLabel, humidityImage, humidityLabel, sunriseImage, sunriseLabel, sunsetImage, sunsetLabel, dateLabel)
         
         let constraints = [
             

@@ -8,14 +8,12 @@ class OnboardingView: UIView {
     
     private let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(named: "image")
         return imageView
     }()
     
     private let permissionLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Разрешить приложению  Weather \nиспользовать данные \nо местоположении вашего устройства"
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
@@ -25,7 +23,6 @@ class OnboardingView: UIView {
     
     private let explanationLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Чтобы получить более точные прогнозы погоды во время движения или путешествия \n \nВы можете изменить свой выбор в любое время из меню приложения"
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
@@ -35,7 +32,6 @@ class OnboardingView: UIView {
     
     private lazy var acceptButton: UIButton = {
         let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 10
         button.setTitleColor(.white, for: .normal)
@@ -50,7 +46,6 @@ class OnboardingView: UIView {
     
     private lazy var declineButton: UIButton = {
         let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.masksToBounds = true
         button.setTitleColor(.white, for: .normal)
         button.setTitle("НЕТ, Я БУДУ ДОБАВЛЯТЬ ЛОКАЦИИ", for: .normal)
@@ -83,11 +78,8 @@ class OnboardingView: UIView {
     }
     
     private func setupLayout() {
-        addSubview(imageView)
-        addSubview(permissionLabel)
-        addSubview(explanationLabel)
-        addSubview(acceptButton)
-        addSubview(declineButton)
+        
+        addSubviews(imageView, permissionLabel, explanationLabel, acceptButton, declineButton)
         
         let constraints = [
             imageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 60),

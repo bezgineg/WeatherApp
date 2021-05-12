@@ -5,7 +5,6 @@ class PlusView: UIView {
 
     private let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(systemName: "plus")
         imageView.tintColor = .black
         return imageView
@@ -22,7 +21,8 @@ class PlusView: UIView {
     }
     
     private func setupLayout() {
-        addSubview(imageView)
+        
+        addSubviews(imageView)
         
         let constraints = [
             imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
