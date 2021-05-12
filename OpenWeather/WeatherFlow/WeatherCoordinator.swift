@@ -29,6 +29,16 @@ class WeatherCoordinator: Coordinator {
         settingsCoordinator.start()
     }
     
+    func pushDayViewController(day: Daily, title: String) {
+        let dayCoordinator = DayCoordinator()
+        dayCoordinator.navigationController = navigationController
+        childCoordinators.append(dayCoordinator)
+        dayCoordinator.parentCoordinator = self
+        dayCoordinator.day = day
+        dayCoordinator.title = title
+        dayCoordinator.start()
+    }
+    
     func showAlert() {
         let alertController = UIAlertController(title: "Добавление города", message: "Введите название города", preferredStyle: .alert)
         alertController.addTextField { textField in

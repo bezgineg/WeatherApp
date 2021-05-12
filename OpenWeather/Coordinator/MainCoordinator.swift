@@ -19,7 +19,7 @@ class MainCoordinator: Coordinator {
             weatherCoordinator.start()
             childCoordinators.append(weatherCoordinator)
             weatherCoordinator.parentCoordinator = self
-            //UserDefaults.standard.setValue(true, forKey: Keys.isCityAdded.rawValue)
+            UserDefaults.standard.setValue(true, forKey: Keys.isCityAdded.rawValue)
         } else {
             let onboardingCoordinator = OnboardingCoordinator()
             onboardingCoordinator.navigationController = navigationController

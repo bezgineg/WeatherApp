@@ -278,6 +278,11 @@ extension WeatherViewController: UITableViewDataSource {
 
 extension WeatherViewController: UITableViewDelegate {
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        coordinator?.pushDayViewController(day: HourlyWeatherStorage.dailyWeather[indexPath.section],
+                                           title: navigationItem.title ?? "")
+    }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
         view.backgroundColor = .white

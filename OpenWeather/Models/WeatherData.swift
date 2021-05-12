@@ -99,8 +99,8 @@ struct FeelsLike: Decodable {
 }
 
 struct Temp: Decodable {
-    let min: Double
-    let max: Double
+    let day, min, max, night: Double
+    let eve, morn: Double
 }
 
 enum Description: String, Decodable {
@@ -112,6 +112,7 @@ enum Description: String, Decodable {
     case ясно = "ясно"
     case сильныйДождь = "сильный дождь"
     case переменнаяОблачность = "переменная облачность"
+    case проливнойДождь = "проливной дождь"
 }
 
 enum Main: String, Decodable {

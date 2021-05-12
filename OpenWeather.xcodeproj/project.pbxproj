@@ -37,6 +37,10 @@
 		A344EDBF2645505100BD7307 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A344EDBE2645505100BD7307 /* NetworkManager.swift */; };
 		A344EDC32645579200BD7307 /* WeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A344EDC22645579200BD7307 /* WeatherData.swift */; };
 		A344EDC726455E8600BD7307 /* MainInformationWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = A344EDC626455E8600BD7307 /* MainInformationWeather.swift */; };
+		BB924320264BF36D0053C6F2 /* PeriodsOfTimeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB92431F264BF36D0053C6F2 /* PeriodsOfTimeTableViewCell.swift */; };
+		BB924323264BF9490053C6F2 /* DayCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB924322264BF9490053C6F2 /* DayCollectionViewCell.swift */; };
+		BBEF5A93264AB73D007B8983 /* DayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEF5A92264AB73D007B8983 /* DayCoordinator.swift */; };
+		BBEF5A97264AB77D007B8983 /* DayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEF5A96264AB77D007B8983 /* DayViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +76,10 @@
 		A344EDBE2645505100BD7307 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		A344EDC22645579200BD7307 /* WeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherData.swift; sourceTree = "<group>"; };
 		A344EDC626455E8600BD7307 /* MainInformationWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainInformationWeather.swift; sourceTree = "<group>"; };
+		BB92431F264BF36D0053C6F2 /* PeriodsOfTimeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodsOfTimeTableViewCell.swift; sourceTree = "<group>"; };
+		BB924322264BF9490053C6F2 /* DayCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayCollectionViewCell.swift; sourceTree = "<group>"; };
+		BBEF5A92264AB73D007B8983 /* DayCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayCoordinator.swift; sourceTree = "<group>"; };
+		BBEF5A96264AB77D007B8983 /* DayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				A344EDC12645577E00BD7307 /* Models */,
+				BBEF5A99264AB925007B8983 /* Storage */,
 				A344EDBC2645503400BD7307 /* Managers */,
 				A344ED6C263D41F900BD7307 /* Helpers */,
 				A344ED36263D11C100BD7307 /* Info.plist */,
@@ -113,6 +122,7 @@
 				A344ED4C263D130C00BD7307 /* OnboardingFlow */,
 				A344ED5F263D2FC800BD7307 /* SettingsFlow */,
 				A344ED7E264190D300BD7307 /* WeatherFlow */,
+				BBEF5A91264AB5A0007B8983 /* DayFlow */,
 				A344ED59263D1C7100BD7307 /* Constants */,
 			);
 			path = OpenWeather;
@@ -206,9 +216,27 @@
 			children = (
 				A344EDC22645579200BD7307 /* WeatherData.swift */,
 				A344EDC626455E8600BD7307 /* MainInformationWeather.swift */,
-				A3348526264813C500FA7A76 /* HourlyWeatherStorage.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		BBEF5A91264AB5A0007B8983 /* DayFlow */ = {
+			isa = PBXGroup;
+			children = (
+				BBEF5A92264AB73D007B8983 /* DayCoordinator.swift */,
+				BBEF5A96264AB77D007B8983 /* DayViewController.swift */,
+				BB92431F264BF36D0053C6F2 /* PeriodsOfTimeTableViewCell.swift */,
+				BB924322264BF9490053C6F2 /* DayCollectionViewCell.swift */,
+			);
+			path = DayFlow;
+			sourceTree = "<group>";
+		};
+		BBEF5A99264AB925007B8983 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				A3348526264813C500FA7A76 /* HourlyWeatherStorage.swift */,
+			);
+			path = Storage;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -280,6 +308,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBEF5A93264AB73D007B8983 /* DayCoordinator.swift in Sources */,
 				A344ED29263D11BD00BD7307 /* AppDelegate.swift in Sources */,
 				A344ED50263D141E00BD7307 /* OnboardingViewController.swift in Sources */,
 				A334852B2649370800FA7A76 /* EveryDayTableViewCell.swift in Sources */,
@@ -293,6 +322,7 @@
 				A344ED7C2641752E00BD7307 /* CustomThumbView.swift in Sources */,
 				A344ED61263D2FEE00BD7307 /* SettingsCoordinator.swift in Sources */,
 				A344ED8D2643E6EB00BD7307 /* PlusView.swift in Sources */,
+				BBEF5A97264AB77D007B8983 /* DayViewController.swift in Sources */,
 				A344ED80264190F300BD7307 /* WeatherViewController.swift in Sources */,
 				A344ED9626446BE500BD7307 /* MainInformationView.swift in Sources */,
 				A344EDC32645579200BD7307 /* WeatherData.swift in Sources */,
@@ -305,6 +335,8 @@
 				A344ED842641914600BD7307 /* WeatherCoordinator.swift in Sources */,
 				A3348527264813C600FA7A76 /* HourlyWeatherStorage.swift in Sources */,
 				A344ED57263D1C6B00BD7307 /* Colors.swift in Sources */,
+				BB924323264BF9490053C6F2 /* DayCollectionViewCell.swift in Sources */,
+				BB924320264BF36D0053C6F2 /* PeriodsOfTimeTableViewCell.swift in Sources */,
 				A344ED72264171AD00BD7307 /* UIButtonExtension.swift in Sources */,
 				A344ED65263D2FFC00BD7307 /* SettingsView.swift in Sources */,
 				A344ED68263D300D00BD7307 /* SettingsViewController.swift in Sources */,
