@@ -89,7 +89,9 @@ class WeatherViewController: UIViewController {
     }
     
     @objc private func detailsButtonTapped() {
-        print("did Tap")
+        if let coordinator = coordinator {
+            coordinator.pushDetailsViewController(title: navigationItem.title ?? "")
+        }
     }
     
     @objc private func openSettings() {
@@ -107,7 +109,7 @@ class WeatherViewController: UIViewController {
             configureMainInformationView()
             setupEveryDayTableView()
             setupLayout()
-            createTimer()
+            //createTimer()
             createCollectionViewLoadTimer()
         } else {
             setupPlusView()
