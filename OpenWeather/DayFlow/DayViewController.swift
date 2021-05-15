@@ -167,6 +167,7 @@ extension DayViewController: UICollectionViewDelegateFlowLayout {
         return UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
     }
 }
+
 extension DayViewController: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {

@@ -11,11 +11,24 @@ class DetailsViewController: UIViewController {
     private var reuseID: String {
         return String(describing: DetailsTableViewCell.self)
     }
+    
     private let cityLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         return label
+    }()
+    
+    private lazy var collectionView : UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.backgroundColor = Colors.customBackgroundColor
+        cv.register(DetailsCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: DetailsCollectionViewCell.self))
+        cv.dataSource = self
+        cv.delegate = self
+        cv.showsHorizontalScrollIndicator = false
+        return cv
     }()
     
     override func viewDidLoad() {
@@ -35,7 +48,7 @@ class DetailsViewController: UIViewController {
     }
     
     private func createTimer() {
-        let timer = Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(updateData), userInfo: nil, repeats: true)
+        let timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(updateData), userInfo: nil, repeats: true)
         timer.tolerance = 0.1
         RunLoop.current.add(timer, forMode: .common)
     }
@@ -80,24 +93,52 @@ class DetailsViewController: UIViewController {
     
     private func setupLayout() {
         
-        view.addSubviews(cityLabel, tableView)
+        view.addSubviews(cityLabel, collectionView, tableView)
         
         let constraints = [
             cityLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
             cityLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 45),
             
-            /*collectionView.topAnchor.constraint(equalTo: cityLabel.bottomAnchor, constant: 40),
+            collectionView.topAnchor.constraint(equalTo: cityLabel.bottomAnchor, constant: 10),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.heightAnchor.constraint(equalToConstant: 36),*/
+            collectionView.heightAnchor.constraint(equalToConstant: 160),
             
-            tableView.topAnchor.constraint(equalTo: cityLabel.bottomAnchor, constant: 10),
+            tableView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 10),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             
         ]
         NSLayoutConstraint.activate(constraints)
+    }
+}
+
+extension DetailsViewController: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DetailsCollectionViewCell.self), for: indexPath) as! DetailsCollectionViewCell
+        
+        let weather: Daily = HourlyWeatherStorage.dailyWeather[indexPath.item]
+
+        //cell.configure(with: weather)
+        
+        return cell
+    }
+}
+
+extension DetailsViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+        return CGSize(width: 2000, height: 160)
     }
 }
 
