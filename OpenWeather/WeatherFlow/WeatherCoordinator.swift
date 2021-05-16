@@ -29,6 +29,14 @@ class WeatherCoordinator: Coordinator {
         settingsCoordinator.start()
     }
     
+    func pushOnboardingViewController() {
+        let onboardingCoordinater = OnboardingCoordinator()
+        onboardingCoordinater.navigationController = navigationController
+        childCoordinators.append(onboardingCoordinater)
+        onboardingCoordinater.parentCoordinator = self
+        onboardingCoordinater.start()
+    }
+    
     func pushDayViewController(day: Daily, title: String) {
         let dayCoordinator = DayCoordinator()
         dayCoordinator.navigationController = navigationController
@@ -47,6 +55,7 @@ class WeatherCoordinator: Coordinator {
         detailsCoordinator.title = title
         detailsCoordinator.start()
     }
+    
     
     func showAlert() {
         let alertController = UIAlertController(title: "Добавление города", message: "Введите название города", preferredStyle: .alert)

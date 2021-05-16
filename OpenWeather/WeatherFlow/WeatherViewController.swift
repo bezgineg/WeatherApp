@@ -5,6 +5,7 @@ class WeatherViewController: UIViewController {
 
     var coordinator: WeatherCoordinator?
     
+    let dataProvider: DataProvider = RealmDataProvider()
     private let everyDayTableView = UITableView(frame: .zero, style: .plain)
     
     private let mainInformationView: MainInformationView = {
@@ -59,9 +60,12 @@ class WeatherViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .white
-        
-        setupNavigationBar()
         setupViews()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNavigationBar()
     }
     
 //    override func viewWillDisappear(_ animated: Bool) {
@@ -99,8 +103,9 @@ class WeatherViewController: UIViewController {
         }
     }
     
-    @objc private func addCity() {
-        coordinator?.showAlert()
+    @objc private func openOnboarding() {
+        coordinator?.pushOnboardingViewController()
+        //coordinator?.showAlert()
     }
     
     private func setupViews() {
@@ -120,6 +125,11 @@ class WeatherViewController: UIViewController {
         NetworkManager.fetchWeather { weather in
             HourlyWeatherStorage.hourlyWeather = weather.hourly
             HourlyWeatherStorage.dailyWeather = weather.daily
+            let cityWeather = CityWeather(current: weather.current, timezone: weather.timezone, daily: weather.daily, hourly: weather.hourly)
+            self.dataProvider.addWeather(cityWeather)
+            //print(self.dataProvider.getWeather().count)
+            let newW = self.dataProvider.getWeather()
+            //print(newW)
             DispatchQueue.main.async {
                 self.mainInformationView.configure(with: weather)
                 self.navigationItem.title = weather.timezone
@@ -150,14 +160,14 @@ class WeatherViewController: UIViewController {
     
     private func setupNavigationBar() {
         navigationController?.navigationBar.backgroundColor = .white
-        //navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.isHidden = false
         navigationItem.hidesBackButton = true
         
         let settingsButtonImage = UIImage(named: "burger")
         let cityButtonImage = UIImage(named: "addCity")
         
         let settingsButton = UIBarButtonItem(image: settingsButtonImage, style: .plain, target: self, action: #selector(openSettings))
-        let cityButton = UIBarButtonItem(image: cityButtonImage, style: .plain, target: self, action: #selector(addCity))
+        let cityButton = UIBarButtonItem(image: cityButtonImage, style: .plain, target: self, action: #selector(openOnboarding))
         navigationItem.leftBarButtonItem = settingsButton
         navigationItem.rightBarButtonItem = cityButton
         navigationItem.leftBarButtonItem?.tintColor = .black

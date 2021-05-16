@@ -23,6 +23,10 @@ class OnboardingCoordinator: Coordinator {
         settingsCoordinator.start()
     }
     
+    func closeOnboardingViewController() {
+        parentCoordinator?.navigationController?.popViewController(animated: true)
+    }
+    
     func didFinishOnboarding() {
         parentCoordinator?.childDidFinish(self)
     }

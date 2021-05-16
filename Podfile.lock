@@ -3,20 +3,30 @@ PODS:
   - Charts (3.6.0):
     - Charts/Core (= 3.6.0)
   - Charts/Core (3.6.0)
+  - Realm (10.1.4):
+    - Realm/Headers (= 10.1.4)
+  - Realm/Headers (10.1.4)
+  - RealmSwift (10.1.4):
+    - Realm (= 10.1.4)
 
 DEPENDENCIES:
   - Alamofire (~> 5.2)
   - Charts
+  - RealmSwift (= 10.1.4)
 
 SPEC REPOS:
   trunk:
     - Alamofire
     - Charts
+    - Realm
+    - RealmSwift
 
 SPEC CHECKSUMS:
   Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
   Charts: b1e3a1f5a1c9ba5394438ca3b91bd8c9076310af
+  Realm: 80f4fb2971ccb9adc27a47d0955ae8e533a7030b
+  RealmSwift: 0e566ca714edb377bba8ea0811eafcea0b93734e
 
-PODFILE CHECKSUM: e42e3e04bb4456695638da82b5f6d740feed7c0a
+PODFILE CHECKSUM: 782442e5846a13d9df59ee2b52522b139cc2c3ac
 
 COCOAPODS: 1.10.0

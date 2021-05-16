@@ -36,7 +36,11 @@ class OnboardingViewController: UIViewController {
         if let coordinator = coordinator {
             onboardingView.onAcceptButtonTap = {
                 UserDefaults.standard.setValue(true, forKey: Keys.isTrackingBoolKey.rawValue)
-                coordinator.pushSettingsViewController()
+                if UserDefaults.standard.bool(forKey: Keys.isOnboardingCompleteBoolKey.rawValue) {
+                    coordinator.closeOnboardingViewController()
+                } else {
+                    coordinator.pushSettingsViewController()
+                }
             }
         }
     }
@@ -45,7 +49,11 @@ class OnboardingViewController: UIViewController {
         if let coordinator = coordinator {
             onboardingView.onDeclineButtonTap = {
                 UserDefaults.standard.setValue(false, forKey: Keys.isTrackingBoolKey.rawValue)
-                coordinator.pushSettingsViewController()
+                if UserDefaults.standard.bool(forKey: Keys.isOnboardingCompleteBoolKey.rawValue) {
+                    coordinator.closeOnboardingViewController()
+                } else {
+                    coordinator.pushSettingsViewController()
+                }
             }
         }
     }
