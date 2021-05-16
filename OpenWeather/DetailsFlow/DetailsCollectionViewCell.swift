@@ -76,8 +76,6 @@ class DetailsCollectionViewCell: UICollectionViewCell {
             let dataEntry = ChartDataEntry(x: Double(i), y: Double(values[i]), icon: icons[i])
             entries.append(dataEntry)
         }
-        
-        //entries.sort(by: { $0.x < $1.x })
 
         let valueForm = NumberFormatter()
         valueForm.numberStyle = .percent
@@ -97,6 +95,7 @@ class DetailsCollectionViewCell: UICollectionViewCell {
         lineChart.data = data
 
         xaxis.valueFormatter = formatter
+        xaxis.labelFont = UIFont.systemFont(ofSize: 14, weight: .regular)
         lineChart.xAxis.valueFormatter = xaxis.valueFormatter
         
         lineChart.data = data

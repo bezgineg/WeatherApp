@@ -6,5 +6,6 @@ target 'OpenWeather' do
   use_frameworks!
 
 pod 'Charts'
+pod 'Alamofire', '~> 5.2'
 
 end

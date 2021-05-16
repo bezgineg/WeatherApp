@@ -59,7 +59,7 @@ class WeatherCoordinator: Coordinator {
             if let cityName = self.inputTextField?.text {
                 //self.weatherViewController.navigationItem.title = cityName
                 //NetworkManager.fetchWeather()
-                NetworkManager.jsonDecodeWeather { weather in
+                NetworkManager.fetchWeather { weather in
                     print(weather)
                 }
             }

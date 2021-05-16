@@ -62,7 +62,6 @@ class WeatherViewController: UIViewController {
         
         setupNavigationBar()
         setupViews()
-        
     }
     
 //    override func viewWillDisappear(_ animated: Bool) {
@@ -118,18 +117,26 @@ class WeatherViewController: UIViewController {
     
     //MARK: - Доделать
     private func configureMainInformationView() {
-        NetworkManager.jsonDecodeWeather { weather in
-            //let weather = WeatherData(current: weather.current, timezone: weather.timezone, daily: weather.daily, hourly: weather.hourly)
+        NetworkManager.fetchWeather { weather in
             HourlyWeatherStorage.hourlyWeather = weather.hourly
             HourlyWeatherStorage.dailyWeather = weather.daily
-//            for hour in weather.hourly {
-//                HourlyWeatherStorage.weather.append(hour)
-//            }
             DispatchQueue.main.async {
                 self.mainInformationView.configure(with: weather)
                 self.navigationItem.title = weather.timezone
             }
         }
+//        NetworkManager.jsonDecodeWeather { weather in
+//            //let weather = WeatherData(current: weather.current, timezone: weather.timezone, daily: weather.daily, hourly: weather.hourly)
+//            HourlyWeatherStorage.hourlyWeather = weather.hourly
+//            HourlyWeatherStorage.dailyWeather = weather.daily
+////            for hour in weather.hourly {
+////                HourlyWeatherStorage.weather.append(hour)
+////            }
+//            DispatchQueue.main.async {
+//                self.mainInformationView.configure(with: weather)
+//                self.navigationItem.title = weather.timezone
+//            }
+//        }
     }
     
     private func setupEveryDayTableView() {
