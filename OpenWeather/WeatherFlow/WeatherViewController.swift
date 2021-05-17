@@ -113,7 +113,7 @@ class WeatherViewController: UIViewController {
             configureMainInformationView()
             setupEveryDayTableView()
             setupLayout()
-            //createTimer()
+            createTimer()
             createCollectionViewLoadTimer()
         } else {
             setupPlusView()
@@ -125,11 +125,11 @@ class WeatherViewController: UIViewController {
         NetworkManager.fetchWeather { weather in
             HourlyWeatherStorage.hourlyWeather = weather.hourly
             HourlyWeatherStorage.dailyWeather = weather.daily
-            let cityWeather = CityWeather(current: weather.current, timezone: weather.timezone, daily: weather.daily, hourly: weather.hourly)
+            let cityWeather = CityWeather(current: weather.current, timezone: weather.timezone, hourly: weather.hourly)
             self.dataProvider.addWeather(cityWeather)
-            //print(self.dataProvider.getWeather().count)
+            print(self.dataProvider.getWeather().count)
             let newW = self.dataProvider.getWeather()
-            //print(newW)
+            print(newW)
             DispatchQueue.main.async {
                 self.mainInformationView.configure(with: weather)
                 self.navigationItem.title = weather.timezone
