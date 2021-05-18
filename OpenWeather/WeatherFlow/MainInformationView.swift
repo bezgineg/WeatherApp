@@ -108,7 +108,7 @@ class MainInformationView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with object: WeatherData) {
+    func configure(with object: CityWeather) {
         dailyTemperatureLabel.text = "\(Int(object.daily.first?.temp.min ?? 0))°/ \(Int(object.daily.first?.temp.max ?? 0))°"
         currentTemperatureLabel.text = "\(Int(object.current.temp))°"
         descriptionLabel.text = "\(object.current.weather.first?.weatherDescription.rawValue ?? "")".capitalizingFirstLetter()

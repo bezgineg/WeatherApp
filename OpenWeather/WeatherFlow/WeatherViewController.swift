@@ -74,13 +74,13 @@ class WeatherViewController: UIViewController {
 //    }
     
     private func createTimer() {
-        let timer = Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(updateData), userInfo: nil, repeats: true)
+        let timer = Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(updateData), userInfo: nil, repeats: false)
         timer.tolerance = 0.1
         RunLoop.current.add(timer, forMode: .common)
     }
     
     @objc private func updateData() {
-        configureMainInformationView()
+        //configureMainInformationView()
         hourlyCollectionView.reloadData()
         everyDayTableView.reloadData()
     }
@@ -125,15 +125,17 @@ class WeatherViewController: UIViewController {
         NetworkManager.fetchWeather { weather in
             HourlyWeatherStorage.hourlyWeather = weather.hourly
             HourlyWeatherStorage.dailyWeather = weather.daily
-            let cityWeather = CityWeather(current: weather.current, timezone: weather.timezone, hourly: weather.hourly)
-            self.dataProvider.addWeather(cityWeather)
-            print(self.dataProvider.getWeather().count)
-            let newW = self.dataProvider.getWeather()
-            print(newW)
-            DispatchQueue.main.async {
-                self.mainInformationView.configure(with: weather)
-                self.navigationItem.title = weather.timezone
+            let cityWeather = CityWeather(current: weather.current, timezone: weather.timezone, hourly: weather.hourly, daily: weather.daily)
+            let realm = self.dataProvider.getWeather()
+            if realm.isEmpty {
+                self.dataProvider.addWeather(cityWeather)
+            } else {
+                DispatchQueue.main.async {
+                    self.mainInformationView.configure(with: realm.first!)
+                    self.navigationItem.title = weather.timezone
+                }
             }
+            
         }
 //        NetworkManager.jsonDecodeWeather { weather in
 //            //let weather = WeatherData(current: weather.current, timezone: weather.timezone, daily: weather.daily, hourly: weather.hourly)

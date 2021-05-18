@@ -24,6 +24,7 @@
 		A33485A42651358100FA7A76 /* DataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33485A32651358100FA7A76 /* DataProvider.swift */; };
 		A33485A82651366B00FA7A76 /* RealmDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33485A72651366B00FA7A76 /* RealmDataProvider.swift */; };
 		A33485AB26513AEA00FA7A76 /* CityWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33485AA26513AEA00FA7A76 /* CityWeather.swift */; };
+		A33485B626540DB100FA7A76 /* RealmModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33485B526540DB000FA7A76 /* RealmModels.swift */; };
 		A344ED29263D11BD00BD7307 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A344ED28263D11BD00BD7307 /* AppDelegate.swift */; };
 		A344ED2B263D11BD00BD7307 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A344ED2A263D11BD00BD7307 /* SceneDelegate.swift */; };
 		A344ED32263D11C100BD7307 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A344ED31263D11C100BD7307 /* Assets.xcassets */; };
@@ -75,6 +76,7 @@
 		A33485A32651358100FA7A76 /* DataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProvider.swift; sourceTree = "<group>"; };
 		A33485A72651366B00FA7A76 /* RealmDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDataProvider.swift; sourceTree = "<group>"; };
 		A33485AA26513AEA00FA7A76 /* CityWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityWeather.swift; sourceTree = "<group>"; };
+		A33485B526540DB000FA7A76 /* RealmModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmModels.swift; sourceTree = "<group>"; };
 		A344ED25263D11BD00BD7307 /* OpenWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A344ED28263D11BD00BD7307 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A344ED2A263D11BD00BD7307 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 			children = (
 				A344EDC22645579200BD7307 /* WeatherData.swift */,
 				A33485AA26513AEA00FA7A76 /* CityWeather.swift */,
+				A33485B526540DB000FA7A76 /* RealmModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -462,6 +465,7 @@
 				BB924323264BF9490053C6F2 /* DayCollectionViewCell.swift in Sources */,
 				A334853B264FC1E000FA7A76 /* DetailsTableViewCell.swift in Sources */,
 				BB924320264BF36D0053C6F2 /* PeriodsOfTimeTableViewCell.swift in Sources */,
+				A33485B626540DB100FA7A76 /* RealmModels.swift in Sources */,
 				A344ED72264171AD00BD7307 /* UIButtonExtension.swift in Sources */,
 				A33485962650761900FA7A76 /* LineChartFormatter.swift in Sources */,
 				A3348544264FC44300FA7A76 /* DetailsCollectionViewCell.swift in Sources */,

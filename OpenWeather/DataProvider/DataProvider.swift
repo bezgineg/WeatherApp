@@ -7,5 +7,4 @@ protocol DataProvider: class {
     func getWeather() -> [CityWeather]
     func addWeather(_ weather: CityWeather)
     func updateWeather(_ weather: CityWeather)
-    func deleteWeather(_ weather: CityWeather)
 }

@@ -13,6 +13,7 @@ struct NetworkManager {
             debugPrint("Response: \(response)")
             return
           }
+            //print(weather)
             completion(weather)
         }
     }
