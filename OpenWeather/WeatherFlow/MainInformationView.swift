@@ -108,32 +108,80 @@ class MainInformationView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with object: CityWeather) {
-        dailyTemperatureLabel.text = "\(Int(object.daily.first?.temp.min ?? 0))°/ \(Int(object.daily.first?.temp.max ?? 0))°"
-        currentTemperatureLabel.text = "\(Int(object.current.temp))°"
+    func configure(with object: WeatherData) {
+        /*dailyTemperatureLabel.text = "\(Int(object.daily.first?.temp.min ?? 0))°/ \(Int(object.daily.first?.temp.max ?? 0))°"
+        currentTemperatureLabel.text = "\(Int(object.current.temp))°"*/
         descriptionLabel.text = "\(object.current.weather.first?.weatherDescription.rawValue ?? "")".capitalizingFirstLetter()
         cloudyLabel.text = "\(object.current.clouds)"
-        windSpeedLabel.text = "\(Int(object.current.windSpeed)) м/с"
+        //windSpeedLabel.text = "\(Int(object.current.windSpeed)) м/с"
         humidityLabel.text = "\(object.current.humidity)%"
-        setupDate()
-        setupSunriseAndSunsetDate(sunrise: object.current.sunrise ?? 0, sunset: object.current.sunset ?? 0)
+        //setupDate()
+        //setupSunriseAndSunsetDate(sunrise: object.current.sunrise ?? 0, sunset: object.current.sunset ?? 0)
     }
     
-    private func setupSunriseAndSunsetDate(sunrise: Int, sunset: Int) {
+    func setupTemperature() {
+        if UserDefaults.standard.bool(forKey: Keys.isCelsiusChosenBoolKey.rawValue) {
+            dailyTemperatureLabel.text = "\(Int(HourlyWeatherStorage.weather?.daily.first?.temp.min ?? 0))°/ \(Int(HourlyWeatherStorage.weather?.daily.first?.temp.max ?? 0))°"
+            currentTemperatureLabel.text = "\(Int(HourlyWeatherStorage.weather?.current.temp ?? 0))°"
+        } else {
+            let dailyTempMin = fahrenheitConversion(HourlyWeatherStorage.weather?.daily.first?.temp.min ?? 0)
+            let dailyTempMax = fahrenheitConversion(HourlyWeatherStorage.weather?.daily.first?.temp.max ?? 0)
+            dailyTemperatureLabel.text = "\(dailyTempMin)°/\(dailyTempMax)°"
+            let currentTemp = fahrenheitConversion(HourlyWeatherStorage.weather?.current.temp ?? 0)
+            currentTemperatureLabel.text = "\(currentTemp)°"
+        }
+    }
+    
+    func setupWindSpeed() {
+        if UserDefaults.standard.bool(forKey: Keys.isKmChosenBoolKey.rawValue) {
+            windSpeedLabel.text = "\(Int(HourlyWeatherStorage.weather?.current.windSpeed ?? 0)) м/c"
+        } else {
+            windSpeedLabel.text = "\(Int((HourlyWeatherStorage.weather?.current.windSpeed ?? 0)*2.23694)) ми/ч"
+        }
+    }
+    
+    func setupSunriseAndSunsetDate(sunrise: Int, sunset: Int) {
         let sunriseDate = NSDate(timeIntervalSince1970: TimeInterval(sunrise))
         let sunsetDate = NSDate(timeIntervalSince1970: TimeInterval(sunset))
         let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
+        if UserDefaults.standard.bool(forKey: Keys.is24TimeFormalChosenBoolKey.rawValue) {
+            formatter.dateFormat = "HH:mm"
+        } else {
+            formatter.dateFormat = "h:mm a"
+        }
         sunriseLabel.text = formatter.string(from: sunriseDate as Date)
         sunsetLabel.text = formatter.string(from: sunsetDate as Date)
     }
     
-    private func setupDate() {
+   func setupDate() {
         let date = Date()
         let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm, E d MMM"
         formatter.locale = Locale(identifier: "ru_RU")
+        if UserDefaults.standard.bool(forKey: Keys.is24TimeFormalChosenBoolKey.rawValue) {
+            formatter.dateFormat = "HH:mm, E d MMM"
+        } else {
+            formatter.dateFormat = "h:mm a, E d MMM"
+        }
         dateLabel.text = formatter.string(from: date)
+    }
+    
+    func update(with object: Current) {
+        currentTemperatureLabel.text = "\(Int(object.temp))°"
+        descriptionLabel.text = "\(object.weather.first?.weatherDescription.rawValue ?? "")".capitalizingFirstLetter()
+        cloudyLabel.text = "\(object.clouds)"
+        humidityLabel.text = "\(object.humidity)%"
+        if UserDefaults.standard.bool(forKey: Keys.isKmChosenBoolKey.rawValue) {
+            windSpeedLabel.text = "\(Int(object.windSpeed)) м/с"
+        } else {
+            windSpeedLabel.text = "\(Int(object.windSpeed*2.23694)) ми/ч"
+        }
+        
+        if UserDefaults.standard.bool(forKey: Keys.isCelsiusChosenBoolKey.rawValue) {
+            currentTemperatureLabel.text = "\(Int(object.temp))°"
+        } else {
+            let currentTemp = fahrenheitConversion(object.temp)
+            currentTemperatureLabel.text = "\(currentTemp)°"
+        }
     }
     
     private func drawArc() {

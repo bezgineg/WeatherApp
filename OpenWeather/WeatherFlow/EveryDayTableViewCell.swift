@@ -60,10 +60,20 @@ class EveryDayTableViewCell: UITableViewCell {
     
     func configure(with object: Daily) {
         setupDayLabel(day: object.dt)
+        setupTemperature(object: object)
         humidityLabel.text = "\(object.humidity)%"
         setupWeatherImage(weather: object.weather.first?.main.rawValue)
         descriptionLabel.text = "\(object.weather.first?.weatherDescription.rawValue ?? "")".capitalizingFirstLetter()
-        temperatureLabel.text = "\(Int(object.temp.min))°-\(Int(object.temp.max))°"
+    }
+    
+    private func setupTemperature(object: Daily) {
+        if UserDefaults.standard.bool(forKey: Keys.isCelsiusChosenBoolKey.rawValue) {
+            temperatureLabel.text = "\(Int(object.temp.min))°-\(Int(object.temp.max))°"
+        } else {
+            let minTemp = fahrenheitConversion(object.temp.min)
+            let maxTemp = fahrenheitConversion(object.temp.max)
+            temperatureLabel.text = "\(minTemp)°-\(maxTemp)°"
+        }
     }
     
     private func setupDayLabel(day: Int) {

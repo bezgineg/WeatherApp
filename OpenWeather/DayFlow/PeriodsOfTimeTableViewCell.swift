@@ -174,28 +174,55 @@ class PeriodsOfTimeTableViewCell: UITableViewCell {
         contentView.backgroundColor = Colors.customBackgroundColor
         periodOfTimeLabel.text = "День"
         setupWeatherImage(weather: object.weather.first?.main.rawValue)
-        temperatureLabel.text = "\(Int(object.temp.day))°"
+        setupDayTemperature(object)
         descriptionLabel.text = "\(object.weather.first?.weatherDescription.rawValue.capitalizingFirstLetter() ?? "")"
         feelsImage.image = object.feelsLike.day >= 0 ? UIImage(named: "temp") : UIImage(named: "tempCold")
-        feelsTempLabel.text = "\(Int(object.feelsLike.day))°"
         windInfoLabel.text = "\(Int(object.windSpeed)) м/с \(Double(object.windDeg).direction)"
         uvInfoLabel.text = "\(Int(object.uvi))(\(setupUvLabel(uv: object.uvi)))"
         precipitationInfoLabel.text = "\(Int(object.pop))%"
         cloudinessInfoLabel.text = "\(object.clouds)%"
+        setupWindInfoLabel(object)
     }
     
     func configureNight(with object: Daily) {
         contentView.backgroundColor = Colors.customBackgroundColor
         periodOfTimeLabel.text = "Ночь"
         setupWeatherImage(weather: object.weather.first?.main.rawValue)
-        temperatureLabel.text = "\(Int(object.temp.night))°"
+        setupNightTemperature(object)
         descriptionLabel.text = "\(object.weather.first?.weatherDescription.rawValue.capitalizingFirstLetter() ?? "")"
         feelsImage.image = object.feelsLike.day >= 0 ? UIImage(named: "temp") : UIImage(named: "tempCold")
-        feelsTempLabel.text = "\(Int(object.feelsLike.night))°"
-        windInfoLabel.text = "\(Int(object.windSpeed)) м/с \(Double(object.windDeg).direction)"
         uvInfoLabel.text = "\(Int(object.uvi))(\(setupUvLabel(uv: object.uvi)))"
         precipitationInfoLabel.text = "\(Int(object.pop))%"
         cloudinessInfoLabel.text = "\(object.clouds)%"
+        setupWindInfoLabel(object)
+    }
+    
+    private func setupWindInfoLabel(_ object: Daily) {
+        if UserDefaults.standard.bool(forKey: Keys.isKmChosenBoolKey.rawValue) {
+            windInfoLabel.text = "\(Int(object.windSpeed)) м/с \(Double(object.windDeg).direction)"
+        } else {
+            windInfoLabel.text = "\(Int(object.windSpeed * 2.23694)) ми/ч \(Double(object.windDeg).direction)"
+        }
+    }
+    
+    private func setupDayTemperature(_ object: Daily) {
+        if UserDefaults.standard.bool(forKey: Keys.isCelsiusChosenBoolKey.rawValue) {
+            temperatureLabel.text = "\(Int(object.temp.day))°"
+            feelsTempLabel.text = "\(Int(object.feelsLike.day))°"
+        } else {
+            temperatureLabel.text = "\(fahrenheitConversion(object.temp.day))°"
+            feelsTempLabel.text = "\(fahrenheitConversion(object.feelsLike.day))°"
+        }
+    }
+    
+    private func setupNightTemperature(_ object: Daily) {
+        if UserDefaults.standard.bool(forKey: Keys.isCelsiusChosenBoolKey.rawValue) {
+            temperatureLabel.text = "\(Int(object.temp.night))°"
+            feelsTempLabel.text = "\(Int(object.feelsLike.night))°"
+        } else {
+            temperatureLabel.text = "\(fahrenheitConversion(object.temp.night))°"
+            feelsTempLabel.text = "\(fahrenheitConversion(object.feelsLike.night))°"
+        }
     }
     
     private func setupWeatherImage(weather: String?) {

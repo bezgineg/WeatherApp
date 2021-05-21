@@ -42,13 +42,22 @@ class DetailsCollectionViewCell: UICollectionViewCell {
         
         for i in 0 ..< HourlyWeatherStorage.hourlyWeather.count - 1 {
             let data = HourlyWeatherStorage.hourlyWeather[i]
-            let temp = Int(data.temp)
-            values.append(temp)
+            if UserDefaults.standard.bool(forKey: Keys.isCelsiusChosenBoolKey.rawValue) {
+                let temp = Int(data.temp)
+                values.append(temp)
+            } else {
+                let temp = fahrenheitConversion(data.temp)
+                values.append(temp)
+            }
             
             let time = data.dt
             let date = NSDate(timeIntervalSince1970: TimeInterval(time))
             let formatter = DateFormatter()
-            formatter.dateFormat = "HH:mm"
+            if UserDefaults.standard.bool(forKey: Keys.is24TimeFormalChosenBoolKey.rawValue) {
+                formatter.dateFormat = "HH:mm"
+            } else {
+                formatter.dateFormat = "h:mm a"
+            }
             let newTime = formatter.string(from: date as Date)
             times.append(newTime)
             

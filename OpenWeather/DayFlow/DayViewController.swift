@@ -52,7 +52,7 @@ class DayViewController: UIViewController {
     }
     
     private func createTimer() {
-        let timer = Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(updateData), userInfo: nil, repeats: true)
+        let timer = Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(updateData), userInfo: nil, repeats: false)
         timer.tolerance = 0.1
         RunLoop.current.add(timer, forMode: .common)
     }
@@ -135,6 +135,7 @@ extension DayViewController: UICollectionViewDataSource {
         let weather: Daily = HourlyWeatherStorage.dailyWeather[indexPath.item]
 
         cell.configure(with: weather)
+        cell.configureUnselectedItem()
         
         return cell
     }
@@ -153,6 +154,9 @@ extension DayViewController: UICollectionViewDelegateFlowLayout {
         if cell.isSelected {
             cell.configureSelectedItem()
         }
+        guard let index = collectionView.indexPath(for: cell)?.row else { return }
+        detailsDay = HourlyWeatherStorage.dailyWeather[index]
+        tableView.reloadData()
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {

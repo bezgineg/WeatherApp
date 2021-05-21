@@ -1,13 +1,15 @@
 
 import Foundation
 import Alamofire
+import CoreLocation
 
 struct NetworkManager {
     
     //static let session = URLSession.shared
     
-    static func fetchWeather(completion: @escaping ((WeatherData) -> Void)) {
-        let request = AF.request("https://api.openweathermap.org/data/2.5/onecall?lat=55.753215&lon=37.622504&exclude=minutely,alerts&units=metric&lang=ru&appid=\(Constants.apiKey)")
+    static func fetchWeather(lat: String, long: String, completion: @escaping ((WeatherData) -> Void)) {
+        
+        let request = AF.request("https://api.openweathermap.org/data/2.5/onecall?lat=\(lat)&lon=\(long)&exclude=minutely,alerts&units=metric&lang=ru&appid=\(Constants.apiKey)")
         request.responseDecodable(of: WeatherData.self) { response in
           guard let weather = response.value else {
             debugPrint("Response: \(response)")
@@ -15,6 +17,12 @@ struct NetworkManager {
           }
             //print(weather)
             completion(weather)
+        }
+    }
+    
+    static func fetchGeocoder(city: String, completion: @escaping (_ coordinate: CLLocationCoordinate2D?, _ error: Error?) -> () ) {
+        CLGeocoder().geocodeAddressString(city) { (placemark, error) in
+            completion(placemark?.first?.location?.coordinate, error)
         }
     }
     

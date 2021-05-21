@@ -165,7 +165,11 @@ class SunAndMoonTableViewCell: UITableViewCell {
         let sunriseDate = NSDate(timeIntervalSince1970: TimeInterval(sunrise))
         let sunsetDate = NSDate(timeIntervalSince1970: TimeInterval(sunset))
         let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
+        if UserDefaults.standard.bool(forKey: Keys.is24TimeFormalChosenBoolKey.rawValue) {
+            formatter.dateFormat = "HH:mm"
+        } else {
+            formatter.dateFormat = "h:mm a"
+        }
         daySunriseTimeLabel.text = formatter.string(from: sunriseDate as Date)
         daySunsetTimeLabel.text = formatter.string(from: sunsetDate as Date)
     }
@@ -174,7 +178,11 @@ class SunAndMoonTableViewCell: UITableViewCell {
         let moonriseDate = NSDate(timeIntervalSince1970: TimeInterval(moonrise))
         let moonsetDate = NSDate(timeIntervalSince1970: TimeInterval(moonset))
         let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
+        if UserDefaults.standard.bool(forKey: Keys.is24TimeFormalChosenBoolKey.rawValue) {
+            formatter.dateFormat = "HH:mm"
+        } else {
+            formatter.dateFormat = "h:mm a"
+        }
         nightMoonriseTimeLabel.text = formatter.string(from: moonsetDate as Date)
         nightMoonsetTimeLabel.text = formatter.string(from: moonriseDate as Date)
     }

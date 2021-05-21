@@ -123,12 +123,29 @@ class DetailsTableViewCell: UITableViewCell {
     func configure(with object: Current) {
         setupDayLabel(day: object.dt)
         setupTimeLabel(time: object.dt)
-        temperatureLabel.text = "\(Int(object.temp))°"
         feelsTemperatureImage.image = object.feelsLike >= 0 ? UIImage(named: "temp") : UIImage(named: "tempCold")
-        feelsTemperatureInfoLabel.text = "\(Int(object.feelsLike))°"
-        windInfoLabel.text = "\(Int(object.windSpeed)) м/с \(Double(object.windDeg).direction)"
+        setupTemperature(object)
+        setupWindInfoLabel(object)
         precipitationInfoLabel.text = "\(Int((object.pop ?? 0) * 100))%"
         cloudsInfoLabel.text = "\(object.clouds)%"
+    }
+    
+    private func setupTemperature(_ object: Current) {
+        if UserDefaults.standard.bool(forKey: Keys.isCelsiusChosenBoolKey.rawValue) {
+            temperatureLabel.text = "\(Int(object.temp))°"
+            feelsTemperatureInfoLabel.text = "\(Int(object.feelsLike))°"
+        } else {
+            temperatureLabel.text = "\(fahrenheitConversion(object.temp))°"
+            feelsTemperatureInfoLabel.text = "\(fahrenheitConversion(object.feelsLike))°"
+        }
+    }
+    
+    private func setupWindInfoLabel(_ object: Current) {
+        if UserDefaults.standard.bool(forKey: Keys.isKmChosenBoolKey.rawValue) {
+            windInfoLabel.text = "\(Int(object.windSpeed)) м/с \(Double(object.windDeg).direction)"
+        } else {
+            windInfoLabel.text = "\(Int(object.windSpeed * 2.23694)) ми/ч \(Double(object.windDeg).direction)"
+        }
     }
     
     private func setupDayLabel(day: Int) {
@@ -142,7 +159,11 @@ class DetailsTableViewCell: UITableViewCell {
     private func setupTimeLabel(time: Int) {
         let date = NSDate(timeIntervalSince1970: TimeInterval(time))
         let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
+        if UserDefaults.standard.bool(forKey: Keys.is24TimeFormalChosenBoolKey.rawValue) {
+            formatter.dateFormat = "HH:mm"
+        } else {
+            formatter.dateFormat = "h:mm a"
+        }
         timeLabel.text = formatter.string(from: date as Date)
     }
     

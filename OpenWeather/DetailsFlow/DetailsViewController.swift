@@ -48,7 +48,7 @@ class DetailsViewController: UIViewController {
     }
     
     private func createTimer() {
-        let timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(updateData), userInfo: nil, repeats: true)
+        let timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(updateData), userInfo: nil, repeats: false)
         timer.tolerance = 0.1
         RunLoop.current.add(timer, forMode: .common)
     }

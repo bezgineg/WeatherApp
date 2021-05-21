@@ -6,7 +6,7 @@ class DayCollectionViewCell: UICollectionViewCell {
     private let dateLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         return label
     }()
     

@@ -35,10 +35,18 @@ class HourlyCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(with object: Current) {
-        temperatureLabel.text = "\(Int(object.temp))°"
+        setupTemperature(object)
         setupTimeLabel(time: object.dt)
         setupWeatherImage(weather: object.weather.first?.main.rawValue)
         configureUnselectedItem()
+    }
+    
+    private func setupTemperature(_ object: Current) {
+        if UserDefaults.standard.bool(forKey: Keys.isCelsiusChosenBoolKey.rawValue) {
+            temperatureLabel.text = "\(Int(object.temp))°"
+        } else {
+            temperatureLabel.text = "\(fahrenheitConversion(object.temp))°"
+        }
     }
     
     func configureSelectedItem() {
@@ -69,7 +77,11 @@ class HourlyCollectionViewCell: UICollectionViewCell {
     private func setupTimeLabel(time: Int) {
         let date = NSDate(timeIntervalSince1970: TimeInterval(time))
         let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
+        if UserDefaults.standard.bool(forKey: Keys.is24TimeFormalChosenBoolKey.rawValue) {
+            formatter.dateFormat = "HH:mm"
+        } else {
+            formatter.dateFormat = "h:mm"
+        }
         timeLabel.text = formatter.string(from: date as Date)
     }
     

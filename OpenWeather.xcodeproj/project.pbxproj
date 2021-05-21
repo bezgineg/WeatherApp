@@ -25,6 +25,7 @@
 		A33485A82651366B00FA7A76 /* RealmDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33485A72651366B00FA7A76 /* RealmDataProvider.swift */; };
 		A33485AB26513AEA00FA7A76 /* CityWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33485AA26513AEA00FA7A76 /* CityWeather.swift */; };
 		A33485B626540DB100FA7A76 /* RealmModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33485B526540DB000FA7A76 /* RealmModels.swift */; };
+		A33485BF2658159200FA7A76 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33485BE2658159200FA7A76 /* Helpers.swift */; };
 		A344ED29263D11BD00BD7307 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A344ED28263D11BD00BD7307 /* AppDelegate.swift */; };
 		A344ED2B263D11BD00BD7307 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A344ED2A263D11BD00BD7307 /* SceneDelegate.swift */; };
 		A344ED32263D11C100BD7307 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A344ED31263D11C100BD7307 /* Assets.xcassets */; };
@@ -77,6 +78,7 @@
 		A33485A72651366B00FA7A76 /* RealmDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDataProvider.swift; sourceTree = "<group>"; };
 		A33485AA26513AEA00FA7A76 /* CityWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityWeather.swift; sourceTree = "<group>"; };
 		A33485B526540DB000FA7A76 /* RealmModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmModels.swift; sourceTree = "<group>"; };
+		A33485BE2658159200FA7A76 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		A344ED25263D11BD00BD7307 /* OpenWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A344ED28263D11BD00BD7307 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A344ED2A263D11BD00BD7307 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 				A3348531264C59E600FA7A76 /* Direction.swift */,
 				A3348592265075D500FA7A76 /* UIImageExtension.swift */,
 				A33485952650761900FA7A76 /* LineChartFormatter.swift */,
+				A33485BE2658159200FA7A76 /* Helpers.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -441,6 +444,7 @@
 				A344ED40263D12A500BD7307 /* MainCoordinator.swift in Sources */,
 				A344ED7C2641752E00BD7307 /* CustomThumbView.swift in Sources */,
 				A3348541264FC20900FA7A76 /* DetailsViewController.swift in Sources */,
+				A33485BF2658159200FA7A76 /* Helpers.swift in Sources */,
 				A344ED61263D2FEE00BD7307 /* SettingsCoordinator.swift in Sources */,
 				A344ED8D2643E6EB00BD7307 /* PlusView.swift in Sources */,
 				BBEF5A97264AB77D007B8983 /* DayViewController.swift in Sources */,

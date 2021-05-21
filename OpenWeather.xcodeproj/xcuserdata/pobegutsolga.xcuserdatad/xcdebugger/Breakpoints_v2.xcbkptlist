@@ -14,8 +14,8 @@
             filePath = "OpenWeather/WeatherFlow/MainInformationView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "209"
-            endingLineNumber = "209"
+            startingLineNumber = "257"
+            endingLineNumber = "257"
             landmarkName = "setupLayout()"
             landmarkType = "7">
          </BreakpointContent>

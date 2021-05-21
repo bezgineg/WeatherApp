@@ -2,6 +2,8 @@
 import UIKit
 
 class PlusView: UIView {
+    
+    var onImageTap: (() -> Void)?
 
     private let imageView: UIImageView = {
         let imageView = UIImageView()
@@ -13,11 +15,22 @@ class PlusView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        tapImageView()
         setupLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func tapImageView() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    @objc func imageTapped() {
+        onImageTap?()
     }
     
     private func setupLayout() {

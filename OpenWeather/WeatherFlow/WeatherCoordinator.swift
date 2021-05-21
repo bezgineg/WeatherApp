@@ -68,8 +68,21 @@ class WeatherCoordinator: Coordinator {
             if let cityName = self.inputTextField?.text {
                 //self.weatherViewController.navigationItem.title = cityName
                 //NetworkManager.fetchWeather()
-                NetworkManager.fetchWeather { weather in
-                    print(weather)
+                NetworkManager.fetchGeocoder(city: cityName) { (coordinate, error) in
+                    
+                    if let coordinate = coordinate {
+                        let lat = String(coordinate.latitude)
+                        let long = String(coordinate.longitude)
+                        NetworkManager.fetchWeather(lat: lat, long: long) { weather in
+                            
+                            HourlyWeatherStorage.dailyWeather = weather.daily
+                            HourlyWeatherStorage.hourlyWeather = weather.hourly
+                            HourlyWeatherStorage.weather = weather
+                            UserDefaults.standard.setValue(true, forKey: Keys.isCityAdded.rawValue)
+                            self.weatherViewController.removePlusView()
+                            self.weatherViewController.setupViews()
+                        }
+                    }
                 }
             }
         }
