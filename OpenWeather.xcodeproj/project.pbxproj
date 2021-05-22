@@ -174,7 +174,6 @@
 		A344ED27263D11BD00BD7307 /* OpenWeather */ = {
 			isa = PBXGroup;
 			children = (
-				A33485A22651354B00FA7A76 /* DataProvider */,
 				A344EDC12645577E00BD7307 /* Models */,
 				BBEF5A99264AB925007B8983 /* Storage */,
 				A344EDBC2645503400BD7307 /* Managers */,
@@ -275,6 +274,7 @@
 		A344EDBC2645503400BD7307 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				A33485A22651354B00FA7A76 /* DataProvider */,
 				A344EDBE2645505100BD7307 /* NetworkManager.swift */,
 			);
 			path = Managers;

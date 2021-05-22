@@ -2,6 +2,14 @@
 import Foundation
 import RealmSwift
 
+extension RealmCollection
+{
+  func toArray<T>() ->[T]
+  {
+    return self.compactMap{$0 as? T}
+  }
+}
+
 final class RealmDataProvider: DataProvider {
     private var realm: Realm? {
         var config = Realm.Configuration()
@@ -25,17 +33,19 @@ final class RealmDataProvider: DataProvider {
 //        dynamic var windDeg = 0
 //        dynamic var clouds = 0
 //        dynamic var pop = 0.0
-//        let weathers = List<CachedWeatherDetails>()
-//        return realm?.objects(CachedCurrent.self).compactMap {
-//            guard let  = $0.clouds, let
+//        //let weathers = List<CachedWeatherDetails>()
+//        return realm?.object(CachedCurrent.self).compactMap {
+//            guard let dt = $0.current?.dt, let humidity = $0.current?.humidity, let sunrise = $0.current?.sunrise, let sunset = $0.current?.sunset, let temp = $0.current?.temp, let feelsLike = $0.current?.feelsLike, let windSpeed = $0.current?.windSpeed, let windDeg = $0.current?.windDeg, let clouds = $0.current?.clouds, let pop = $0.current?.pop, let uvi = $0.current?.uvi else { return nil}
+//            return Current
 //        }
 //    }
     
-    func getWeather() -> [CityWeather] {
-        return realm?.objects(CachedWeather.self).compactMap {
-            guard let id = $0.id, let timezone = $0.timezone, let dt = $0.current?.dt, let humidity = $0.current?.humidity, let sunrise = $0.current?.sunrise, let sunset = $0.current?.sunset, let temp = $0.current?.temp, let feelsLike = $0.current?.feelsLike, let windSpeed = $0.current?.windSpeed, let windDeg = $0.current?.windDeg, let clouds = $0.current?.clouds, let pop = $0.current?.pop, let uvi = $0.current?.uvi else { return nil }
-            return CityWeather(id: id, current: Current(dt: dt, humidity: humidity, sunrise: sunrise, sunset: sunset, temp: temp, feelsLike: feelsLike, windSpeed: windSpeed, uvi: uvi, windDeg: windDeg, clouds: clouds, weather: weathers, pop: pop), timezone: timezone, hourly: hourlies, daily: daylies)
-        } ?? []
+    func getWeather() -> [CityWeatherCached] {
+        guard let weather = realm?.objects(CachedWeather.self) else { return [] }
+        guard let timezone = weather.first?.timezone, let current = weather.first?.current, let daily = weather.first?.daily,
+              let hourly = weather.first?.hourly else { return [] }
+        return [CityWeatherCached(current: current, timezone: timezone, hourly: hourly, daily: daily)]
+        
     }
     
     func addWeather(_ weather: CityWeather) {

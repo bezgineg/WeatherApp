@@ -7,14 +7,16 @@ class DayCoordinator: Coordinator {
     
     var navigationController: UINavigationController?
     var childCoordinators = [Coordinator]()
-    var day: Daily?
+    var day: CachedDaily?
     var title: String?
+    var index: Int?
     
     func start() {
         let dayViewController = DayViewController()
         dayViewController.coordinator = self
         dayViewController.detailsDay = day
         dayViewController.city = title
+        dayViewController.index = index
         guard let navigator = navigationController else { return }
         navigator.show(dayViewController, sender: self)
     }

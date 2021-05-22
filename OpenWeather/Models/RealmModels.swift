@@ -129,5 +129,22 @@ enum CachedDescription: String, CaseIterable {
     case проливнойДождь = "проливной дождь"
 }
 
+final class CityWeatherCached {
+    
+    let id: String
+    let current: CachedCurrent
+    let timezone: String
+    let daily: List<CachedDaily>
+    let hourly: List<CachedCurrent>
+    
+    init(id: String = UUID().uuidString, current: CachedCurrent, timezone: String, hourly: List<CachedCurrent>, daily: List<CachedDaily>) {
+        self.id = id
+        self.current = current
+        self.timezone = timezone
+        self.daily = daily
+        self.hourly = hourly
+    }
+}
+
 
 

@@ -108,10 +108,11 @@ class MainInformationView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with object: WeatherData) {
+    func configure(with object: CityWeatherCached) {
         /*dailyTemperatureLabel.text = "\(Int(object.daily.first?.temp.min ?? 0))°/ \(Int(object.daily.first?.temp.max ?? 0))°"
         currentTemperatureLabel.text = "\(Int(object.current.temp))°"*/
-        descriptionLabel.text = "\(object.current.weather.first?.weatherDescription.rawValue ?? "")".capitalizingFirstLetter()
+//        descriptionLabel.text = "\(object.current.weather.first?.weatherDescription.rawValue ?? "")".capitalizingFirstLetter()
+        descriptionLabel.text = "\(object.current.weathers.first?.weatherDescriptionEnum.rawValue ?? "")".capitalizingFirstLetter()
         cloudyLabel.text = "\(object.current.clouds)"
         //windSpeedLabel.text = "\(Int(object.current.windSpeed)) м/с"
         humidityLabel.text = "\(object.current.humidity)%"
@@ -119,24 +120,24 @@ class MainInformationView: UIView {
         //setupSunriseAndSunsetDate(sunrise: object.current.sunrise ?? 0, sunset: object.current.sunset ?? 0)
     }
     
-    func setupTemperature() {
+    func setupTemperature(with object: CityWeatherCached) {
         if UserDefaults.standard.bool(forKey: Keys.isCelsiusChosenBoolKey.rawValue) {
-            dailyTemperatureLabel.text = "\(Int(HourlyWeatherStorage.weather?.daily.first?.temp.min ?? 0))°/ \(Int(HourlyWeatherStorage.weather?.daily.first?.temp.max ?? 0))°"
-            currentTemperatureLabel.text = "\(Int(HourlyWeatherStorage.weather?.current.temp ?? 0))°"
+            dailyTemperatureLabel.text = "\(Int(object.daily.first?.temp?.min ?? 0))°/ \(Int(object.daily.first?.temp?.max ?? 0))°"
+            currentTemperatureLabel.text = "\(Int(object.current.temp))°"
         } else {
-            let dailyTempMin = fahrenheitConversion(HourlyWeatherStorage.weather?.daily.first?.temp.min ?? 0)
-            let dailyTempMax = fahrenheitConversion(HourlyWeatherStorage.weather?.daily.first?.temp.max ?? 0)
+            let dailyTempMin = fahrenheitConversion(object.daily.first?.temp?.min ?? 0)
+            let dailyTempMax = fahrenheitConversion(object.daily.first?.temp?.max ?? 0)
             dailyTemperatureLabel.text = "\(dailyTempMin)°/\(dailyTempMax)°"
-            let currentTemp = fahrenheitConversion(HourlyWeatherStorage.weather?.current.temp ?? 0)
+            let currentTemp = fahrenheitConversion(object.current.temp)
             currentTemperatureLabel.text = "\(currentTemp)°"
         }
     }
     
-    func setupWindSpeed() {
+    func setupWindSpeed(with object: CityWeatherCached) {
         if UserDefaults.standard.bool(forKey: Keys.isKmChosenBoolKey.rawValue) {
-            windSpeedLabel.text = "\(Int(HourlyWeatherStorage.weather?.current.windSpeed ?? 0)) м/c"
+            windSpeedLabel.text = "\(Int(object.current.windSpeed)) м/c"
         } else {
-            windSpeedLabel.text = "\(Int((HourlyWeatherStorage.weather?.current.windSpeed ?? 0)*2.23694)) ми/ч"
+            windSpeedLabel.text = "\(Int((object.current.windSpeed)*2.23694)) ми/ч"
         }
     }
     
@@ -165,9 +166,9 @@ class MainInformationView: UIView {
         dateLabel.text = formatter.string(from: date)
     }
     
-    func update(with object: Current) {
+    func update(with object: CachedCurrent) {
         currentTemperatureLabel.text = "\(Int(object.temp))°"
-        descriptionLabel.text = "\(object.weather.first?.weatherDescription.rawValue ?? "")".capitalizingFirstLetter()
+        descriptionLabel.text = "\(object.weathers.first?.weatherDescriptionEnum.rawValue ?? "")".capitalizingFirstLetter()
         cloudyLabel.text = "\(object.clouds)"
         humidityLabel.text = "\(object.humidity)%"
         if UserDefaults.standard.bool(forKey: Keys.isKmChosenBoolKey.rawValue) {

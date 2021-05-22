@@ -22,13 +22,12 @@ class DayCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with object: Daily) {
+    func configure(with object: CachedDaily) {
         let date = NSDate(timeIntervalSince1970: TimeInterval(object.dt))
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ru_RU")
         formatter.dateFormat = "dd/MM E"
         dateLabel.text = formatter.string(from: date as Date).uppercased()
-        configureUnselectedItem()
     }
     
     func configureSelectedItem() {

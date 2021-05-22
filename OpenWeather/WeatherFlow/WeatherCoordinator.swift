@@ -37,13 +37,14 @@ class WeatherCoordinator: Coordinator {
         onboardingCoordinater.start()
     }
     
-    func pushDayViewController(day: Daily, title: String) {
+    func pushDayViewController(day: CachedDaily, title: String, index: Int) {
         let dayCoordinator = DayCoordinator()
         dayCoordinator.navigationController = navigationController
         childCoordinators.append(dayCoordinator)
         dayCoordinator.parentCoordinator = self
         dayCoordinator.day = day
         dayCoordinator.title = title
+        dayCoordinator.index = index
         dayCoordinator.start()
     }
     
@@ -75,9 +76,9 @@ class WeatherCoordinator: Coordinator {
                         let long = String(coordinate.longitude)
                         NetworkManager.fetchWeather(lat: lat, long: long) { weather in
                             
-                            HourlyWeatherStorage.dailyWeather = weather.daily
-                            HourlyWeatherStorage.hourlyWeather = weather.hourly
-                            HourlyWeatherStorage.weather = weather
+//                            HourlyWeatherStorage.dailyWeather = weather.daily
+//                            HourlyWeatherStorage.hourlyWeather = weather.hourly
+//                            HourlyWeatherStorage.weather = weather
                             UserDefaults.standard.setValue(true, forKey: Keys.isCityAdded.rawValue)
                             self.weatherViewController.removePlusView()
                             self.weatherViewController.setupViews()

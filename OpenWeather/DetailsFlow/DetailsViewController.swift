@@ -6,6 +6,7 @@ class DetailsViewController: UIViewController {
     var coordinator: DetailsCoordinator?
     var city: String?
     
+    private let dataProvider = RealmDataProvider()
     private let tableView = UITableView(frame: .zero, style: .plain)
     
     private var reuseID: String {
@@ -126,9 +127,9 @@ extension DetailsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DetailsCollectionViewCell.self), for: indexPath) as! DetailsCollectionViewCell
         
-        let weather: Daily = HourlyWeatherStorage.dailyWeather[indexPath.item]
+        guard let weather = dataProvider.getWeather().first else { return UICollectionViewCell() }
+        let daily: CachedDaily = weather.daily[indexPath.item]
 
-        //cell.configure(with: weather)
         
         return cell
     }
@@ -149,14 +150,17 @@ extension DetailsViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return HourlyWeatherStorage.hourlyWeather.count
+        guard let weather = dataProvider.getWeather().first else { return 0 }
+        
+        return weather.hourly.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: DetailsTableViewCell = tableView.dequeueReusableCell(withIdentifier: reuseID, for: indexPath) as! DetailsTableViewCell
         
-        let weather: Current = HourlyWeatherStorage.hourlyWeather[indexPath.row]
-        cell.configure(with: weather)
+        guard let weather = dataProvider.getWeather().first else { return UITableViewCell() }
+        let current: CachedCurrent = weather.hourly[indexPath.row]
+        cell.configure(with: current)
         
         return cell
     }

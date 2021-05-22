@@ -34,14 +34,14 @@ class HourlyCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with object: Current) {
+    func configure(with object: CachedCurrent) {
         setupTemperature(object)
         setupTimeLabel(time: object.dt)
-        setupWeatherImage(weather: object.weather.first?.main.rawValue)
+        setupWeatherImage(weather: object.weathers.first?.mainEnum.rawValue)
         configureUnselectedItem()
     }
     
-    private func setupTemperature(_ object: Current) {
+    private func setupTemperature(_ object: CachedCurrent) {
         if UserDefaults.standard.bool(forKey: Keys.isCelsiusChosenBoolKey.rawValue) {
             temperatureLabel.text = "\(Int(object.temp))°"
         } else {

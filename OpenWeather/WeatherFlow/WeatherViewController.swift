@@ -1,6 +1,7 @@
 
 import UIKit
 import CoreLocation
+import RealmSwift
 
 class WeatherViewController: UIViewController {
 
@@ -69,14 +70,15 @@ class WeatherViewController: UIViewController {
         setupNavigationBar()
         
         if UserDefaults.standard.bool(forKey: Keys.isTrackingBoolKey.rawValue) {
-            getLocation()
+            //getLocation()
         }
         
         if UserDefaults.standard.bool(forKey: Keys.isOnboardingCompleteBoolKey.rawValue) {
+            guard let weather = dataProvider.getWeather().first else { return }
             mainInformationView.setupDate()
-            mainInformationView.setupSunriseAndSunsetDate(sunrise: HourlyWeatherStorage.weather?.current.sunrise ?? 0, sunset: HourlyWeatherStorage.weather?.current.sunset ?? 0)
-            mainInformationView.setupWindSpeed()
-            mainInformationView.setupTemperature()
+            mainInformationView.setupSunriseAndSunsetDate(sunrise: weather.current.sunrise , sunset: weather.current.sunset )
+            mainInformationView.setupWindSpeed(with: weather)
+            mainInformationView.setupTemperature(with: weather)
             hourlyCollectionView.reloadData()
             everyDayTableView.reloadData()
         }
@@ -105,10 +107,11 @@ class WeatherViewController: UIViewController {
     }
     
     @objc private func updateData() {
-        //configureMainInformationView()
-        mainInformationView.setupSunriseAndSunsetDate(sunrise: HourlyWeatherStorage.weather?.current.sunrise ?? 0, sunset: HourlyWeatherStorage.weather?.current.sunset ?? 0)
-        mainInformationView.setupWindSpeed()
-        mainInformationView.setupTemperature()
+        configureMainInformationView()
+        guard let weather = dataProvider.getWeather().first else { return }
+        mainInformationView.setupSunriseAndSunsetDate(sunrise: weather.current.sunrise, sunset: weather.current.sunset)
+        mainInformationView.setupWindSpeed(with: weather)
+        mainInformationView.setupTemperature(with: weather)
         hourlyCollectionView.reloadData()
         everyDayTableView.reloadData()
     }
@@ -159,7 +162,7 @@ class WeatherViewController: UIViewController {
     
     //MARK: - Доделать
     private func configureMainInformationView() {
-        guard let weather = HourlyWeatherStorage.weather else { return }
+        guard let weather = dataProvider.getWeather().first else { return }
         mainInformationView.configure(with: weather)
         self.navigationItem.title = weather.timezone
         /*NetworkManager.fetchWeather(lat: "55.753215", long: "37.622504") { weather in
@@ -270,15 +273,17 @@ extension WeatherViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return HourlyWeatherStorage.hourlyWeather.count
+        let weather = dataProvider.getWeather()
+        return weather.first?.hourly.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: HourlyCollectionViewCell.self), for: indexPath) as! HourlyCollectionViewCell
         
-        let weather: Current = HourlyWeatherStorage.hourlyWeather[indexPath.item]
+        let weather = dataProvider.getWeather()
+        guard let current: CachedCurrent = weather.first?.hourly[indexPath.item] else { return UICollectionViewCell() }
 
-        cell.configure(with: weather)
+        cell.configure(with: current)
         cell.configureUnselectedItem()
         
         return cell
@@ -299,7 +304,8 @@ extension WeatherViewController: UICollectionViewDelegateFlowLayout {
             cell.configureSelectedItem()
         }
         guard let index = collectionView.indexPath(for: cell)?.row else { return }
-        mainInformationView.update(with: HourlyWeatherStorage.hourlyWeather[index])
+        guard let weather = dataProvider.getWeather().first?.hourly else { return }
+        mainInformationView.update(with: weather[index])
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -318,7 +324,7 @@ extension WeatherViewController: UICollectionViewDelegateFlowLayout {
 extension WeatherViewController: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return HourlyWeatherStorage.dailyWeather.count
+        return dataProvider.getWeather().first?.daily.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -328,8 +334,9 @@ extension WeatherViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let everyDayCell: EveryDayTableViewCell = tableView.dequeueReusableCell(withIdentifier: everyDayReuseID, for: indexPath) as! EveryDayTableViewCell
         
-        let weather: Daily = HourlyWeatherStorage.dailyWeather[indexPath.section]
-        everyDayCell.configure(with: weather)
+        let weather = dataProvider.getWeather()
+        guard let daily: CachedDaily = weather.first?.daily[indexPath.section] else { return UITableViewCell() }
+        everyDayCell.configure(with: daily)
         
         return everyDayCell
     }
@@ -340,8 +347,11 @@ extension WeatherViewController: UITableViewDataSource {
 extension WeatherViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        coordinator?.pushDayViewController(day: HourlyWeatherStorage.dailyWeather[indexPath.section],
-                                           title: navigationItem.title ?? "")
+        let weather = dataProvider.getWeather()
+        guard let daily = weather.first?.daily else { return }
+        coordinator?.pushDayViewController(day: daily[indexPath.section],
+                                           title: navigationItem.title ?? "",
+                                           index: indexPath.section)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

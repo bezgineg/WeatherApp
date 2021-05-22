@@ -5,6 +5,7 @@ class MainCoordinator: Coordinator {
     
     var navigationController: UINavigationController?
     var childCoordinators = [Coordinator]()
+    private let dataProvider = RealmDataProvider()
     
     func start() {
 //        NetworkManager.jsonDecodeWeather { weather in
@@ -19,7 +20,14 @@ class MainCoordinator: Coordinator {
             weatherCoordinator.start()
             childCoordinators.append(weatherCoordinator)
             weatherCoordinator.parentCoordinator = self
-            UserDefaults.standard.setValue(false, forKey: Keys.isCityAdded.rawValue)
+            NetworkManager.fetchWeather(lat: "55.753215", long: "37.622504") { weather in
+                let realm = self.dataProvider.getWeather()
+                if realm.isEmpty {
+                    let cityWeather = CityWeather(current: weather.current, timezone: weather.timezone, hourly: weather.hourly, daily: weather.daily)
+                    self.dataProvider.addWeather(cityWeather)
+                }
+            }
+            UserDefaults.standard.setValue(true, forKey: Keys.isCityAdded.rawValue)
         } else {
             let onboardingCoordinator = OnboardingCoordinator()
             onboardingCoordinator.navigationController = navigationController

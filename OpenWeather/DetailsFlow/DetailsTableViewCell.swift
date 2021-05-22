@@ -120,17 +120,17 @@ class DetailsTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with object: Current) {
+    func configure(with object: CachedCurrent) {
         setupDayLabel(day: object.dt)
         setupTimeLabel(time: object.dt)
         feelsTemperatureImage.image = object.feelsLike >= 0 ? UIImage(named: "temp") : UIImage(named: "tempCold")
         setupTemperature(object)
         setupWindInfoLabel(object)
-        precipitationInfoLabel.text = "\(Int((object.pop ?? 0) * 100))%"
+        precipitationInfoLabel.text = "\(Int((object.pop) * 100))%"
         cloudsInfoLabel.text = "\(object.clouds)%"
     }
     
-    private func setupTemperature(_ object: Current) {
+    private func setupTemperature(_ object: CachedCurrent) {
         if UserDefaults.standard.bool(forKey: Keys.isCelsiusChosenBoolKey.rawValue) {
             temperatureLabel.text = "\(Int(object.temp))°"
             feelsTemperatureInfoLabel.text = "\(Int(object.feelsLike))°"
@@ -140,7 +140,7 @@ class DetailsTableViewCell: UITableViewCell {
         }
     }
     
-    private func setupWindInfoLabel(_ object: Current) {
+    private func setupWindInfoLabel(_ object: CachedCurrent) {
         if UserDefaults.standard.bool(forKey: Keys.isKmChosenBoolKey.rawValue) {
             windInfoLabel.text = "\(Int(object.windSpeed)) м/с \(Double(object.windDeg).direction)"
         } else {

@@ -3,8 +3,10 @@ import UIKit
 class DayViewController: UIViewController {
     
     var coordinator: DayCoordinator?
-    var detailsDay: Daily?
+    var detailsDay: CachedDaily?
     var city: String?
+    var index: Int?
+    let dataProvider = RealmDataProvider()
     
     private let tableView = UITableView(frame: .zero, style: .plain)
     
@@ -46,9 +48,33 @@ class DayViewController: UIViewController {
         setupLayout()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupCollectionView()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setupCollectionView()
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         coordinator?.didFinishDay()
+    }
+    
+    private func setupCollectionView() {
+        guard let index = index else { return }
+        if index >= 4 {
+        let selectedIndex = IndexPath(item: index, section: 0)
+            collectionView.scrollToItem(at: selectedIndex, at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
+            collectionView.selectItem(at: selectedIndex, animated: true, scrollPosition: .centeredHorizontally)
+        }
+        else {
+            let selectedIndex = IndexPath(item: index, section: 0)
+            collectionView.scrollToItem(at: selectedIndex, at: UICollectionView.ScrollPosition.left, animated: true)
+            collectionView.selectItem(at: selectedIndex, animated: true, scrollPosition: .left)
+        }
     }
     
     private func createTimer() {
@@ -58,7 +84,7 @@ class DayViewController: UIViewController {
     }
     
     @objc private func updateData() {
-        collectionView.reloadData()
+        //collectionView.reloadData()
         tableView.reloadData()
     }
     
@@ -126,16 +152,23 @@ extension DayViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return HourlyWeatherStorage.dailyWeather.count
+        guard let weather = dataProvider.getWeather().first else { return 0 }
+        return weather.daily.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DayCollectionViewCell.self), for: indexPath) as! DayCollectionViewCell
         
-        let weather: Daily = HourlyWeatherStorage.dailyWeather[indexPath.item]
-
-        cell.configure(with: weather)
-        cell.configureUnselectedItem()
+        guard let weather = dataProvider.getWeather().first else { return UICollectionViewCell() }
+        let daily: CachedDaily = weather.daily[indexPath.item]
+        
+        cell.configure(with: daily)
+        if cell.isSelected {
+            cell.configureSelectedItem()
+        } else {
+            cell.configureUnselectedItem()
+        }
+        
         
         return cell
     }
@@ -153,9 +186,13 @@ extension DayViewController: UICollectionViewDelegateFlowLayout {
         let cell = collectionView.cellForItem(at: indexPath) as! DayCollectionViewCell
         if cell.isSelected {
             cell.configureSelectedItem()
+        } else {
+            cell.configureUnselectedItem()
         }
         guard let index = collectionView.indexPath(for: cell)?.row else { return }
-        detailsDay = HourlyWeatherStorage.dailyWeather[index]
+        
+        let weather = dataProvider.getWeather()
+        detailsDay = weather.first?.daily[index]
         tableView.reloadData()
     }
     
@@ -163,6 +200,8 @@ extension DayViewController: UICollectionViewDelegateFlowLayout {
         if let cell = collectionView.cellForItem(at: indexPath) as? DayCollectionViewCell {
             if !cell.isSelected {
                 cell.configureUnselectedItem()
+            } else {
+                cell.configureSelectedItem()
             }
         }
     }

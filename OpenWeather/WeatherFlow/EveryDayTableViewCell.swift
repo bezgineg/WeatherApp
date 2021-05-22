@@ -58,20 +58,20 @@ class EveryDayTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with object: Daily) {
+    func configure(with object: CachedDaily) {
         setupDayLabel(day: object.dt)
         setupTemperature(object: object)
         humidityLabel.text = "\(object.humidity)%"
-        setupWeatherImage(weather: object.weather.first?.main.rawValue)
-        descriptionLabel.text = "\(object.weather.first?.weatherDescription.rawValue ?? "")".capitalizingFirstLetter()
+        setupWeatherImage(weather: object.weathers.first?.mainEnum.rawValue)
+        descriptionLabel.text = "\(object.weathers.first?.weatherDescriptionEnum.rawValue ?? "")".capitalizingFirstLetter()
     }
     
-    private func setupTemperature(object: Daily) {
+    private func setupTemperature(object: CachedDaily) {
         if UserDefaults.standard.bool(forKey: Keys.isCelsiusChosenBoolKey.rawValue) {
-            temperatureLabel.text = "\(Int(object.temp.min))°-\(Int(object.temp.max))°"
+            temperatureLabel.text = "\(Int(object.temp?.min ?? 0))°-\(Int(object.temp?.max ?? 0))°"
         } else {
-            let minTemp = fahrenheitConversion(object.temp.min)
-            let maxTemp = fahrenheitConversion(object.temp.max)
+            let minTemp = fahrenheitConversion(object.temp?.min ?? 0)
+            let maxTemp = fahrenheitConversion(object.temp?.max ?? 0)
             temperatureLabel.text = "\(minTemp)°-\(maxTemp)°"
         }
     }
