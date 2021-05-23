@@ -2,6 +2,12 @@ import UIKit
 
 class MainInformationView: UIView {
     
+    private let arcImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "arc")
+        return imageView
+    }()
+    
     private let dailyTemperatureLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
@@ -99,7 +105,6 @@ class MainInformationView: UIView {
         super.init(frame: frame)
         
         backgroundColor = Colors.mainColor
-        drawArc()
         setupLayout()
         
     }
@@ -179,22 +184,16 @@ class MainInformationView: UIView {
         }
     }
     
-    private func drawArc() {
-        let path = UIBezierPath(arcCenter: CGPoint(x: 173, y: 160), radius: 140, startAngle: 0, endAngle: .pi, clockwise: false)
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = path.cgPath
-        shapeLayer.lineWidth = 3
-        shapeLayer.strokeColor =  UIColor.yellow.cgColor
-        shapeLayer.fillColor = Colors.mainColor.cgColor
-        
-        self.layer.addSublayer(shapeLayer)
-    }
-    
     private func setupLayout() {
         
-        addSubviews(dailyTemperatureLabel, currentTemperatureLabel, descriptionLabel, cloudyImage, cloudyLabel, windSpeedImage, windSpeedLabel, humidityImage, humidityLabel, sunriseImage, sunriseLabel, sunsetImage, sunsetLabel, dateLabel)
+        addSubviews(arcImageView, dailyTemperatureLabel, currentTemperatureLabel, descriptionLabel, cloudyImage, cloudyLabel, windSpeedImage, windSpeedLabel, humidityImage, humidityLabel, sunriseImage, sunriseLabel, sunsetImage, sunsetLabel, dateLabel)
         
         let constraints = [
+            
+            arcImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 15),
+            arcImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 31),
+            arcImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -31),
+            arcImageView.heightAnchor.constraint(equalToConstant: 123),
             
             dailyTemperatureLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 35),
             dailyTemperatureLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
@@ -230,7 +229,7 @@ class MainInformationView: UIView {
             humidityLabel.leadingAnchor.constraint(equalTo: humidityImage.trailingAnchor, constant: 5),
             
             sunriseImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 24),
-            sunriseImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -32),
+            sunriseImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -50),
             sunriseImage.widthAnchor.constraint(equalToConstant: 17),
             sunriseImage.heightAnchor.constraint(equalToConstant: 17),
             
@@ -238,7 +237,7 @@ class MainInformationView: UIView {
             sunriseLabel.centerXAnchor.constraint(equalTo: sunriseImage.centerXAnchor),
             
             sunsetImage.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -24),
-            sunsetImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -33),
+            sunsetImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -50),
             sunsetImage.widthAnchor.constraint(equalToConstant: 17),
             sunsetImage.heightAnchor.constraint(equalToConstant: 17),
             
