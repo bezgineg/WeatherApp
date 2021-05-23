@@ -94,6 +94,34 @@ class WeatherViewController: UIViewController {
         RunLoop.current.add(timer, forMode: .common)
     }
     
+    private func createUpdateTimer() {
+        let timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(updateRealm), userInfo: nil, repeats: false)
+        timer.tolerance = 0.1
+        RunLoop.current.add(timer, forMode: .common)
+    }
+    
+    private func createNewUpdateTimer() {
+        let timer = Timer.scheduledTimer(timeInterval: 4, target: self, selector: #selector(updateData), userInfo: nil, repeats: false)
+        timer.tolerance = 0.1
+        RunLoop.current.add(timer, forMode: .common)
+    }
+    
+    @objc private func updateRealm() {
+        guard let cityName = dataProvider.getWeather().first?.timezone else { return }
+        print(cityName)
+        LocationManager.shared.fetchCoordinates(city: cityName) { (coordinate, error) in
+            
+            if let coordinate = coordinate {
+                let lat = String(coordinate.latitude)
+                let long = String(coordinate.longitude)
+                NetworkManager.fetchWeather(lat: lat, long: long) { weather in
+                    let cityWeather = CityWeather(current: weather.current, timezone: weather.timezone, hourly: weather.hourly, daily: weather.daily)
+                    self.dataProvider.updateWeather(cityWeather)
+                }
+            }
+        }
+    }
+    
     @objc private func updateData() {
         configureMainInformationView()
         guard let weather = dataProvider.getWeather().first else { return }
@@ -127,6 +155,8 @@ class WeatherViewController: UIViewController {
             setupEveryDayTableView()
             setupLayout()
             createTimer()
+            createUpdateTimer()
+            createNewUpdateTimer()
             UserDefaults.standard.setValue(false, forKey: Keys.isFirstAppearance.rawValue)
         } else {
             setupPlusView()

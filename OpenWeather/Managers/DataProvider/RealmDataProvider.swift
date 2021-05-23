@@ -42,24 +42,37 @@ final class RealmDataProvider: DataProvider {
         }
     }
     
+    func getNewWeather(_ weather: CityWeather) -> CachedWeather {
+        let cachedWeather = CachedWeather()
+        let cachedCurrent = addCurrent(weather)
+        let cachedHours = addHourly(weather.hourly)
+        let cachedDays = addDaily(weather.daily)
+        
+        for cachedHour in cachedHours {
+            cachedWeather.hourly.append(cachedHour)
+        }
+        for cachedDay in cachedDays {
+            cachedWeather.daily.append(cachedDay)
+        }
+        cachedWeather.id = weather.id
+        cachedWeather.current = cachedCurrent
+        cachedWeather.timezone = weather.timezone
+        
+        return cachedWeather
+    }
+    
     func updateWeather(_ weather: CityWeather) {
-        guard let cachedWeather = realm?.object(ofType: CachedWeather.self, forPrimaryKey: weather.id) else { return }
+        guard let cachedWeather = realm?.objects(CachedWeather.self).first else { return }
+        
+        let newWeather = getNewWeather(weather)
         
         try? realm?.write {
-            cachedWeather.current?.dt = weather.current.dt
-            cachedWeather.current?.humidity = weather.current.humidity
-            cachedWeather.current?.sunrise = weather.current.sunrise ?? 0
-            cachedWeather.current?.sunset = weather.current.sunset ?? 0
-            cachedWeather.current?.temp = weather.current.temp
-            cachedWeather.current?.feelsLike = weather.current.feelsLike
-            cachedWeather.current?.windSpeed = weather.current.windSpeed
-            cachedWeather.current?.uvi = weather.current.uvi
-            cachedWeather.current?.windDeg = weather.current.windDeg
-            cachedWeather.current?.clouds = weather.current.clouds
-            cachedWeather.current?.pop = weather.current.pop ?? 0
-//            cachedWeather.daily = weather.daily
-//            cachedWeather.hourly = weather.hourly
-            cachedWeather.timezone = weather.timezone
+            cachedWeather.current = newWeather.current
+            cachedWeather.daily.removeAll()
+            cachedWeather.daily.append(objectsIn: newWeather.daily)
+            cachedWeather.hourly.removeAll()
+            cachedWeather.hourly.append(objectsIn: newWeather.hourly)
+            cachedWeather.timezone = newWeather.timezone
         }
     }
     
