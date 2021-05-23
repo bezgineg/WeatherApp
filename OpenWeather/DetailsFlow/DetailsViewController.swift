@@ -55,7 +55,6 @@ class DetailsViewController: UIViewController {
     }
     
     @objc private func updateData() {
-        //collectionView.reloadData()
         tableView.reloadData()
     }
     
@@ -66,16 +65,10 @@ class DetailsViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-        // MARK: - Доделать
         navigationItem.title = "Прогноз на 24 часа"
-        /*let attributes = [
-            NSAttributedString.Key.foregroundColor: UIColor.gray,
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14, weight: .regular)
-        ]*/
         let backButtonImage = UIImage(systemName: "arrow.left")
         let backButton = UIBarButtonItem(image: backButtonImage, style: .plain, target: self, action: #selector(backToWeather))
         navigationItem.leftBarButtonItem = backButton
-        //navigationController?.navigationBar.titleTextAttributes = attributes
         navigationItem.leftBarButtonItem?.tintColor = .gray
         
     }
@@ -126,10 +119,6 @@ extension DetailsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DetailsCollectionViewCell.self), for: indexPath) as! DetailsCollectionViewCell
-        
-        guard let weather = dataProvider.getWeather().first else { return UICollectionViewCell() }
-        let daily: CachedDaily = weather.daily[indexPath.item]
-
         
         return cell
     }

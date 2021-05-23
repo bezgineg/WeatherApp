@@ -7,6 +7,7 @@ class WeatherCoordinator: Coordinator {
     
     var navigationController: UINavigationController?
     var childCoordinators = [Coordinator]()
+    let dataProvider = RealmDataProvider()
     
     private var inputTextField: UITextField?
     private let weatherViewController = WeatherViewController()
@@ -67,18 +68,18 @@ class WeatherCoordinator: Coordinator {
 
         let addAction = UIAlertAction(title: "Добавить", style: .default) { _ in
             if let cityName = self.inputTextField?.text {
-                //self.weatherViewController.navigationItem.title = cityName
-                //NetworkManager.fetchWeather()
-                NetworkManager.fetchGeocoder(city: cityName) { (coordinate, error) in
+                LocationManager.shared.fetchCoordinates(city: cityName) { (coordinate, error) in
                     
                     if let coordinate = coordinate {
                         let lat = String(coordinate.latitude)
                         let long = String(coordinate.longitude)
                         NetworkManager.fetchWeather(lat: lat, long: long) { weather in
+                            let cityWeather = CityWeather(current: weather.current, timezone: weather.timezone, hourly: weather.hourly, daily: weather.daily)
+                            let realm = self.dataProvider.getWeather()
+                            if realm.isEmpty {
+                                self.dataProvider.addWeather(cityWeather)
+                            }
                             
-//                            HourlyWeatherStorage.dailyWeather = weather.daily
-//                            HourlyWeatherStorage.hourlyWeather = weather.hourly
-//                            HourlyWeatherStorage.weather = weather
                             UserDefaults.standard.setValue(true, forKey: Keys.isCityAdded.rawValue)
                             self.weatherViewController.removePlusView()
                             self.weatherViewController.setupViews()

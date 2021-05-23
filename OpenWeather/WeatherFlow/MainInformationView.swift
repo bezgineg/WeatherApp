@@ -109,15 +109,9 @@ class MainInformationView: UIView {
     }
     
     func configure(with object: CityWeatherCached) {
-        /*dailyTemperatureLabel.text = "\(Int(object.daily.first?.temp.min ?? 0))°/ \(Int(object.daily.first?.temp.max ?? 0))°"
-        currentTemperatureLabel.text = "\(Int(object.current.temp))°"*/
-//        descriptionLabel.text = "\(object.current.weather.first?.weatherDescription.rawValue ?? "")".capitalizingFirstLetter()
         descriptionLabel.text = "\(object.current.weathers.first?.weatherDescriptionEnum.rawValue ?? "")".capitalizingFirstLetter()
         cloudyLabel.text = "\(object.current.clouds)"
-        //windSpeedLabel.text = "\(Int(object.current.windSpeed)) м/с"
         humidityLabel.text = "\(object.current.humidity)%"
-        //setupDate()
-        //setupSunriseAndSunsetDate(sunrise: object.current.sunrise ?? 0, sunset: object.current.sunset ?? 0)
     }
     
     func setupTemperature(with object: CityWeatherCached) {

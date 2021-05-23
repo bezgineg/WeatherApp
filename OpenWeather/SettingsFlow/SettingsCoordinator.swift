@@ -18,7 +18,6 @@ class SettingsCoordinator: Coordinator {
     func pushWeatherViewController() {
         let weatherCoordinator = WeatherCoordinator()
         weatherCoordinator.navigationController = navigationController
-        //childCoordinators.append(weatherCoordinator)
         weatherCoordinator.parentCoordinator = self
         weatherCoordinator.start()
     }

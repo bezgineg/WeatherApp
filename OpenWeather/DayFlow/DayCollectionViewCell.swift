@@ -28,6 +28,11 @@ class DayCollectionViewCell: UICollectionViewCell {
         formatter.locale = Locale(identifier: "ru_RU")
         formatter.dateFormat = "dd/MM E"
         dateLabel.text = formatter.string(from: date as Date).uppercased()
+        if isSelected {
+            configureSelectedItem()
+        } else {
+            configureUnselectedItem()
+        }
     }
     
     func configureSelectedItem() {

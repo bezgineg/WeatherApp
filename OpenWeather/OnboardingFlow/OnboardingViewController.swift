@@ -35,11 +35,14 @@ class OnboardingViewController: UIViewController {
     private func onAcceptButtonTapSetup() {
         if let coordinator = coordinator {
             onboardingView.onAcceptButtonTap = {
+                LocationManager.shared.getUserLocation()
                 UserDefaults.standard.setValue(true, forKey: Keys.isTrackingBoolKey.rawValue)
-                if UserDefaults.standard.bool(forKey: Keys.isOnboardingCompleteBoolKey.rawValue) {
-                    coordinator.closeOnboardingViewController()
-                } else {
-                    coordinator.pushSettingsViewController()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    if UserDefaults.standard.bool(forKey: Keys.isOnboardingCompleteBoolKey.rawValue) {
+                        coordinator.closeOnboardingViewController()
+                    } else {
+                        coordinator.pushSettingsViewController()
+                    }
                 }
             }
         }

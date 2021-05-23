@@ -95,16 +95,10 @@ class DayViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-        // MARK: - Доделать
         navigationItem.title = "Дневная погода"
-        /*let attributes = [
-            NSAttributedString.Key.foregroundColor: UIColor.gray,
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14, weight: .regular)
-        ]*/
         let backButtonImage = UIImage(systemName: "arrow.left")
         let backButton = UIBarButtonItem(image: backButtonImage, style: .plain, target: self, action: #selector(backToWeather))
         navigationItem.leftBarButtonItem = backButton
-        //navigationController?.navigationBar.titleTextAttributes = attributes
         navigationItem.leftBarButtonItem?.tintColor = .gray
         
     }
@@ -163,12 +157,6 @@ extension DayViewController: UICollectionViewDataSource {
         let daily: CachedDaily = weather.daily[indexPath.item]
         
         cell.configure(with: daily)
-        if cell.isSelected {
-            cell.configureSelectedItem()
-        } else {
-            cell.configureUnselectedItem()
-        }
-        
         
         return cell
     }
@@ -180,8 +168,7 @@ extension DayViewController: UICollectionViewDelegateFlowLayout {
         
         return CGSize(width: 88, height: 36)
     }
-    
-    //MARK: - Доделать
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! DayCollectionViewCell
         if cell.isSelected {
@@ -222,8 +209,6 @@ extension DayViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        //let weather: Daily = HourlyWeatherStorage.dailyWeather[indexPath.section]
         
         switch indexPath.section {
         case 0:

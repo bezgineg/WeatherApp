@@ -1,6 +1,5 @@
 
 import UIKit
-import CoreLocation
 import RealmSwift
 
 class WeatherViewController: UIViewController {
@@ -63,17 +62,18 @@ class WeatherViewController: UIViewController {
         
         view.backgroundColor = .white
         setupViews()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigationBar()
-        
-        if UserDefaults.standard.bool(forKey: Keys.isTrackingBoolKey.rawValue) {
-            //getLocation()
-        }
-        
-        if UserDefaults.standard.bool(forKey: Keys.isOnboardingCompleteBoolKey.rawValue) {
+        if UserDefaults.standard.bool(forKey: Keys.isCityAdded.rawValue) {
+            if UserDefaults.standard.bool(forKey: Keys.isFirstAppearance.rawValue) {
+                removePlusView()
+                setupViews()
+                UserDefaults.standard.setValue(false, forKey: Keys.isFirstAppearance.rawValue)
+            }
             guard let weather = dataProvider.getWeather().first else { return }
             mainInformationView.setupDate()
             mainInformationView.setupSunriseAndSunsetDate(sunrise: weather.current.sunrise , sunset: weather.current.sunset )
@@ -84,24 +84,12 @@ class WeatherViewController: UIViewController {
         }
     }
     
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        coordinator?.didFinishWeather()
-//    }
-    
     func removePlusView() {
         plusView.removeFromSuperview()
     }
     
-    private func getLocation() {
-      let locationManager = CLLocationManager()
-        locationManager.delegate = self
-        
-        locationManager.requestLocation()
-    }
-    
     private func createTimer() {
-        let timer = Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(updateData), userInfo: nil, repeats: false)
+        let timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateData), userInfo: nil, repeats: false)
         timer.tolerance = 0.1
         RunLoop.current.add(timer, forMode: .common)
     }
@@ -112,14 +100,9 @@ class WeatherViewController: UIViewController {
         mainInformationView.setupSunriseAndSunsetDate(sunrise: weather.current.sunrise, sunset: weather.current.sunset)
         mainInformationView.setupWindSpeed(with: weather)
         mainInformationView.setupTemperature(with: weather)
+        mainInformationView.setupDate()
         hourlyCollectionView.reloadData()
         everyDayTableView.reloadData()
-    }
-    
-    private func createCollectionViewLoadTimer() {
-        let timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateData), userInfo: nil, repeats: false)
-        timer.tolerance = 0.1
-        RunLoop.current.add(timer, forMode: .common)
     }
     
     @objc private func detailsButtonTapped() {
@@ -136,7 +119,6 @@ class WeatherViewController: UIViewController {
     
     @objc private func openOnboarding() {
         coordinator?.pushOnboardingViewController()
-        //coordinator?.showAlert()
     }
     
     func setupViews() {
@@ -145,10 +127,11 @@ class WeatherViewController: UIViewController {
             setupEveryDayTableView()
             setupLayout()
             createTimer()
-            createCollectionViewLoadTimer()
+            UserDefaults.standard.setValue(false, forKey: Keys.isFirstAppearance.rawValue)
         } else {
             setupPlusView()
             onPlusViewTapped()
+            UserDefaults.standard.setValue(true, forKey: Keys.isFirstAppearance.rawValue)
         }
     }
     
@@ -160,43 +143,10 @@ class WeatherViewController: UIViewController {
         }
     }
     
-    //MARK: - Доделать
     private func configureMainInformationView() {
         guard let weather = dataProvider.getWeather().first else { return }
         mainInformationView.configure(with: weather)
         self.navigationItem.title = weather.timezone
-        /*NetworkManager.fetchWeather(lat: "55.753215", long: "37.622504") { weather in
-            print(weather)
-            HourlyWeatherStorage.dailyWeather = weather.daily
-            HourlyWeatherStorage.hourlyWeather = weather.hourly
-            HourlyWeatherStorage.weather = weather
-            //let cityWeather = CityWeather(current: weather.current, timezone: weather.timezone, hourly: weather.hourly, daily: weather.daily)
-            /*let realm = self.dataProvider.getWeather()
-            if realm.isEmpty {
-                self.dataProvider.addWeather(cityWeather)
-            } else {
-                DispatchQueue.main.async {
-                    self.mainInformationView.configure(with: realm.first!)
-                    self.navigationItem.title = weather.timezone
-                }
-            }*/
-            DispatchQueue.main.async {
-                
-            }
-            
-        }*/
-//        NetworkManager.jsonDecodeWeather { weather in
-//            //let weather = WeatherData(current: weather.current, timezone: weather.timezone, daily: weather.daily, hourly: weather.hourly)
-//            HourlyWeatherStorage.hourlyWeather = weather.hourly
-//            HourlyWeatherStorage.dailyWeather = weather.daily
-////            for hour in weather.hourly {
-////                HourlyWeatherStorage.weather.append(hour)
-////            }
-//            DispatchQueue.main.async {
-//                self.mainInformationView.configure(with: weather)
-//                self.navigationItem.title = weather.timezone
-//            }
-//        }
     }
     
     private func setupEveryDayTableView() {
@@ -222,6 +172,9 @@ class WeatherViewController: UIViewController {
         navigationItem.rightBarButtonItem = cityButton
         navigationItem.leftBarButtonItem?.tintColor = .black
         navigationItem.rightBarButtonItem?.tintColor = .black
+        if UserDefaults.standard.bool(forKey: Keys.isTrackingBoolKey.rawValue) {
+            navigationItem.rightBarButtonItem?.isEnabled = false
+        }
     }
     
     private func setupLayout() {
@@ -282,7 +235,7 @@ extension WeatherViewController: UICollectionViewDataSource {
         
         let weather = dataProvider.getWeather()
         guard let current: CachedCurrent = weather.first?.hourly[indexPath.item] else { return UICollectionViewCell() }
-
+        
         cell.configure(with: current)
         cell.configureUnselectedItem()
         
@@ -297,7 +250,6 @@ extension WeatherViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: 42, height: 83)
     }
     
-    //MARK: - Доделать
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! HourlyCollectionViewCell
         if cell.isSelected {
@@ -337,7 +289,6 @@ extension WeatherViewController: UITableViewDataSource {
         let weather = dataProvider.getWeather()
         guard let daily: CachedDaily = weather.first?.daily[indexPath.section] else { return UITableViewCell() }
         everyDayCell.configure(with: daily)
-        
         return everyDayCell
     }
 
@@ -365,16 +316,3 @@ extension WeatherViewController: UITableViewDelegate {
     }
 }
 
-extension WeatherViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = locations.first {
-            let lat = location.coordinate.latitude
-            let long = location.coordinate.longitude
-            print(lat, long)
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print(error.localizedDescription)
-    }
-}
