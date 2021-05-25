@@ -3,8 +3,6 @@ import UIKit
 
 class DetailsCollectionViewCell: UICollectionViewCell {
     
-   let dataProvider = RealmDataProvider()
-    
     private let lineChart: LineChartView = {
         let chart = LineChartView()
         chart.legend.enabled = false
@@ -43,10 +41,10 @@ class DetailsCollectionViewCell: UICollectionViewCell {
         var icons = [UIImage]()
         
         
-        guard let weather = dataProvider.getWeather().first?.hourly else { return }
+        guard let weather = RealmDataProvider.shared.getWeather().first else { return }
         
-        for i in 0 ..< weather.count - 1 {
-            let data = weather[i]
+        for i in 0 ..< weather.hourly.count - 1 {
+            let data = weather.hourly[i]
             if UserDefaults.standard.bool(forKey: Keys.isCelsiusChosenBoolKey.rawValue) {
                 let temp = Int(data.temp)
                 values.append(temp)
@@ -66,8 +64,8 @@ class DetailsCollectionViewCell: UICollectionViewCell {
             let newTime = formatter.string(from: date as Date)
             times.append(newTime)
             
-            let weather = weather[i].weathers.first?.mainEnum.rawValue
-            let image = setupWeatherImage(weather: weather)
+            let mainWeather = weather.hourly[i].weathers.first?.mainEnum.rawValue
+            let image = setupWeatherImage(weather: mainWeather)
             
             if let image = image {
                 icons.append(image)

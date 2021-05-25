@@ -8,3 +8,4 @@ enum Keys: String {
     case isCityAdded
     case isFirstAppearance
 }
+

@@ -1,18 +1,20 @@
 
 import UIKit
 
-class WeatherCoordinator: Coordinator {
+class WeatherCoordinator: Coordinator, NetworkErrorDelegate {
     
     weak var parentCoordinator: Coordinator?
     
     var navigationController: UINavigationController?
     var childCoordinators = [Coordinator]()
-    let dataProvider = RealmDataProvider()
     
     private var inputTextField: UITextField?
     private let weatherViewController = WeatherViewController()
     
     func start() {
+        NetworkManager.shared.delegate = self
+        LocationManager.shared.delegate = self
+        NetworkManager.shared.updateRealm()
         weatherViewController.coordinator = self
         guard let navigator = navigationController else { return }
         navigator.show(weatherViewController, sender: self)
@@ -59,7 +61,7 @@ class WeatherCoordinator: Coordinator {
     }
     
     
-    func showAlert() {
+    func showAddCityAlert() {
         let alertController = UIAlertController(title: "Добавление города", message: "Введите название города", preferredStyle: .alert)
         alertController.addTextField { textField in
             textField.placeholder = "Введите название города"
@@ -68,18 +70,24 @@ class WeatherCoordinator: Coordinator {
 
         let addAction = UIAlertAction(title: "Добавить", style: .default) { _ in
             if let cityName = self.inputTextField?.text {
-                LocationManager.shared.fetchCoordinates(city: cityName) { (coordinate, error) in
+                LocationManager.shared.getCoordinates(city: cityName) { (coordinate, error) in
+                    
+                    if let _ = error {
+                        self.showNetworkAlert()
+                    }
                     
                     if let coordinate = coordinate {
                         let lat = String(coordinate.latitude)
                         let long = String(coordinate.longitude)
-                        NetworkManager.fetchWeather(lat: lat, long: long) { weather in
-                            let cityWeather = CityWeather(current: weather.current, timezone: weather.timezone, hourly: weather.hourly, daily: weather.daily)
-                            let realm = self.dataProvider.getWeather()
+                        print(lat, long)
+                        NetworkManager.shared.fetchWeather(lat: lat, long: long) { weather in
+                            let timezone = cityName
+                            let cityWeather = CityWeather(current: weather.current, timezone: timezone, hourly: weather.hourly, daily: weather.daily)
+                            let realm = RealmDataProvider.shared.getWeather()
                             if realm.isEmpty {
-                                self.dataProvider.addWeather(cityWeather)
+                                RealmDataProvider.shared.addWeather(cityWeather)
                             }
-                            
+            
                             UserDefaults.standard.setValue(true, forKey: Keys.isCityAdded.rawValue)
                             self.weatherViewController.removePlusView()
                             self.weatherViewController.setupViews()
@@ -91,12 +99,18 @@ class WeatherCoordinator: Coordinator {
             
         let cancelAction = UIAlertAction(title: "Отменить", style: .cancel) { _ in
         }
-        
             
         alertController.addAction(addAction)
         alertController.addAction(cancelAction)
         
         navigationController?.present(alertController, animated: true, completion: nil)
+    }
+    
+    func showNetworkAlert() {
+        let alertController = UIAlertController(title: "Проверьте интернет соединение", message: "Соединение с интернетом не установлено. Не удалось загрузить данные о погоде", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alertController.addAction(okAction)
+        navigationController?.present(alertController, animated: false, completion: nil)
     }
     
     func childDidFinish(_ child: Coordinator?) {
@@ -108,5 +122,6 @@ class WeatherCoordinator: Coordinator {
         }
     }
 }
+
 
 

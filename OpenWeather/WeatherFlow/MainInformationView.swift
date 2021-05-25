@@ -117,6 +117,10 @@ class MainInformationView: UIView {
         descriptionLabel.text = "\(object.current.weathers.first?.weatherDescriptionEnum.rawValue ?? "")".capitalizingFirstLetter()
         cloudyLabel.text = "\(object.current.clouds)"
         humidityLabel.text = "\(object.current.humidity)%"
+        setupTemperature(with: object)
+        setupDate()
+        setupWindSpeed(with: object)
+        setupSunriseAndSunsetDate(sunrise: object.current.sunrise, sunset: object.current.sunset)
     }
     
     func setupTemperature(with object: CityWeatherCached) {

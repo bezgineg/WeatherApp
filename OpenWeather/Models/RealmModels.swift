@@ -2,6 +2,21 @@
 import Foundation
 import RealmSwift
 
+class CityWeatherCached {
+    
+    let current: CachedCurrent
+    let timezone: String
+    let daily: List<CachedDaily>
+    let hourly: List<CachedCurrent>
+    
+    init(current: CachedCurrent, timezone: String, hourly: List<CachedCurrent>, daily: List<CachedDaily>) {
+        self.current = current
+        self.timezone = timezone
+        self.daily = daily
+        self.hourly = hourly
+    }
+}
+
 @objcMembers class CachedWeather: Object {
     dynamic var id: String?
     dynamic var current: CachedCurrent? = nil
@@ -33,8 +48,6 @@ import RealmSwift
     dynamic var clouds = 0
     dynamic var pop = 0.0
     let weathers = List<CachedWeatherDetails>()
-    
-    var parentCachedWeather = LinkingObjects(fromType: CachedWeather.self, property: "hourly")
 
     convenience init(weathers: [CachedWeatherDetails]) {
         self.init()
@@ -57,9 +70,7 @@ import RealmSwift
     dynamic var clouds = 0
     dynamic var pop = 0.0
     dynamic var uvi = 0.0
-    
-    var parentCachedWeather = LinkingObjects(fromType: CachedWeather.self, property: "daily")
-    
+
     let weathers = List<CachedWeatherDetails>()
 
     convenience init(weathers: [CachedWeatherDetails]) {
@@ -106,9 +117,6 @@ class CachedWeatherDetails: Object {
             weatherDescriptionRaw = newValue.rawValue
         }
     }
-
-    var parentCachedCurrent = LinkingObjects(fromType: CachedCurrent.self, property: "weathers")
-    var parentCachedDaily = LinkingObjects(fromType: CachedDaily.self, property: "weathers")
 }
 
 enum CachedMain: String , CaseIterable {
@@ -129,22 +137,6 @@ enum CachedDescription: String, CaseIterable {
     case проливнойДождь = "проливной дождь"
 }
 
-final class CityWeatherCached {
-    
-    let id: String
-    let current: CachedCurrent
-    let timezone: String
-    let daily: List<CachedDaily>
-    let hourly: List<CachedCurrent>
-    
-    init(id: String = UUID().uuidString, current: CachedCurrent, timezone: String, hourly: List<CachedCurrent>, daily: List<CachedDaily>) {
-        self.id = id
-        self.current = current
-        self.timezone = timezone
-        self.daily = daily
-        self.hourly = hourly
-    }
-}
 
 
 

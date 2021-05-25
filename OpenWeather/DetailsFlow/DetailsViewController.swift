@@ -6,7 +6,6 @@ class DetailsViewController: UIViewController {
     var coordinator: DetailsCoordinator?
     var city: String?
     
-    private let dataProvider = RealmDataProvider()
     private let tableView = UITableView(frame: .zero, style: .plain)
     
     private var reuseID: String {
@@ -37,8 +36,6 @@ class DetailsViewController: UIViewController {
         view.backgroundColor = .white
         cityLabel.text = city
         setupNavigationBar()
-        createTimer()
-        createCollectionViewLoadTimer()
         setupTableView()
         setupLayout()
     }
@@ -48,20 +45,8 @@ class DetailsViewController: UIViewController {
         coordinator?.didFinishDetails()
     }
     
-    private func createTimer() {
-        let timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(updateData), userInfo: nil, repeats: false)
-        timer.tolerance = 0.1
-        RunLoop.current.add(timer, forMode: .common)
-    }
-    
-    @objc private func updateData() {
-        tableView.reloadData()
-    }
-    
-    private func createCollectionViewLoadTimer() {
-        let timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateData), userInfo: nil, repeats: false)
-        timer.tolerance = 0.1
-        RunLoop.current.add(timer, forMode: .common)
+    @objc private func backToWeather() {
+        coordinator?.closeDetailsViewController()
     }
     
     private func setupNavigationBar() {
@@ -73,14 +58,9 @@ class DetailsViewController: UIViewController {
         
     }
     
-    @objc private func backToWeather() {
-        coordinator?.closeDetailsViewController()
-    }
-    
     private func setupTableView() {
         tableView.backgroundColor = .white
         tableView.dataSource = self
-        //tableView.delegate = self
         tableView.separatorColor = Colors.dividerColor
         tableView.register(DetailsTableViewCell.self, forCellReuseIdentifier: reuseID)
     }
@@ -139,15 +119,17 @@ extension DetailsViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let weather = dataProvider.getWeather().first else { return 0 }
+        guard let weather = RealmDataProvider.shared.getWeather().first else { return 0 }
         
         return weather.hourly.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        guard let weather = RealmDataProvider.shared.getWeather().first else { return UITableViewCell() }
+        
         let cell: DetailsTableViewCell = tableView.dequeueReusableCell(withIdentifier: reuseID, for: indexPath) as! DetailsTableViewCell
         
-        guard let weather = dataProvider.getWeather().first else { return UITableViewCell() }
         let current: CachedCurrent = weather.hourly[indexPath.row]
         cell.configure(with: current)
         

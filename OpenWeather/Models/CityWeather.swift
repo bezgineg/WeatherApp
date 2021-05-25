@@ -1,6 +1,6 @@
 import Foundation
 
-final class CityWeather {
+class CityWeather {
     
     let id: String
     let current: Current
@@ -16,4 +16,3 @@ final class CityWeather {
         self.hourly = hourly
     }
 }
-

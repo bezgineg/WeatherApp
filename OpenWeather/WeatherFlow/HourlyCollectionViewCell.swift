@@ -49,18 +49,6 @@ class HourlyCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func configureSelectedItem() {
-        contentView.backgroundColor = Colors.mainColor
-        timeLabel.textColor = .white
-        temperatureLabel.textColor = .white
-    }
-    
-    func configureUnselectedItem() {
-        contentView.backgroundColor = .white
-        timeLabel.textColor = .gray
-        temperatureLabel.textColor = .black
-    }
-    
     private func setupWeatherImage(weather: String?) {
         switch weather {
         case "Clear":
@@ -83,6 +71,18 @@ class HourlyCollectionViewCell: UICollectionViewCell {
             formatter.dateFormat = "h:mm"
         }
         timeLabel.text = formatter.string(from: date as Date)
+    }
+    
+    func configureSelectedItem() {
+        contentView.backgroundColor = Colors.mainColor
+        timeLabel.textColor = .white
+        temperatureLabel.textColor = .white
+    }
+    
+    func configureUnselectedItem() {
+        contentView.backgroundColor = .white
+        timeLabel.textColor = .gray
+        temperatureLabel.textColor = .black
     }
     
     private func setupCellView() {

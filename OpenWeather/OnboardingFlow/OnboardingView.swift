@@ -62,7 +62,6 @@ class OnboardingView: UIView {
         backgroundColor = Colors.mainColor
         
         setupLayout()
-        
     }
     
     required init?(coder: NSCoder) {

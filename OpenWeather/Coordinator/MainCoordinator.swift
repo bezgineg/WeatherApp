@@ -5,7 +5,6 @@ class MainCoordinator: Coordinator {
     
     var navigationController: UINavigationController?
     var childCoordinators = [Coordinator]()
-    private let dataProvider = RealmDataProvider()
     
     func start() {
         if UserDefaults.standard.bool(forKey: Keys.isOnboardingCompleteBoolKey.rawValue) {

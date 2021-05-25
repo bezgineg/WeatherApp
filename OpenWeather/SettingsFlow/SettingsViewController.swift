@@ -24,10 +24,6 @@ class SettingsViewController: UIViewController {
         coordinator?.didFinishSettings()
     }
     
-    private func setupNavigationBar() {
-        navigationController?.navigationBar.isHidden = true
-    }
-    
     private func onSetupButtonTapped() {
         if let coordinator = coordinator {
             settingsView.onSetupButtonTapped = {
@@ -39,6 +35,10 @@ class SettingsViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    private func setupNavigationBar() {
+        navigationController?.navigationBar.isHidden = true
     }
     
     private func setupLayout() {

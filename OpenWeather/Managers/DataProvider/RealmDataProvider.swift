@@ -2,7 +2,12 @@
 import Foundation
 import RealmSwift
 
-final class RealmDataProvider: DataProvider {
+class RealmDataProvider: DataProvider {
+    
+    weak var delegate: DataProviderDelegate?
+    
+    static let shared = RealmDataProvider()
+    
     private var realm: Realm? {
         var config = Realm.Configuration()
         config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("weather.realm")
@@ -42,25 +47,6 @@ final class RealmDataProvider: DataProvider {
         }
     }
     
-    func getNewWeather(_ weather: CityWeather) -> CachedWeather {
-        let cachedWeather = CachedWeather()
-        let cachedCurrent = addCurrent(weather)
-        let cachedHours = addHourly(weather.hourly)
-        let cachedDays = addDaily(weather.daily)
-        
-        for cachedHour in cachedHours {
-            cachedWeather.hourly.append(cachedHour)
-        }
-        for cachedDay in cachedDays {
-            cachedWeather.daily.append(cachedDay)
-        }
-        cachedWeather.id = weather.id
-        cachedWeather.current = cachedCurrent
-        cachedWeather.timezone = weather.timezone
-        
-        return cachedWeather
-    }
-    
     func updateWeather(_ weather: CityWeather) {
         guard let cachedWeather = realm?.objects(CachedWeather.self).first else { return }
         
@@ -74,6 +60,25 @@ final class RealmDataProvider: DataProvider {
             cachedWeather.hourly.append(objectsIn: newWeather.hourly)
             cachedWeather.timezone = newWeather.timezone
         }
+        delegate?.weatherDidChange()
+    }
+    
+    func getNewWeather(_ weather: CityWeather) -> CachedWeather {
+        let cachedWeather = CachedWeather()
+        let cachedCurrent = addCurrent(weather)
+        let cachedHours = addHourly(weather.hourly)
+        let cachedDays = addDaily(weather.daily)
+        
+        for cachedHour in cachedHours {
+            cachedWeather.hourly.append(cachedHour)
+        }
+        for cachedDay in cachedDays {
+            cachedWeather.daily.append(cachedDay)
+        }
+        cachedWeather.current = cachedCurrent
+        cachedWeather.timezone = weather.timezone
+        
+        return cachedWeather
     }
     
     private func addWeatherDetails(_ weathers: [Weather]) -> [CachedWeatherDetails] {

@@ -34,7 +34,7 @@ class EveryDayTableViewCell: UITableViewCell {
     private let temperatureLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         return label
     }()
     

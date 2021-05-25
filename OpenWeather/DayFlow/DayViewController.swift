@@ -6,9 +6,16 @@ class DayViewController: UIViewController {
     var detailsDay: CachedDaily?
     var city: String?
     var index: Int?
-    let dataProvider = RealmDataProvider()
     
     private let tableView = UITableView(frame: .zero, style: .plain)
+    
+    private var periodsOfTimeReuseID: String {
+        return String(describing: PeriodsOfTimeTableViewCell.self)
+    }
+    
+    private var sunAndMoonReuseId: String {
+        return String(describing: SunAndMoonTableViewCell.self)
+    }
     
     private let cityLabel: UILabel = {
         let label = UILabel()
@@ -29,21 +36,11 @@ class DayViewController: UIViewController {
         return cv
     }()
     
-    private var periodsOfTimeReuseID: String {
-        return String(describing: PeriodsOfTimeTableViewCell.self)
-    }
-    
-    private var sunAndMoonReuseId: String {
-        return String(describing: SunAndMoonTableViewCell.self)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         cityLabel.text = city
         setupNavigationBar()
-        createTimer()
-        createCollectionViewLoadTimer()
         setupTableView()
         setupLayout()
     }
@@ -77,21 +74,8 @@ class DayViewController: UIViewController {
         }
     }
     
-    private func createTimer() {
-        let timer = Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(updateData), userInfo: nil, repeats: false)
-        timer.tolerance = 0.1
-        RunLoop.current.add(timer, forMode: .common)
-    }
-    
-    @objc private func updateData() {
-        //collectionView.reloadData()
-        tableView.reloadData()
-    }
-    
-    private func createCollectionViewLoadTimer() {
-        let timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateData), userInfo: nil, repeats: false)
-        timer.tolerance = 0.1
-        RunLoop.current.add(timer, forMode: .common)
+    @objc private func backToWeather() {
+        coordinator?.closeDayViewController()
     }
     
     private func setupNavigationBar() {
@@ -101,10 +85,6 @@ class DayViewController: UIViewController {
         navigationItem.leftBarButtonItem = backButton
         navigationItem.leftBarButtonItem?.tintColor = .gray
         
-    }
-    
-    @objc private func backToWeather() {
-        coordinator?.closeDayViewController()
     }
     
     private func setupTableView() {
@@ -146,14 +126,15 @@ extension DayViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let weather = dataProvider.getWeather().first else { return 0 }
+        guard let weather = RealmDataProvider.shared.getWeather().first else { return 0 }
         return weather.daily.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        guard let weather = RealmDataProvider.shared.getWeather().first else { return UICollectionViewCell() }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DayCollectionViewCell.self), for: indexPath) as! DayCollectionViewCell
         
-        guard let weather = dataProvider.getWeather().first else { return UICollectionViewCell() }
         let daily: CachedDaily = weather.daily[indexPath.item]
         
         cell.configure(with: daily)
@@ -171,25 +152,27 @@ extension DayViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! DayCollectionViewCell
+        
+        guard let index = collectionView.indexPath(for: cell)?.row else { return }
+
         if cell.isSelected {
             cell.configureSelectedItem()
         } else {
             cell.configureUnselectedItem()
         }
-        guard let index = collectionView.indexPath(for: cell)?.row else { return }
         
-        let weather = dataProvider.getWeather()
-        detailsDay = weather.first?.daily[index]
+        let weather = RealmDataProvider.shared.getWeather().first
+        detailsDay = weather?.daily[index]
         tableView.reloadData()
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        if let cell = collectionView.cellForItem(at: indexPath) as? DayCollectionViewCell {
-            if !cell.isSelected {
-                cell.configureUnselectedItem()
-            } else {
-                cell.configureSelectedItem()
-            }
+        guard let cell = collectionView.cellForItem(at: indexPath) as? DayCollectionViewCell else { return }
+        
+        if !cell.isSelected {
+            cell.configureUnselectedItem()
+        } else {
+            cell.configureSelectedItem()
         }
     }
     
@@ -210,20 +193,19 @@ extension DayViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        guard let detailsDay = detailsDay else { return UITableViewCell() }
+        
         switch indexPath.section {
         case 0:
             let cell: PeriodsOfTimeTableViewCell = tableView.dequeueReusableCell(withIdentifier: periodsOfTimeReuseID, for: indexPath) as! PeriodsOfTimeTableViewCell
-            guard let detailsDay = detailsDay else { return UITableViewCell() }
             cell.configureDay(with: detailsDay)
             return cell
         case 1:
             let cell: PeriodsOfTimeTableViewCell = tableView.dequeueReusableCell(withIdentifier: periodsOfTimeReuseID, for: indexPath) as! PeriodsOfTimeTableViewCell
-            guard let detailsDay = detailsDay else { return UITableViewCell() }
             cell.configureNight(with: detailsDay)
             return cell
         case 2:
             let cell: SunAndMoonTableViewCell = tableView.dequeueReusableCell(withIdentifier: sunAndMoonReuseId, for: indexPath) as! SunAndMoonTableViewCell
-            guard let detailsDay = detailsDay else { return UITableViewCell() }
             cell.configure(with: detailsDay)
             return cell
         default:
