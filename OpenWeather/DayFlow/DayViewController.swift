@@ -6,6 +6,16 @@ class DayViewController: UIViewController {
     var detailsDay: CachedDaily?
     var city: String?
     var index: Int?
+    var weatherStorage: CityWeatherCached?
+    
+    init(weatherStorage: CityWeatherCached?) {
+        self.weatherStorage = weatherStorage
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private let tableView = UITableView(frame: .zero, style: .plain)
     
@@ -126,13 +136,13 @@ extension DayViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let weather = RealmDataProvider.shared.getWeather().first else { return 0 }
+        guard let weather = weatherStorage else { return 0 }
         return weather.daily.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        guard let weather = RealmDataProvider.shared.getWeather().first else { return UICollectionViewCell() }
+        guard let weather = weatherStorage else { return UICollectionViewCell() }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DayCollectionViewCell.self), for: indexPath) as! DayCollectionViewCell
         
         let daily: CachedDaily = weather.daily[indexPath.item]
@@ -161,7 +171,7 @@ extension DayViewController: UICollectionViewDelegateFlowLayout {
             cell.configureUnselectedItem()
         }
         
-        let weather = RealmDataProvider.shared.getWeather().first
+        let weather = weatherStorage
         detailsDay = weather?.daily[index]
         tableView.reloadData()
     }

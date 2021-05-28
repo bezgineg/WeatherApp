@@ -10,9 +10,10 @@ class DayCoordinator: Coordinator {
     var day: CachedDaily?
     var title: String?
     var index: Int?
+    var weatherStorage: CityWeatherCached?
     
     func start() {
-        let dayViewController = DayViewController()
+        let dayViewController = DayViewController(weatherStorage: weatherStorage)
         dayViewController.coordinator = self
         dayViewController.detailsDay = day
         dayViewController.city = title

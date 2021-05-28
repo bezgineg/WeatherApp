@@ -12,7 +12,9 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     func getCoordinates(city: String, completion: @escaping (_ coordinate: CLLocationCoordinate2D?, _ error: Error?) -> () ) {
         CLGeocoder().geocodeAddressString(city) { (placemark, error) in
             if let _ = error {
-                self.delegate?.showNetworkAlert()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    self.delegate?.showNetworkAlert()
+                }
             }
             completion(placemark?.first?.location?.coordinate, error)
         }
@@ -45,10 +47,8 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         NetworkManager.shared.fetchWeather(lat: lat, long: long) { weather in
             let timezone = city ?? separate(weather.timezone)
             let cityWeather = CityWeather(current: weather.current, timezone: timezone, hourly: weather.hourly, daily: weather.daily)
-            let realm = RealmDataProvider.shared.getWeather()
-            if realm.isEmpty {
-                RealmDataProvider.shared.addWeather(cityWeather)
-            }
+            RealmDataProvider.shared.addWeather(cityWeather)
+            
         }
 
         UserDefaults.standard.setValue(true, forKey: Keys.isCityAdded.rawValue)

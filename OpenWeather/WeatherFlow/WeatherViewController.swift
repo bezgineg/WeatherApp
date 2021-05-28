@@ -2,10 +2,29 @@
 import UIKit
 import RealmSwift
 
+protocol WeatherViewControllerDelegate: class {
+    func addCity()
+    func pushDetailsViewController(_ weatherStorage: CityWeatherCached?)
+    func pushDayViewController(day: CachedDaily, index: Int, weatherStorage: CityWeatherCached?)
+}
+
 class WeatherViewController: UIViewController {
 
+    weak var delegate: WeatherViewControllerDelegate?
     var coordinator: WeatherCoordinator?
-
+    var weatherStorage: CityWeatherCached?
+    var index: Int?
+    
+    init(weatherStorage: CityWeatherCached?, index: Int?) {
+        self.weatherStorage = weatherStorage
+        self.index = index
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private let everyDayTableView = UITableView(frame: .zero, style: .plain)
     
     private var everyDayReuseID: String {
@@ -66,7 +85,6 @@ class WeatherViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setupNavigationBar()
         updateViews()
     }
     
@@ -77,7 +95,7 @@ class WeatherViewController: UIViewController {
                 setupViews()
                 UserDefaults.standard.setValue(false, forKey: Keys.isFirstAppearance.rawValue)
             }
-            guard let weather = RealmDataProvider.shared.getWeather().first else { return }
+            guard let weather = weatherStorage else { return }
             mainInformationView.setupDate()
             mainInformationView.setupSunriseAndSunsetDate(sunrise: weather.current.sunrise , sunset: weather.current.sunset )
             mainInformationView.setupWindSpeed(with: weather)
@@ -88,31 +106,20 @@ class WeatherViewController: UIViewController {
     }
     
     @objc private func detailsButtonTapped() {
-        if let coordinator = coordinator {
-            coordinator.pushDetailsViewController(title: navigationItem.title ?? "")
+        if let delegate = delegate {
+            delegate.pushDetailsViewController(weatherStorage)
         }
     }
     
-    @objc private func openSettings() {
-        if let coordinator = coordinator {
-            coordinator.pushSettingsViewController()
-        }
-    }
-    
-    @objc private func openOnboarding() {
-        coordinator?.pushOnboardingViewController()
-    }
-    
-    private func configureMainInformationView() {
-        guard let weather = RealmDataProvider.shared.getWeather().first else { return }
+    private func configureMainInformationView(_ weatherStorage: CityWeatherCached?) {
+        guard let weather = weatherStorage else { return }
         mainInformationView.configure(with: weather)
-        self.navigationItem.title = weather.timezone
     }
     
     private func onPlusViewTapped() {
-        if let coordinator = coordinator {
+        if let delegate = delegate {
             plusView.onImageTap = {
-                coordinator.showAddCityAlert()
+                delegate.addCity()
             }
         }
     }
@@ -123,7 +130,7 @@ class WeatherViewController: UIViewController {
     
     func setupViews() {
         if UserDefaults.standard.bool(forKey: Keys.isCityAdded.rawValue) {
-            configureMainInformationView()
+            configureMainInformationView(weatherStorage)
             setupEveryDayTableView()
             setupLayout()
             UserDefaults.standard.setValue(false, forKey: Keys.isFirstAppearance.rawValue)
@@ -141,25 +148,6 @@ class WeatherViewController: UIViewController {
         everyDayTableView.showsVerticalScrollIndicator = false
         everyDayTableView.separatorStyle = .none
         everyDayTableView.register(EveryDayTableViewCell.self, forCellReuseIdentifier: everyDayReuseID)
-    }
-    
-    private func setupNavigationBar() {
-        navigationController?.navigationBar.backgroundColor = .white
-        navigationController?.navigationBar.isHidden = false
-        navigationItem.hidesBackButton = true
-        
-        let settingsButtonImage = UIImage(named: "burger")
-        let cityButtonImage = UIImage(named: "addCity")
-        
-        let settingsButton = UIBarButtonItem(image: settingsButtonImage, style: .plain, target: self, action: #selector(openSettings))
-        let cityButton = UIBarButtonItem(image: cityButtonImage, style: .plain, target: self, action: #selector(openOnboarding))
-        navigationItem.leftBarButtonItem = settingsButton
-        navigationItem.rightBarButtonItem = cityButton
-        navigationItem.leftBarButtonItem?.tintColor = .black
-        navigationItem.rightBarButtonItem?.tintColor = .black
-        if UserDefaults.standard.bool(forKey: Keys.isTrackingBoolKey.rawValue) {
-            navigationItem.rightBarButtonItem?.isEnabled = false
-        }
     }
     
     private func setupLayout() {
@@ -212,13 +200,13 @@ extension WeatherViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 
-        guard let weather = RealmDataProvider.shared.getWeather().first else { return 0 }
+        guard let weather = weatherStorage else { return 0 }
         return weather.hourly.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        guard let weather = RealmDataProvider.shared.getWeather().first else { return UICollectionViewCell() }
+        guard let weather = weatherStorage else { return UICollectionViewCell() }
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: HourlyCollectionViewCell.self), for: indexPath) as! HourlyCollectionViewCell
         
@@ -243,7 +231,7 @@ extension WeatherViewController: UICollectionViewDelegateFlowLayout {
         let cell = collectionView.cellForItem(at: indexPath) as! HourlyCollectionViewCell
         
         guard let index = collectionView.indexPath(for: cell)?.row,
-              let weather = RealmDataProvider.shared.getWeather().first else { return }
+              let weather = weatherStorage else { return }
 
         if cell.isSelected {
             cell.configureSelectedItem()
@@ -269,7 +257,7 @@ extension WeatherViewController: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        guard let weather = RealmDataProvider.shared.getWeather().first else { return 0 }
+        guard let weather = weatherStorage else { return 0 }
         return weather.daily.count
     }
 
@@ -279,7 +267,7 @@ extension WeatherViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let weather = RealmDataProvider.shared.getWeather().first else { return UITableViewCell() }
+        guard let weather = weatherStorage else { return UITableViewCell() }
         
         let everyDayCell: EveryDayTableViewCell = tableView.dequeueReusableCell(withIdentifier: everyDayReuseID, for: indexPath) as! EveryDayTableViewCell
         
@@ -292,11 +280,10 @@ extension WeatherViewController: UITableViewDataSource {
 extension WeatherViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let weather = RealmDataProvider.shared.getWeather().first else { return }
+        guard let weather = weatherStorage else { return }
         let daily = weather.daily
-        coordinator?.pushDayViewController(day: daily[indexPath.section],
-                                           title: navigationItem.title ?? "",
-                                           index: indexPath.section)
+        delegate?.pushDayViewController(day: daily[indexPath.section],
+                                        index: indexPath.section, weatherStorage: weatherStorage)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -312,7 +299,9 @@ extension WeatherViewController: UITableViewDelegate {
 
 extension WeatherViewController: DataProviderDelegate {
     func weatherDidChange() {
-        configureMainInformationView()
+        guard let index = index else { return }
+        weatherStorage = RealmDataProvider.shared.getWeather()[index]
+        configureMainInformationView(weatherStorage)
         hourlyCollectionView.reloadData()
         everyDayTableView.reloadData()
     }

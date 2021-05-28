@@ -9,15 +9,15 @@ class WeatherCoordinator: Coordinator, NetworkErrorDelegate {
     var childCoordinators = [Coordinator]()
     
     private var inputTextField: UITextField?
-    private let weatherViewController = WeatherViewController()
+    private let pageViewController = PageViewController()
     
     func start() {
         NetworkManager.shared.delegate = self
         LocationManager.shared.delegate = self
         NetworkManager.shared.updateRealm()
-        weatherViewController.coordinator = self
+        pageViewController.coordinator = self
         guard let navigator = navigationController else { return }
-        navigator.show(weatherViewController, sender: self)
+        navigator.show(pageViewController, sender: self)
     }
     
     func didFinishWeather() {
@@ -40,23 +40,25 @@ class WeatherCoordinator: Coordinator, NetworkErrorDelegate {
         onboardingCoordinater.start()
     }
     
-    func pushDayViewController(day: CachedDaily, title: String, index: Int) {
+    func pushDayViewController(day: CachedDaily, title: String, index: Int, weatherStorage: CityWeatherCached?) {
         let dayCoordinator = DayCoordinator()
         dayCoordinator.navigationController = navigationController
         childCoordinators.append(dayCoordinator)
         dayCoordinator.parentCoordinator = self
+        dayCoordinator.weatherStorage = weatherStorage
         dayCoordinator.day = day
         dayCoordinator.title = title
         dayCoordinator.index = index
         dayCoordinator.start()
     }
     
-    func pushDetailsViewController(title: String) {
+    func pushDetailsViewController(title: String, weatherStorage: CityWeatherCached?) {
         let detailsCoordinator = DetailsCoordinator()
         detailsCoordinator.navigationController = navigationController
         childCoordinators.append(detailsCoordinator)
         detailsCoordinator.parentCoordinator = self
         detailsCoordinator.title = title
+        detailsCoordinator.weatherStorage = weatherStorage
         detailsCoordinator.start()
     }
     
@@ -83,14 +85,13 @@ class WeatherCoordinator: Coordinator, NetworkErrorDelegate {
                         NetworkManager.shared.fetchWeather(lat: lat, long: long) { weather in
                             let timezone = cityName
                             let cityWeather = CityWeather(current: weather.current, timezone: timezone, hourly: weather.hourly, daily: weather.daily)
-                            let realm = RealmDataProvider.shared.getWeather()
-                            if realm.isEmpty {
-                                RealmDataProvider.shared.addWeather(cityWeather)
-                            }
+                            //let realm = RealmDataProvider.shared.getWeather()
+
+                            RealmDataProvider.shared.addWeather(cityWeather)
+                            
             
                             UserDefaults.standard.setValue(true, forKey: Keys.isCityAdded.rawValue)
-                            self.weatherViewController.removePlusView()
-                            self.weatherViewController.setupViews()
+                            self.pageViewController.update()
                         }
                     }
                 }

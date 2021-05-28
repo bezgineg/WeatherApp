@@ -55,6 +55,8 @@ class RealmDataProvider: DataProvider {
               let cachedWeatherDetails = realm?.objects(CachedWeatherDetails.self),
               let cachedDaily = realm?.objects(CachedDaily.self) else { return }
         
+        let newWeather = getNewWeather(weather)
+
         try? realm?.write {
             realm?.delete(cachedCurrent)
             realm?.delete(cachedFeelslike)
@@ -63,14 +65,13 @@ class RealmDataProvider: DataProvider {
             realm?.delete(cachedDaily)
         }
         
-        let newWeather = getNewWeather(weather)
-        
         try? realm?.write {
             cachedWeather.current = newWeather.current
             cachedWeather.daily.append(objectsIn: newWeather.daily)
             cachedWeather.hourly.append(objectsIn: newWeather.hourly)
             cachedWeather.timezone = newWeather.timezone
         }
+        
         delegate?.weatherDidChange()
     }
     

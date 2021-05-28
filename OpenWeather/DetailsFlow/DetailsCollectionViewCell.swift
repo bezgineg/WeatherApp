@@ -2,7 +2,7 @@ import Charts
 import UIKit
 
 class DetailsCollectionViewCell: UICollectionViewCell {
-    
+
     private let lineChart: LineChartView = {
         let chart = LineChartView()
         chart.legend.enabled = false
@@ -22,13 +22,13 @@ class DetailsCollectionViewCell: UICollectionViewCell {
         chart.leftAxis.zeroLineColor = Colors.dividerColor
         return chart
     }()
+    
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.backgroundColor = Colors.customBackgroundColor
         setupLineChart()
         setupLayout()
-        
     }
     
     required init?(coder: NSCoder) {
@@ -41,7 +41,8 @@ class DetailsCollectionViewCell: UICollectionViewCell {
         var icons = [UIImage]()
         
         
-        guard let weather = RealmDataProvider.shared.getWeather().first else { return }
+        guard let weatherStorage = ChartStorage.weatherStorage.first else { return }
+        guard let weather = weatherStorage else { return }
         
         for i in 0 ..< weather.hourly.count - 1 {
             let data = weather.hourly[i]

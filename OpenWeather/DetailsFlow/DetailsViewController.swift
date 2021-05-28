@@ -5,6 +5,16 @@ class DetailsViewController: UIViewController {
     
     var coordinator: DetailsCoordinator?
     var city: String?
+    var weatherStorage: CityWeatherCached?
+    
+    init(weatherStorage: CityWeatherCached?) {
+        self.weatherStorage = weatherStorage
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private let tableView = UITableView(frame: .zero, style: .plain)
     
@@ -119,14 +129,14 @@ extension DetailsViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let weather = RealmDataProvider.shared.getWeather().first else { return 0 }
+        guard let weather = weatherStorage else { return 0 }
         
         return weather.hourly.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let weather = RealmDataProvider.shared.getWeather().first else { return UITableViewCell() }
+        guard let weather = weatherStorage else { return UITableViewCell() }
         
         let cell: DetailsTableViewCell = tableView.dequeueReusableCell(withIdentifier: reuseID, for: indexPath) as! DetailsTableViewCell
         

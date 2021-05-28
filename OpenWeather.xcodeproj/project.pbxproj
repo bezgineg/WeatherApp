@@ -27,6 +27,8 @@
 		A33485BF2658159200FA7A76 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33485BE2658159200FA7A76 /* Helpers.swift */; };
 		A33485C9265A3E7A00FA7A76 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33485C8265A3E7A00FA7A76 /* LocationManager.swift */; };
 		A33485D3265D713C00FA7A76 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33485D2265D713C00FA7A76 /* NetworkError.swift */; };
+		A33485F526615EE400FA7A76 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33485F426615EE400FA7A76 /* PageViewController.swift */; };
+		A33485F92661614900FA7A76 /* ChartStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33485F82661614900FA7A76 /* ChartStorage.swift */; };
 		A344ED29263D11BD00BD7307 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A344ED28263D11BD00BD7307 /* AppDelegate.swift */; };
 		A344ED2B263D11BD00BD7307 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A344ED2A263D11BD00BD7307 /* SceneDelegate.swift */; };
 		A344ED32263D11C100BD7307 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A344ED31263D11C100BD7307 /* Assets.xcassets */; };
@@ -81,6 +83,8 @@
 		A33485BE2658159200FA7A76 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		A33485C8265A3E7A00FA7A76 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		A33485D2265D713C00FA7A76 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		A33485F426615EE400FA7A76 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
+		A33485F82661614900FA7A76 /* ChartStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartStorage.swift; sourceTree = "<group>"; };
 		A344ED25263D11BD00BD7307 /* OpenWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A344ED28263D11BD00BD7307 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A344ED2A263D11BD00BD7307 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -172,6 +176,14 @@
 			path = NetworkManager;
 			sourceTree = "<group>";
 		};
+		A33485F72661613800FA7A76 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				A33485F82661614900FA7A76 /* ChartStorage.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
 		A344ED1C263D11BD00BD7307 = {
 			isa = PBXGroup;
 			children = (
@@ -193,6 +205,7 @@
 		A344ED27263D11BD00BD7307 /* OpenWeather */ = {
 			isa = PBXGroup;
 			children = (
+				A33485F72661613800FA7A76 /* Storage */,
 				A344EDC12645577E00BD7307 /* Models */,
 				A344EDBC2645503400BD7307 /* Managers */,
 				A344ED6C263D41F900BD7307 /* Helpers */,
@@ -285,6 +298,7 @@
 				A344ED9526446BE500BD7307 /* MainInformationView.swift */,
 				A3348522264807EF00FA7A76 /* HourlyCollectionViewCell.swift */,
 				A334852A2649370800FA7A76 /* EveryDayTableViewCell.swift */,
+				A33485F426615EE400FA7A76 /* PageViewController.swift */,
 			);
 			path = WeatherFlow;
 			sourceTree = "<group>";
@@ -478,9 +492,11 @@
 				A344ED842641914600BD7307 /* WeatherCoordinator.swift in Sources */,
 				A33485AB26513AEA00FA7A76 /* CityWeather.swift in Sources */,
 				A344ED57263D1C6B00BD7307 /* Colors.swift in Sources */,
+				A33485F92661614900FA7A76 /* ChartStorage.swift in Sources */,
 				BB924323264BF9490053C6F2 /* DayCollectionViewCell.swift in Sources */,
 				A334853B264FC1E000FA7A76 /* DetailsTableViewCell.swift in Sources */,
 				BB924320264BF36D0053C6F2 /* PeriodsOfTimeTableViewCell.swift in Sources */,
+				A33485F526615EE400FA7A76 /* PageViewController.swift in Sources */,
 				A33485B626540DB100FA7A76 /* RealmModels.swift in Sources */,
 				A344ED72264171AD00BD7307 /* UIButtonExtension.swift in Sources */,
 				A33485962650761900FA7A76 /* LineChartFormatter.swift in Sources */,
