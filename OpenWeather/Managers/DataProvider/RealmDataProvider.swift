@@ -48,15 +48,26 @@ class RealmDataProvider: DataProvider {
     }
     
     func updateWeather(_ weather: CityWeather) {
-        guard let cachedWeather = realm?.objects(CachedWeather.self).first else { return }
+        guard let cachedWeather = realm?.objects(CachedWeather.self).first,
+              let cachedCurrent = realm?.objects(CachedCurrent.self),
+              let cachedFeelslike = realm?.objects(CachedFeelslike.self),
+              let cachedTemp = realm?.objects(CachedTemp.self),
+              let cachedWeatherDetails = realm?.objects(CachedWeatherDetails.self),
+              let cachedDaily = realm?.objects(CachedDaily.self) else { return }
+        
+        try? realm?.write {
+            realm?.delete(cachedCurrent)
+            realm?.delete(cachedFeelslike)
+            realm?.delete(cachedTemp)
+            realm?.delete(cachedWeatherDetails)
+            realm?.delete(cachedDaily)
+        }
         
         let newWeather = getNewWeather(weather)
         
         try? realm?.write {
             cachedWeather.current = newWeather.current
-            cachedWeather.daily.removeAll()
             cachedWeather.daily.append(objectsIn: newWeather.daily)
-            cachedWeather.hourly.removeAll()
             cachedWeather.hourly.append(objectsIn: newWeather.hourly)
             cachedWeather.timezone = newWeather.timezone
         }
