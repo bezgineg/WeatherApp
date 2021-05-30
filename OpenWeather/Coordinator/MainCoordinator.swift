@@ -13,7 +13,6 @@ class MainCoordinator: Coordinator {
             weatherCoordinator.start()
             childCoordinators.append(weatherCoordinator)
             weatherCoordinator.parentCoordinator = self
-            //RealmDataProvider.shared.clearRealm()
         } else {
             let onboardingCoordinator = OnboardingCoordinator()
             onboardingCoordinator.navigationController = navigationController

@@ -8,6 +8,8 @@ class RealmDataProvider: DataProvider {
     
     static let shared = RealmDataProvider()
     
+    //var isRealmCleared: Bool = false
+    
     private var realm: Realm? {
         var config = Realm.Configuration()
         config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("weather.realm")
@@ -52,23 +54,24 @@ class RealmDataProvider: DataProvider {
         }
     }
     
-    func clearRealm() {
-        guard let cachedCurrent = realm?.objects(CachedCurrent.self),
-              let cachedFeelslike = realm?.objects(CachedFeelslike.self),
-              let cachedTemp = realm?.objects(CachedTemp.self),
-              let cachedWeatherDetails = realm?.objects(CachedWeatherDetails.self),
-              let cachedDaily = realm?.objects(CachedDaily.self) else { return }
-        try? realm?.write {
-            realm?.delete(cachedCurrent)
-            realm?.delete(cachedFeelslike)
-            realm?.delete(cachedTemp)
-            realm?.delete(cachedWeatherDetails)
-            realm?.delete(cachedDaily)
-        }
-    }
-    
     func updateWeather(_ weather: CityWeather, index: Int) {
         guard let cachedWeather = realm?.objects(CachedWeather.self)[index] else { return }
+//              let cachedCurrent = realm?.objects(CachedCurrent.self),
+//              let cachedFeelslike = realm?.objects(CachedFeelslike.self),
+//              let cachedTemp = realm?.objects(CachedTemp.self),
+//              let cachedWeatherDetails = realm?.objects(CachedWeatherDetails.self),
+//              let cachedDaily = realm?.objects(CachedDaily.self)
+        
+//        if !isRealmCleared {
+//            try? realm?.write {
+//                realm?.delete(cachedCurrent)
+//                realm?.delete(cachedFeelslike)
+//                realm?.delete(cachedTemp)
+//                realm?.delete(cachedWeatherDetails)
+//                realm?.delete(cachedDaily)
+//            }
+//            isRealmCleared = true
+//        }
         
         let newWeather = getNewWeather(weather)
         
@@ -83,6 +86,7 @@ class RealmDataProvider: DataProvider {
         
         delegate?.weatherDidChange()
     }
+    
     
     func getNewWeather(_ weather: CityWeather) -> CachedWeather {
         let cachedWeather = CachedWeather()

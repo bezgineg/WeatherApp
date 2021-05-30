@@ -39,6 +39,7 @@ class OnboardingViewController: UIViewController {
                 UserDefaults.standard.setValue(true, forKey: Keys.isTrackingBoolKey.rawValue)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                     if UserDefaults.standard.bool(forKey: Keys.isOnboardingCompleteBoolKey.rawValue) {
+                        Storage.newIndex = 0
                         coordinator.closeOnboardingViewController()
                     } else {
                         coordinator.pushSettingsViewController()

@@ -10,7 +10,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     let manager = CLLocationManager()
     
     func getCoordinates(city: String, completion: @escaping (_ coordinate: CLLocationCoordinate2D?, _ error: Error?) -> () ) {
-        CLGeocoder().geocodeAddressString(city) { (placemark, error) in
+        CLGeocoder().geocodeAddressString(city.capitalizingFirstLetter()) { (placemark, error) in
             if let _ = error {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     self.delegate?.showNetworkAlert()

@@ -16,3 +16,4 @@ class CityWeather {
         self.hourly = hourly
     }
 }
+

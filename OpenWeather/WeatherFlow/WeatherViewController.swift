@@ -16,16 +16,6 @@ class WeatherViewController: UIViewController {
     var weatherStorage: CityWeatherCached?
     var index: Int?
     
-    init(weatherStorage: CityWeatherCached?, index: Int?) {
-        self.weatherStorage = weatherStorage
-        self.index = index
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     private let everyDayTableView = UITableView(frame: .zero, style: .plain)
     
     private var everyDayReuseID: String {
@@ -75,6 +65,16 @@ class WeatherViewController: UIViewController {
         label.text = "Ежедневный прогноз"
         return label
     }()
+    
+    init(weatherStorage: CityWeatherCached?, index: Int?) {
+        self.weatherStorage = weatherStorage
+        self.index = index
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,11 +86,9 @@ class WeatherViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationItem.title = weatherStorage?.timezone
         updateViews()
         delegate?.changeTitle(title: weatherStorage?.timezone ?? "")
     }
-    
     
     private func updateViews() {
         if UserDefaults.standard.bool(forKey: Keys.isCityAdded.rawValue) {

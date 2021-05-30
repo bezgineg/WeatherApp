@@ -83,12 +83,10 @@ class WeatherCoordinator: Coordinator, NetworkErrorDelegate {
                         let long = String(coordinate.longitude)
                         print(lat, long)
                         NetworkManager.shared.fetchWeather(lat: lat, long: long) { weather in
-                            let timezone = cityName
+                            let timezone = cityName.capitalizingFirstLetter()
                             let cityWeather = CityWeather(current: weather.current, timezone: timezone, hourly: weather.hourly, daily: weather.daily)
-                            //let realm = RealmDataProvider.shared.getWeather()
 
                             RealmDataProvider.shared.addWeather(cityWeather)
-                            
             
                             UserDefaults.standard.setValue(true, forKey: Keys.isCityAdded.rawValue)
                             self.pageViewController.update()

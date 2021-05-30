@@ -7,5 +7,4 @@ protocol DataProvider: class {
     func getWeather() -> [CityWeatherCached]
     func addWeather(_ weather: CityWeather)
     func updateWeather(_ weather: CityWeather, index: Int)
-    func clearRealm()
 }
