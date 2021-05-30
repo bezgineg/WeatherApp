@@ -7,6 +7,7 @@ class PageViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     var controllers = [UIViewController]()
     var weather: CityWeatherCached? = nil
     var index: Int? = nil
+    var pageControl = UIPageControl()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,7 +77,18 @@ class PageViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         }
 
         pageController.setViewControllers([controllers[Storage.newIndex ?? 0]], direction: .forward, animated: false)
-        
+        configurePageControll()
+    }
+    
+    private func configurePageControll() {
+        pageControl = UIPageControl(frame: CGRect(x: 0, y: UIScreen.main.bounds.maxY - 50, width: UIScreen.main.bounds.width, height: 50))
+        pageControl.numberOfPages = controllers.count
+        pageControl.currentPage = Storage.newIndex ?? 0
+        pageControl.tintColor = .black
+        pageControl.pageIndicatorTintColor = .white
+        pageControl.currentPageIndicatorTintColor = .black
+        pageControl.hidesForSinglePage = true
+        view.addSubview(pageControl)
     }
     
     private func setupNavigationBar() {
@@ -96,6 +108,13 @@ class PageViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         if UserDefaults.standard.bool(forKey: Keys.isTrackingBoolKey.rawValue) {
             navigationItem.rightBarButtonItem?.isEnabled = false
         }
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        guard let viewControllers = pageViewController.viewControllers else { return }
+        let pageContentViewController = viewControllers[Storage.newIndex ?? 0]
+        pageControl.currentPage = controllers.firstIndex(of: pageContentViewController)!
+        
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {

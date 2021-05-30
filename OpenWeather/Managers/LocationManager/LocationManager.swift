@@ -41,7 +41,6 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     
     private func getLocation(_ coordinate: CLLocationCoordinate2D?, city: String?) {
         guard let coordinates = coordinate else { return }
-        print(coordinates.latitude, coordinates.longitude)
         let lat = String(coordinates.latitude)
         let long = String(coordinates.longitude)
         NetworkManager.shared.fetchWeather(lat: lat, long: long) { weather in

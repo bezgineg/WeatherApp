@@ -81,7 +81,6 @@ class WeatherCoordinator: Coordinator, NetworkErrorDelegate {
                     if let coordinate = coordinate {
                         let lat = String(coordinate.latitude)
                         let long = String(coordinate.longitude)
-                        print(lat, long)
                         NetworkManager.shared.fetchWeather(lat: lat, long: long) { weather in
                             let timezone = cityName.capitalizingFirstLetter()
                             let cityWeather = CityWeather(current: weather.current, timezone: timezone, hourly: weather.hourly, daily: weather.daily)
