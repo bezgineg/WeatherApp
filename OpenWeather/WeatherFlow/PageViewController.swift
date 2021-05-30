@@ -113,8 +113,12 @@ class PageViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         guard let viewControllers = pageViewController.viewControllers else { return }
         let pageContentViewController = viewControllers[Storage.newIndex ?? 0]
-        pageControl.currentPage = controllers.firstIndex(of: pageContentViewController)!
         
+        if let currentIndex = controllers.firstIndex(of: pageContentViewController) {
+            pageControl.currentPage = currentIndex
+        } else {
+            pageControl.currentPage = 0
+        }
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
