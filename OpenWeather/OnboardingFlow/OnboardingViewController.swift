@@ -37,7 +37,7 @@ class OnboardingViewController: UIViewController {
             onboardingView.onAcceptButtonTap = {
                 LocationManager.shared.getUserLocation()
                 UserDefaults.standard.setValue(true, forKey: Keys.isTrackingBoolKey.rawValue)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                     if UserDefaults.standard.bool(forKey: Keys.isOnboardingCompleteBoolKey.rawValue) {
                         coordinator.closeOnboardingViewController()
                     } else {

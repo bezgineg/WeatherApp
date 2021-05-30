@@ -1,6 +1,10 @@
 import UIKit
 
 class PageViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, WeatherViewControllerDelegate {
+    func changeTitle(title: String) {
+        navigationItem.title = title
+    }
+    
     
     var coordinator: WeatherCoordinator?
     var pageController: UIPageViewController!
@@ -10,8 +14,7 @@ class PageViewController: UIViewController, UIPageViewControllerDataSource, UIPa
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        setupPageController()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,7 +47,7 @@ class PageViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     }
     
     private func setupPageController() {
-        pageController = UIPageViewController(transitionStyle: .pageCurl, navigationOrientation: .horizontal, options: nil)
+        pageController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         pageController.dataSource = self
         pageController.delegate = self
 
@@ -65,19 +68,29 @@ class PageViewController: UIViewController, UIPageViewControllerDataSource, UIPa
             for (index, weather) in weatherStorage.enumerated() {
                 let vc = WeatherViewController(weatherStorage: weather, index: index)
                 vc.delegate = self
-                navigationItem.title = weatherStorage.first?.timezone
+                //navigationItem.title = weather.timezone
                 controllers.append(vc)
             }
         }
         
 
-        pageController.setViewControllers([controllers[0]], direction: .forward, animated: false)
+        pageController.setViewControllers([controllers[Storage.newIndex ?? 0]], direction: .forward, animated: false)
         
     }
     
     func update() {
         setupPageController()
     }
+    
+//    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+//        let realm = RealmDataProvider.shared.getWeather()
+//        if !controllers.isEmpty {
+//            for (index, _) in controllers .enumerated() {
+//                navigationItem.title = realm[index].timezone
+//            }
+//        }
+//    }
+    
     
     private func setupNavigationBar() {
         navigationController?.navigationBar.backgroundColor = .white

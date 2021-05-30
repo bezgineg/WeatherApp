@@ -50,7 +50,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
             RealmDataProvider.shared.addWeather(cityWeather)
             
         }
-
+        
         UserDefaults.standard.setValue(true, forKey: Keys.isCityAdded.rawValue)
     }
     

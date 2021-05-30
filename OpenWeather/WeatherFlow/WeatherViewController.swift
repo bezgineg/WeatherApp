@@ -6,6 +6,7 @@ protocol WeatherViewControllerDelegate: class {
     func addCity()
     func pushDetailsViewController(_ weatherStorage: CityWeatherCached?)
     func pushDayViewController(day: CachedDaily, index: Int, weatherStorage: CityWeatherCached?)
+    func changeTitle(title: String)
 }
 
 class WeatherViewController: UIViewController {
@@ -85,8 +86,11 @@ class WeatherViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationItem.title = weatherStorage?.timezone
         updateViews()
+        delegate?.changeTitle(title: weatherStorage?.timezone ?? "")
     }
+    
     
     private func updateViews() {
         if UserDefaults.standard.bool(forKey: Keys.isCityAdded.rawValue) {
@@ -107,6 +111,7 @@ class WeatherViewController: UIViewController {
     
     @objc private func detailsButtonTapped() {
         if let delegate = delegate {
+            Storage.newIndex = index
             delegate.pushDetailsViewController(weatherStorage)
         }
     }
@@ -282,6 +287,7 @@ extension WeatherViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let weather = weatherStorage else { return }
         let daily = weather.daily
+        Storage.newIndex = index
         delegate?.pushDayViewController(day: daily[indexPath.section],
                                         index: indexPath.section, weatherStorage: weatherStorage)
     }

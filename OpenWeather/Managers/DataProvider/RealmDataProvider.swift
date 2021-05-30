@@ -15,11 +15,16 @@ class RealmDataProvider: DataProvider {
     }
     
     func getWeather() -> [CityWeatherCached] {
-        guard let weather = realm?.objects(CachedWeather.self) else { return [] }
-        guard let timezone = weather.first?.timezone, let current = weather.first?.current, let daily = weather.first?.daily,
-              let hourly = weather.first?.hourly else { return [] }
-        return [CityWeatherCached(current: current, timezone: timezone, hourly: hourly, daily: daily)]
-        
+        var storage = [CityWeatherCached]()
+        guard let weatherStorage = realm?.objects(CachedWeather.self) else { return [] }
+        for weather in weatherStorage {
+            guard let timezone = weather.timezone,
+                  let current = weather.current else { return [] }
+            let daily = weather.daily
+            let hourly = weather.hourly
+            storage.append(CityWeatherCached(current: current, timezone: timezone, hourly: hourly, daily: daily))
+        }
+        return storage
     }
     
     func addWeather(_ weather: CityWeather) {
@@ -47,16 +52,12 @@ class RealmDataProvider: DataProvider {
         }
     }
     
-    func updateWeather(_ weather: CityWeather) {
-        guard let cachedWeather = realm?.objects(CachedWeather.self).first,
-              let cachedCurrent = realm?.objects(CachedCurrent.self),
+    func clearRealm() {
+        guard let cachedCurrent = realm?.objects(CachedCurrent.self),
               let cachedFeelslike = realm?.objects(CachedFeelslike.self),
               let cachedTemp = realm?.objects(CachedTemp.self),
               let cachedWeatherDetails = realm?.objects(CachedWeatherDetails.self),
               let cachedDaily = realm?.objects(CachedDaily.self) else { return }
-        
-        let newWeather = getNewWeather(weather)
-
         try? realm?.write {
             realm?.delete(cachedCurrent)
             realm?.delete(cachedFeelslike)
@@ -64,10 +65,18 @@ class RealmDataProvider: DataProvider {
             realm?.delete(cachedWeatherDetails)
             realm?.delete(cachedDaily)
         }
+    }
+    
+    func updateWeather(_ weather: CityWeather, index: Int) {
+        guard let cachedWeather = realm?.objects(CachedWeather.self)[index] else { return }
+        
+        let newWeather = getNewWeather(weather)
         
         try? realm?.write {
             cachedWeather.current = newWeather.current
+            cachedWeather.daily.removeAll()
             cachedWeather.daily.append(objectsIn: newWeather.daily)
+            cachedWeather.hourly.removeAll()
             cachedWeather.hourly.append(objectsIn: newWeather.hourly)
             cachedWeather.timezone = newWeather.timezone
         }

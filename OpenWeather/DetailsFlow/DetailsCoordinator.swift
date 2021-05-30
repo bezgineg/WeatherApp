@@ -11,8 +11,8 @@ class DetailsCoordinator: Coordinator {
     
     func start() {
         let detailsViewController = DetailsViewController(weatherStorage: weatherStorage)
-        ChartStorage.weatherStorage.removeAll()
-        ChartStorage.weatherStorage.append(weatherStorage)
+        Storage.weatherStorage.removeAll()
+        Storage.weatherStorage.append(weatherStorage)
         detailsViewController.coordinator = self
         detailsViewController.city = title
         guard let navigator = navigationController else { return }

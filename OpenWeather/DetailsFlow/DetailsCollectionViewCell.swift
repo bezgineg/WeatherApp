@@ -41,7 +41,7 @@ class DetailsCollectionViewCell: UICollectionViewCell {
         var icons = [UIImage]()
         
         
-        guard let weatherStorage = ChartStorage.weatherStorage.first else { return }
+        guard let weatherStorage = Storage.weatherStorage.first else { return }
         guard let weather = weatherStorage else { return }
         
         for i in 0 ..< weather.hourly.count - 1 {

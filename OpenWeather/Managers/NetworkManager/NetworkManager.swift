@@ -18,17 +18,20 @@ class NetworkManager {
     }
     
     func updateRealm() {
-        guard let cityName = RealmDataProvider.shared.getWeather().first?.timezone else { return }
-        LocationManager.shared.getCoordinates(city: cityName) { (coordinate, error) in
-            
-            if let coordinate = coordinate {
-                let lat = String(coordinate.latitude)
-                let long = String(coordinate.longitude)
+        let realm = RealmDataProvider.shared.getWeather()
+        for (index, city) in realm.enumerated() {
+            let cityName = city.timezone
+            LocationManager.shared.getCoordinates(city: cityName) { (coordinate, error) in
                 
-                NetworkManager.shared.fetchWeather(lat: lat, long: long) { weather in
-                    let timezone = cityName
-                    let cityWeather = CityWeather(current: weather.current, timezone: timezone, hourly: weather.hourly, daily: weather.daily)
-                    RealmDataProvider.shared.updateWeather(cityWeather)
+                if let coordinate = coordinate {
+                    let lat = String(coordinate.latitude)
+                    let long = String(coordinate.longitude)
+                    
+                    NetworkManager.shared.fetchWeather(lat: lat, long: long) { weather in
+                        let timezone = cityName
+                        let cityWeather = CityWeather(current: weather.current, timezone: timezone, hourly: weather.hourly, daily: weather.daily)
+                        RealmDataProvider.shared.updateWeather(cityWeather, index: index)
+                    }
                 }
             }
         }
