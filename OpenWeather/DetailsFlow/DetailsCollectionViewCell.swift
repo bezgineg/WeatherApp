@@ -101,7 +101,7 @@ class DetailsCollectionViewCell: UICollectionViewCell {
         set.drawCirclesEnabled = false
         set.valueFont = UIFont.systemFont(ofSize: 14, weight: .regular)
         set.circleColors = [UIColor.white]
-        set.colors = [UIColor(red: 0.125, green: 0.306, blue: 0.78, alpha: 1)]
+        set.colors = [Colors.chartColor]
         set.valueFormatter = DefaultValueFormatter(formatter: valueForm)
         
         let data = LineChartData(dataSet: set)

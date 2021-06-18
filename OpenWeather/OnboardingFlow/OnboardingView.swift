@@ -51,7 +51,7 @@ class OnboardingView: UIView {
         button.setTitle("НЕТ, Я БУДУ ДОБАВЛЯТЬ ЛОКАЦИИ", for: .normal)
         button.contentHorizontalAlignment = .right
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        button.backgroundColor = UIColor(red: 0.898, green: 0.898, blue: 0.898, alpha: 0.0)
+        button.backgroundColor = Colors.zeroAlphaButtonColor
         button.addTarget(self, action: #selector(declineButtonTapped), for: .touchUpInside)
         return button
     }()

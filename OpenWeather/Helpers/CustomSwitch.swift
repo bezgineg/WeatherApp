@@ -15,7 +15,7 @@ public class CustomSwitch: UIControl {
         }
     }
     
-    @IBInspectable public var onTintColor: UIColor = UIColor(red: 144/255, green: 202/255, blue: 119/255, alpha: 1) {
+    @IBInspectable public var onTintColor: UIColor = Colors.customSwitchOnTintColor {
         didSet {
             self.setupUI()
             

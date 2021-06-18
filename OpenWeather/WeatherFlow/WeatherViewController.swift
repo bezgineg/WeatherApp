@@ -40,7 +40,7 @@ class WeatherViewController: UIViewController {
         button.setTitle("Подробнее на 24 часа", for: .normal)
         button.contentHorizontalAlignment = .right
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        button.backgroundColor = UIColor(red: 0.898, green: 0.898, blue: 0.898, alpha: 0.0)
+        button.backgroundColor = Colors.zeroAlphaButtonColor
         button.addTarget(self, action: #selector(detailsButtonTapped), for: .touchUpInside)
         button.underline()
         return button
