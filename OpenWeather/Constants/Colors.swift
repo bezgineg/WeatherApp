@@ -1,7 +1,7 @@
 
 import UIKit
 
-struct Colors {
+enum Colors {
     static let mainColor = UIColor(red: 31/255, green: 77/255, blue: 197/255, alpha: 1)
     static let buttonColor = UIColor(red: 242/255, green: 110/255, blue: 17/255, alpha: 1)
     static let buttonSelectedColor = UIColor(red: 198/255, green: 86/255, blue: 7/255, alpha: 1)
