@@ -80,15 +80,16 @@ struct Temp: Decodable {
 }
 
 enum Description: String, Decodable {
-    case дождь = "дождь"
-    case небольшаяОблачность = "небольшая облачность"
-    case небольшойДождь = "небольшой дождь"
-    case облачноСПрояснениями = "облачно с прояснениями"
-    case пасмурно = "пасмурно"
-    case ясно = "ясно"
-    case сильныйДождь = "сильный дождь"
-    case переменнаяОблачность = "переменная облачность"
-    case проливнойДождь = "проливной дождь"
+    case rain = "дождь"
+    case fewClouds = "небольшая облачность"
+    case lightRain = "небольшой дождь"
+    case scatteredClouds = "облачно с прояснениями"
+    case overcastClouds = "пасмурно"
+    case clearSky = "ясно"
+    case heavyIntensityRain = "сильный дождь"
+    case brokenClouds = "переменная облачность"
+    case veryHeavyRain = "проливной дождь"
+    case moderateRain = "умеренный дождь"
 }
 
 enum Main: String, Decodable {

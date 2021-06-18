@@ -95,8 +95,8 @@ class CachedWeatherDetails: Object {
     @objc dynamic var mainRaw = CachedMain.clear.rawValue
     var mainEnum: CachedMain {
         get {
-            for main in CachedMain.allCases where mainRaw == main.rawValue {
-                return main
+            for mainEnum in CachedMain.allCases where mainRaw == mainEnum.rawValue {
+                return mainEnum
             }
             return .clear
         }
@@ -105,13 +105,13 @@ class CachedWeatherDetails: Object {
         }
     }
     
-    @objc dynamic var weatherDescriptionRaw = CachedDescription.ясно.rawValue
+    @objc dynamic var weatherDescriptionRaw = CachedDescription.clearSky.rawValue
     var weatherDescriptionEnum: CachedDescription {
         get {
-            for weatherDescription in CachedDescription.allCases where weatherDescriptionRaw == weatherDescription.rawValue {
-                return weatherDescription
+            for weatherDescriptionEnum in CachedDescription.allCases where weatherDescriptionRaw == weatherDescriptionEnum.rawValue {
+                return weatherDescriptionEnum
             }
-            return .ясно
+            return .clearSky
         }
         set {
             weatherDescriptionRaw = newValue.rawValue
@@ -126,15 +126,16 @@ enum CachedMain: String , CaseIterable {
 }
 
 enum CachedDescription: String, CaseIterable {
-    case дождь = "дождь"
-    case небольшаяОблачность = "небольшая облачность"
-    case небольшойДождь = "небольшой дождь"
-    case облачноСПрояснениями = "облачно с прояснениями"
-    case пасмурно = "пасмурно"
-    case ясно = "ясно"
-    case сильныйДождь = "сильный дождь"
-    case переменнаяОблачность = "переменная облачность"
-    case проливнойДождь = "проливной дождь"
+    case rain = "дождь"
+    case fewClouds = "небольшая облачность"
+    case lightRain = "небольшой дождь"
+    case scatteredClouds = "облачно с прояснениями"
+    case overcastClouds = "пасмурно"
+    case clearSky = "ясно"
+    case heavyIntensityRain = "сильный дождь"
+    case brokenClouds = "переменная облачность"
+    case veryHeavyRain = "проливной дождь"
+    case moderateRain = "умеренный дождь"
 }
 
 

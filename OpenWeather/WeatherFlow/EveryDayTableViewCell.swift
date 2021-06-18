@@ -5,7 +5,6 @@ class EveryDayTableViewCell: UITableViewCell {
     
     private let dayLabel: UILabel = {
         let label = UILabel()
-        label.text = "17/04"
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.textColor = .gray
         return label
