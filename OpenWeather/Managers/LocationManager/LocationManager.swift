@@ -43,6 +43,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         guard let coordinates = coordinate else { return }
         let lat = String(coordinates.latitude)
         let long = String(coordinates.longitude)
+        print(lat, long)
         NetworkManager.shared.fetchWeather(lat: lat, long: long) { weather in
             let timezone = city ?? separate(weather.timezone)
             let cityWeather = CityWeather(current: weather.current, timezone: timezone, hourly: weather.hourly, daily: weather.daily)
