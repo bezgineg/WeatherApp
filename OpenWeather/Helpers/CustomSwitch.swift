@@ -11,7 +11,7 @@ public class CustomSwitch: UIControl {
     
     @IBInspectable public var padding: CGFloat = 1 {
         didSet {
-            self.layoutSubviews()
+            self.layoutIfNeeded()
         }
     }
     
@@ -44,7 +44,7 @@ public class CustomSwitch: UIControl {
     
     private var privateCornerRadius: CGFloat = 0.5 {
         didSet {
-            self.layoutSubviews()
+            self.layoutIfNeeded()
             
         }
     }
@@ -72,14 +72,14 @@ public class CustomSwitch: UIControl {
     
     private var privateThumbCornerRadius: CGFloat = 0.5 {
         didSet {
-            self.layoutSubviews()
+            self.layoutIfNeeded()
             
         }
     }
     
     @IBInspectable public var thumbSize: CGSize = CGSize.zero {
         didSet {
-            self.layoutSubviews()
+            self.layoutIfNeeded()
         }
     }
     
@@ -95,7 +95,7 @@ public class CustomSwitch: UIControl {
     public var onImage:UIImage? {
         didSet {
             self.onImageView.image = onImage
-            self.layoutSubviews()
+            self.layoutIfNeeded()
             
         }
         
@@ -104,7 +104,7 @@ public class CustomSwitch: UIControl {
     public var offImage:UIImage? {
         didSet {
             self.offImageView.image = offImage
-            self.layoutSubviews()
+            self.layoutIfNeeded()
             
         }
         
