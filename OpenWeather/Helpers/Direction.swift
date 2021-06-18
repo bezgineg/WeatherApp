@@ -2,7 +2,22 @@
 import Foundation
 
 enum Direction: String, CaseIterable {
-    case с, ссв, св, всв, в, вюв, юв, ююв, ю, ююз, юз, зюз, з, зсз, сз, ссз
+    case n = "с"
+    case nne = "ссв"
+    case ne = "св"
+    case ene = "всв"
+    case e = "в"
+    case ese = "вюв"
+    case se = "юв"
+    case sse = "ююв"
+    case s = "ю"
+    case ssw = "ююз"
+    case sw = "юз"
+    case wsw = "зюз"
+    case w = "з"
+    case wnw = "зсз"
+    case nw = "сз"
+    case nnw = "ссз"
 }
 
 extension Direction: CustomStringConvertible  {

@@ -142,9 +142,9 @@ class DetailsTableViewCell: UITableViewCell {
     
     private func setupWindInfoLabel(_ object: CachedCurrent) {
         if UserDefaults.standard.bool(forKey: Keys.isKmChosenBoolKey.rawValue) {
-            windInfoLabel.text = "\(Int(object.windSpeed)) м/с \(Double(object.windDeg).direction)"
+            windInfoLabel.text = "\(Int(object.windSpeed)) м/с \(Double(object.windDeg).direction.rawValue)"
         } else {
-            windInfoLabel.text = "\(Int(object.windSpeed * 2.23694)) ми/ч \(Double(object.windDeg).direction)"
+            windInfoLabel.text = "\(Int(object.windSpeed * 2.23694)) ми/ч \(Double(object.windDeg).direction.rawValue)"
         }
     }
     

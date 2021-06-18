@@ -177,7 +177,7 @@ class PeriodsOfTimeTableViewCell: UITableViewCell {
         setupDayTemperature(object)
         descriptionLabel.text = "\(object.weathers.first?.weatherDescriptionEnum.rawValue.capitalizingFirstLetter() ?? "")"
         feelsImage.image = object.feelsLike?.day ?? 0 >= 0 ? UIImage(named: "temp") : UIImage(named: "tempCold")
-        windInfoLabel.text = "\(Int(object.windSpeed)) м/с \(Double(object.windDeg).direction)"
+        windInfoLabel.text = "\(Int(object.windSpeed)) м/с \(Double(object.windDeg).direction.rawValue)"
         uvInfoLabel.text = "\(Int(object.uvi))(\(setupUvLabel(uv: object.uvi)))"
         precipitationInfoLabel.text = "\(Int(object.pop))%"
         cloudinessInfoLabel.text = "\(object.clouds)%"
@@ -199,9 +199,9 @@ class PeriodsOfTimeTableViewCell: UITableViewCell {
     
     private func setupWindInfoLabel(_ object: CachedDaily) {
         if UserDefaults.standard.bool(forKey: Keys.isKmChosenBoolKey.rawValue) {
-            windInfoLabel.text = "\(Int(object.windSpeed)) м/с \(Double(object.windDeg).direction)"
+            windInfoLabel.text = "\(Int(object.windSpeed)) м/с \(Double(object.windDeg).direction.rawValue)"
         } else {
-            windInfoLabel.text = "\(Int(object.windSpeed * 2.23694)) ми/ч \(Double(object.windDeg).direction)"
+            windInfoLabel.text = "\(Int(object.windSpeed * 2.23694)) ми/ч \(Double(object.windDeg).direction.rawValue)"
         }
     }
     
