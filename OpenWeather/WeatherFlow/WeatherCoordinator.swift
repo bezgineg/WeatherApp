@@ -1,7 +1,7 @@
 
 import UIKit
 
-class WeatherCoordinator: Coordinator, NetworkErrorDelegate {
+class WeatherCoordinator: Coordinator, NetworkErrorDelegate, LocationErrorDelegate {
     
     weak var parentCoordinator: Coordinator?
     
@@ -12,8 +12,9 @@ class WeatherCoordinator: Coordinator, NetworkErrorDelegate {
     private let pageViewController = PageViewController()
     
     func start() {
-        NetworkManager.shared.delegate = self
         LocationManager.shared.delegate = self
+        NetworkManager.shared.networkDelegate = self
+        NetworkManager.shared.locationDelegate = self
         NetworkManager.shared.updateRealm()
         pageViewController.coordinator = self
         guard let navigator = navigationController else { return }
@@ -72,15 +73,11 @@ class WeatherCoordinator: Coordinator, NetworkErrorDelegate {
 
         let addAction = UIAlertAction(title: "Добавить", style: .default) { _ in
             if let cityName = self.inputTextField?.text {
-                LocationManager.shared.getCoordinates(city: cityName) { (coordinate, error) in
-                    
-                    if let _ = error {
-                        self.showNetworkAlert()
-                    }
-                    
-                    if let coordinate = coordinate {
-                        let lat = String(coordinate.latitude)
-                        let long = String(coordinate.longitude)
+                LocationManager.shared.getCoordinates(city: cityName) { result in
+                    switch result {
+                    case .success(let coordinates):
+                        let lat = String(coordinates.latitude)
+                        let long = String(coordinates.longitude)
                         NetworkManager.shared.fetchWeather(lat: lat, long: long) { weather in
                             let timezone = cityName.capitalizingFirstLetter()
                             let cityWeather = CityWeather(current: weather.current, timezone: timezone, hourly: weather.hourly, daily: weather.daily)
@@ -90,6 +87,8 @@ class WeatherCoordinator: Coordinator, NetworkErrorDelegate {
                             UserDefaults.standard.setValue(true, forKey: Keys.isCityAdded.rawValue)
                             self.pageViewController.update()
                         }
+                    case .failure(let error):
+                        self.showLocationAlert(error: error)
                     }
                 }
             }
@@ -109,6 +108,16 @@ class WeatherCoordinator: Coordinator, NetworkErrorDelegate {
         let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
         alertController.addAction(okAction)
         navigationController?.present(alertController, animated: false, completion: nil)
+    }
+    
+    func showLocationAlert(error: LocationError) {
+        switch error {
+        case .cannotFindCoordinates:
+            let alertController = UIAlertController(title: "Не удалось установить местоположение", message: "Проверьте соединение с интернетом или разрешите приложению отслеживать ваши действия", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(okAction)
+            navigationController?.present(alertController, animated: false, completion: nil)
+        }
     }
     
     func childDidFinish(_ child: Coordinator?) {

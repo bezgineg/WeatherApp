@@ -9,14 +9,19 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     static let shared = LocationManager()
     let manager = CLLocationManager()
     
-    func getCoordinates(city: String, completion: @escaping (_ coordinate: CLLocationCoordinate2D?, _ error: Error?) -> () ) {
+    func getCoordinates(city: String, completion: @escaping (Result<CLLocationCoordinate2D, LocationError>) -> Void) {
         CLGeocoder().geocodeAddressString(city.capitalizingFirstLetter()) { (placemark, error) in
             if let _ = error {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     self.delegate?.showNetworkAlert()
                 }
             }
-            completion(placemark?.first?.location?.coordinate, error)
+            
+            if let location = placemark?.first?.location {
+                completion(.success(location.coordinate))
+            } else {
+                completion(.failure(.cannotFindCoordinates))
+            }
         }
     }
     
@@ -69,5 +74,4 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
             completion(placemark)
         }
     }
-    
 }

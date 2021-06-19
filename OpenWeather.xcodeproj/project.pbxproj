@@ -54,6 +54,7 @@
 		A344EDBA26454FC800BD7307 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A344EDB926454FC700BD7307 /* Constants.swift */; };
 		A344EDBF2645505100BD7307 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A344EDBE2645505100BD7307 /* NetworkManager.swift */; };
 		A344EDC32645579200BD7307 /* WeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A344EDC22645579200BD7307 /* WeatherData.swift */; };
+		A3C9D99F267DD4E100E2578D /* LocationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C9D99E267DD4E100E2578D /* LocationError.swift */; };
 		BB924320264BF36D0053C6F2 /* PeriodsOfTimeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB92431F264BF36D0053C6F2 /* PeriodsOfTimeTableViewCell.swift */; };
 		BB924323264BF9490053C6F2 /* DayCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB924322264BF9490053C6F2 /* DayCollectionViewCell.swift */; };
 		BBEF5A93264AB73D007B8983 /* DayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEF5A92264AB73D007B8983 /* DayCoordinator.swift */; };
@@ -112,6 +113,7 @@
 		A344EDB926454FC700BD7307 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A344EDBE2645505100BD7307 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		A344EDC22645579200BD7307 /* WeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherData.swift; sourceTree = "<group>"; };
+		A3C9D99E267DD4E100E2578D /* LocationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationError.swift; sourceTree = "<group>"; };
 		BB92431F264BF36D0053C6F2 /* PeriodsOfTimeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodsOfTimeTableViewCell.swift; sourceTree = "<group>"; };
 		BB924322264BF9490053C6F2 /* DayCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayCollectionViewCell.swift; sourceTree = "<group>"; };
 		BBEF5A92264AB73D007B8983 /* DayCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayCoordinator.swift; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 			isa = PBXGroup;
 			children = (
 				A33485C8265A3E7A00FA7A76 /* LocationManager.swift */,
+				A3C9D99E267DD4E100E2578D /* LocationError.swift */,
 			);
 			path = LocationManager;
 			sourceTree = "<group>";
@@ -470,6 +473,7 @@
 				A344ED7C2641752E00BD7307 /* CustomThumbView.swift in Sources */,
 				A3348541264FC20900FA7A76 /* DetailsViewController.swift in Sources */,
 				A33485BF2658159200FA7A76 /* Helpers.swift in Sources */,
+				A3C9D99F267DD4E100E2578D /* LocationError.swift in Sources */,
 				A344ED61263D2FEE00BD7307 /* SettingsCoordinator.swift in Sources */,
 				A344ED8D2643E6EB00BD7307 /* PlusView.swift in Sources */,
 				BBEF5A97264AB77D007B8983 /* DayViewController.swift in Sources */,

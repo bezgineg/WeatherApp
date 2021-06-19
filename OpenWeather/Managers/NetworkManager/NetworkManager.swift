@@ -4,7 +4,8 @@ import Alamofire
 
 class NetworkManager {
     
-    weak var delegate: NetworkErrorDelegate?
+    weak var networkDelegate: NetworkErrorDelegate?
+    weak var locationDelegate: LocationErrorDelegate?
     
     static let shared = NetworkManager()
     
@@ -21,21 +22,22 @@ class NetworkManager {
         let realm = RealmDataProvider.shared.getWeather()
         for (index, city) in realm.enumerated() {
             let cityName = city.timezone
-            LocationManager.shared.getCoordinates(city: cityName) { (coordinate, error) in
-                
-                if let coordinate = coordinate {
-                    let lat = String(coordinate.latitude)
-                    let long = String(coordinate.longitude)
+            LocationManager.shared.getCoordinates(city: cityName) { result in
+                switch result {
+                case .success(let coordinates):
+                    let lat = String(coordinates.latitude)
+                    let long = String(coordinates.longitude)
                     
                     NetworkManager.shared.fetchWeather(lat: lat, long: long) { weather in
                         let timezone = cityName
                         let cityWeather = CityWeather(current: weather.current, timezone: timezone, hourly: weather.hourly, daily: weather.daily)
                         RealmDataProvider.shared.updateWeather(cityWeather, index: index)
                     }
+                case .failure(let error):
+                    self.locationDelegate?.showLocationAlert(error: error)
                 }
             }
         }
     }
-    
 }
 
