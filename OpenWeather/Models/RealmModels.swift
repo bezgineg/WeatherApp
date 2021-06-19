@@ -123,6 +123,7 @@ enum CachedMain: String , CaseIterable {
     case clear = "Clear"
     case clouds = "Clouds"
     case rain = "Rain"
+    case drizzle = "Drizzle"
 }
 
 enum CachedDescription: String, CaseIterable {

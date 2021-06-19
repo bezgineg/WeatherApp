@@ -96,4 +96,5 @@ enum Main: String, Decodable {
     case clear = "Clear"
     case clouds = "Clouds"
     case rain = "Rain"
+    case drizzle = "Drizzle"
 }

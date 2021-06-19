@@ -57,6 +57,8 @@ class HourlyCollectionViewCell: UICollectionViewCell {
             weatherImage.image = UIImage(named: "rain")
         case "Clouds":
             weatherImage.image = UIImage(named: "clouds")
+        case "Drizzle":
+            weatherImage.image = UIImage(named: "drizzle")
         default:
             break
         }

@@ -122,6 +122,8 @@ class DetailsCollectionViewCell: UICollectionViewCell {
             return UIImage(named: "rain")?.resize(60)
         case "Clouds":
             return UIImage(named: "clouds")?.resize(60)
+        case "Drizzle":
+            return UIImage(named: "drizzle")?.resize(60)
         default:
             return UIImage(named: "fullMoon")?.resize(60)
         }
