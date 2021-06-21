@@ -8,7 +8,7 @@ class PlusView: UIView {
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "plus")
-        imageView.tintColor = .black
+        imageView.tintColor = Colors.primaryTextBlackColor
         return imageView
     }()
     

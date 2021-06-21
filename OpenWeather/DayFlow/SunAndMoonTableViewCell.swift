@@ -6,7 +6,7 @@ class SunAndMoonTableViewCell: UITableViewCell {
     private let mainLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         label.text = "Солнце и Луна"
         return label
     }()
@@ -14,7 +14,7 @@ class SunAndMoonTableViewCell: UITableViewCell {
     private let moonPhaseLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         return label
     }()
     
@@ -32,7 +32,7 @@ class SunAndMoonTableViewCell: UITableViewCell {
     private let dayDurationLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         return label
     }()
     
@@ -51,7 +51,7 @@ class SunAndMoonTableViewCell: UITableViewCell {
     private let nightDurationLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         return label
     }()
     
@@ -64,7 +64,7 @@ class SunAndMoonTableViewCell: UITableViewCell {
     private let daySunriseLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .gray
+        label.textColor = Colors.primaryTextGrayColor
         label.text = "Восход"
         return label
     }()
@@ -72,7 +72,7 @@ class SunAndMoonTableViewCell: UITableViewCell {
     private let daySunriseTimeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         return label
     }()
     
@@ -85,7 +85,7 @@ class SunAndMoonTableViewCell: UITableViewCell {
     private let daySunsetLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .gray
+        label.textColor = Colors.primaryTextGrayColor
         label.text = "Заход"
         return label
     }()
@@ -93,7 +93,7 @@ class SunAndMoonTableViewCell: UITableViewCell {
     private let daySunsetTimeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         return label
     }()
     
@@ -106,7 +106,7 @@ class SunAndMoonTableViewCell: UITableViewCell {
     private let nightMoonriseLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .gray
+        label.textColor = Colors.primaryTextGrayColor
         label.text = "Восход"
         return label
     }()
@@ -114,7 +114,7 @@ class SunAndMoonTableViewCell: UITableViewCell {
     private let nightMoonriseTimeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         return label
     }()
     
@@ -127,7 +127,7 @@ class SunAndMoonTableViewCell: UITableViewCell {
     private let nightMoonsetLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .gray
+        label.textColor = Colors.primaryTextGrayColor
         label.text = "Заход"
         return label
     }()
@@ -135,14 +135,14 @@ class SunAndMoonTableViewCell: UITableViewCell {
     private let nightMoonsetTimeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         return label
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .white
+        backgroundColor = Colors.primaryBackgroundWhiteColor
         contentView.layer.cornerRadius = 5
         
         setupLayout()
@@ -153,7 +153,7 @@ class SunAndMoonTableViewCell: UITableViewCell {
     }
     
     func configure(with object: CachedDaily) {
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = Colors.primaryBackgroundWhiteColor
         setupMoonPhase(moonphase: object.moonPhase)
         setupDayDurationLabel(sunrise: object.sunrise, sunset: object.sunset)
         setupNightDurationLabel(moonrise: object.moonrise, moonset: object.moonset)

@@ -36,7 +36,7 @@ class WeatherViewController: UIViewController {
     private lazy var detailsButton: UIButton = {
         let button = UIButton(type: .system)
         button.layer.masksToBounds = true
-        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(Colors.primaryTextBlackColor, for: .normal)
         button.setTitle("Подробнее на 24 часа", for: .normal)
         button.contentHorizontalAlignment = .right
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
@@ -50,7 +50,7 @@ class WeatherViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = .white
+        cv.backgroundColor = Colors.primaryBackgroundWhiteColor
         cv.register(HourlyCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: HourlyCollectionViewCell.self))
         cv.dataSource = self
         cv.delegate = self
@@ -60,7 +60,7 @@ class WeatherViewController: UIViewController {
     
     private let everyDayLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         label.text = "Ежедневный прогноз"
         return label
@@ -79,7 +79,7 @@ class WeatherViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
+        view.backgroundColor = Colors.primaryBackgroundWhiteColor
         RealmDataProvider.shared.delegate = self
         setupViews()
     }
@@ -145,7 +145,7 @@ class WeatherViewController: UIViewController {
     }
     
     private func setupEveryDayTableView() {
-        everyDayTableView.backgroundColor = .white
+        everyDayTableView.backgroundColor = Colors.primaryBackgroundWhiteColor
         everyDayTableView.dataSource = self
         everyDayTableView.delegate = self
         everyDayTableView.showsVerticalScrollIndicator = false
@@ -292,7 +292,7 @@ extension WeatherViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = Colors.primaryBackgroundWhiteColor
         return view
     }
     

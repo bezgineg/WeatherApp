@@ -13,4 +13,17 @@ enum Colors {
     static let customSwitchOnTintColor = UIColor(red: 144/255, green: 202/255, blue: 119/255, alpha: 1)
     static let zeroAlphaButtonColor = UIColor(red: 0.898, green: 0.898, blue: 0.898, alpha: 0.0)
     static let chartColor = UIColor(red: 0.125, green: 0.306, blue: 0.78, alpha: 1)
+    static let customSwitchBlackColor = UIColor.black
+    static let customSwitchBlueColor = UIColor.blue
+    static let customSwitchWhiteColor = UIColor.white
+    static let customSwitchLightGrayColor = UIColor.lightGray
+    static let primaryTextWhiteColor = UIColor.white
+    static let primaryTextBlackColor = UIColor.black
+    static let primaryBackgroundWhiteColor = UIColor.white
+    static let imageTintYellowColor = UIColor.yellow
+    static let imageTintBlackColor = UIColor.black
+    static let imageTintWhiteColor = UIColor.white
+    static let imageTintGrayColor = UIColor.gray
+    static let primaryTextYellowColor = UIColor.yellow
+    static let primaryTextGrayColor = UIColor.gray
 }

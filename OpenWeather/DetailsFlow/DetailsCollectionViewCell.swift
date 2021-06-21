@@ -100,7 +100,7 @@ class DetailsCollectionViewCell: UICollectionViewCell {
         set.drawCircleHoleEnabled = false
         set.drawCirclesEnabled = false
         set.valueFont = UIFont.systemFont(ofSize: 14, weight: .regular)
-        set.circleColors = [UIColor.white]
+        set.circleColors = [Colors.imageTintWhiteColor]
         set.colors = [Colors.chartColor]
         set.valueFormatter = DefaultValueFormatter(formatter: valueForm)
         

@@ -84,15 +84,15 @@ class PageViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         pageControl = UIPageControl(frame: CGRect(x: 0, y: UIScreen.main.bounds.maxY - 50, width: UIScreen.main.bounds.width, height: 50))
         pageControl.numberOfPages = controllers.count
         pageControl.currentPage = Storage.newIndex ?? 0
-        pageControl.tintColor = .black
-        pageControl.pageIndicatorTintColor = .white
-        pageControl.currentPageIndicatorTintColor = .black
+        pageControl.tintColor = Colors.imageTintBlackColor
+        pageControl.pageIndicatorTintColor = Colors.imageTintWhiteColor
+        pageControl.currentPageIndicatorTintColor = Colors.imageTintBlackColor
         pageControl.hidesForSinglePage = true
         view.addSubview(pageControl)
     }
     
     private func setupNavigationBar() {
-        navigationController?.navigationBar.backgroundColor = .white
+        navigationController?.navigationBar.backgroundColor = Colors.primaryBackgroundWhiteColor
         navigationController?.navigationBar.isHidden = false
         navigationItem.hidesBackButton = true
         
@@ -103,8 +103,8 @@ class PageViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         let cityButton = UIBarButtonItem(image: cityButtonImage, style: .plain, target: self, action: #selector(openOnboarding))
         navigationItem.leftBarButtonItem = settingsButton
         navigationItem.rightBarButtonItem = cityButton
-        navigationItem.leftBarButtonItem?.tintColor = .black
-        navigationItem.rightBarButtonItem?.tintColor = .black
+        navigationItem.leftBarButtonItem?.tintColor = Colors.imageTintBlackColor
+        navigationItem.rightBarButtonItem?.tintColor = Colors.imageTintBlackColor
         if UserDefaults.standard.bool(forKey: Keys.isTrackingBoolKey.rawValue) {
             navigationItem.rightBarButtonItem?.isEnabled = false
         }

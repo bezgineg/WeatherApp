@@ -15,7 +15,7 @@ class OnboardingView: UIView {
     private let permissionLabel: UILabel = {
         let label = UILabel()
         label.text = "Разрешить приложению  Weather \nиспользовать данные \nо местоположении вашего устройства"
-        label.textColor = .white
+        label.textColor = Colors.primaryTextWhiteColor
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.numberOfLines = 3
         return label
@@ -24,7 +24,7 @@ class OnboardingView: UIView {
     private let explanationLabel: UILabel = {
         let label = UILabel()
         label.text = "Чтобы получить более точные прогнозы погоды во время движения или путешествия \n \nВы можете изменить свой выбор в любое время из меню приложения"
-        label.textColor = .white
+        label.textColor = Colors.primaryTextWhiteColor
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.numberOfLines = 5
         return label
@@ -34,7 +34,7 @@ class OnboardingView: UIView {
         let button = UIButton(type: .system)
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 10
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(Colors.primaryTextWhiteColor, for: .normal)
         button.setTitle("ИСПОЛЬЗОВАТЬ МЕСТОПОЛОЖЕНИЕ  УСТРОЙСТВА", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         button.backgroundColor = Colors.buttonColor
@@ -47,7 +47,7 @@ class OnboardingView: UIView {
     private lazy var declineButton: UIButton = {
         let button = UIButton(type: .system)
         button.layer.masksToBounds = true
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(Colors.primaryTextWhiteColor, for: .normal)
         button.setTitle("НЕТ, Я БУДУ ДОБАВЛЯТЬ ЛОКАЦИИ", for: .normal)
         button.contentHorizontalAlignment = .right
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)

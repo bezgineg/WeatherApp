@@ -22,7 +22,7 @@ public class CustomSwitch: UIControl {
         }
     }
     
-    @IBInspectable public var offTintColor: UIColor = UIColor.black {
+    @IBInspectable public var offTintColor: UIColor = Colors.customSwitchBlackColor {
         didSet {
             self.setupUI()
         }
@@ -50,7 +50,7 @@ public class CustomSwitch: UIControl {
     }
     
     // thumb properties
-    @IBInspectable public var thumbTintColor: UIColor = UIColor.blue {
+    @IBInspectable public var thumbTintColor: UIColor = Colors.customSwitchBlueColor {
         didSet {
             self.thumbView.backgroundColor = self.thumbTintColor
         }
@@ -111,7 +111,7 @@ public class CustomSwitch: UIControl {
     }
     
     // dodati kasnije
-    @IBInspectable public var thumbShadowColor: UIColor = UIColor.black {
+    @IBInspectable public var thumbShadowColor: UIColor = Colors.customSwitchBlackColor {
         didSet {
             self.thumbView.layer.shadowColor = self.thumbShadowColor.cgColor
         }
@@ -244,8 +244,8 @@ extension CustomSwitch {
     private func setupViewsOnAction() {
         self.thumbView.frame.origin.x = self.isOn ? self.onPoint.x : self.offPoint.x
         self.backgroundColor = self.isOn ? self.onTintColor : self.offTintColor
-        self.labelOn.textColor = self.isOn ? UIColor.white : UIColor.black
-        self.labelOff.textColor = self.isOn ? UIColor.black : UIColor.white
+        self.labelOn.textColor = self.isOn ? Colors.customSwitchWhiteColor : Colors.customSwitchBlackColor
+        self.labelOff.textColor = self.isOn ? Colors.customSwitchBlackColor : Colors.customSwitchWhiteColor
         self.setOnOffImageFrame()
         
     }
@@ -335,11 +335,11 @@ extension CustomSwitch {
         self.labelOff.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         self.labelOn.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         if self.isOn {
-            self.labelOff.textColor = UIColor.black
-            self.labelOn.textColor = UIColor.white
+            self.labelOff.textColor = Colors.customSwitchBlackColor
+            self.labelOn.textColor = Colors.customSwitchWhiteColor
         } else {
-            self.labelOff.textColor = UIColor.white
-            self.labelOn.textColor = UIColor.black
+            self.labelOff.textColor = Colors.customSwitchWhiteColor
+            self.labelOn.textColor = Colors.customSwitchBlackColor
         }
         
         self.labelOn.sizeToFit()
@@ -353,16 +353,16 @@ extension CustomSwitch {
     public func myCustomSwitchSetup() {
         
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.onTintColor = UIColor.lightGray
-        self.offTintColor = UIColor.lightGray
+        self.onTintColor = Colors.customSwitchLightGrayColor
+        self.offTintColor = Colors.customSwitchLightGrayColor
         self.cornerRadius = 0.1
         self.thumbCornerRadius = 0.1
-        self.thumbTintColor = UIColor.white
+        self.thumbTintColor = Colors.customSwitchWhiteColor
         self.animationDuration = 0.75
         self.areLabelsShown = true
         self.thumbSize = CGSize(width: 40, height: 30)
         self.padding = 0
-        self.thumbTintColor = .blue
+        self.thumbTintColor = Colors.customSwitchBlueColor
         self.thumbShadowOffset = CGSize(width: 0, height: 0)
         self.thumbShaddowRadius = 0
         self.thumbShaddowOppacity = 0
@@ -370,11 +370,11 @@ extension CustomSwitch {
     
     public func setupLabelColor() {
         if self.isOn {
-            self.labelOff.textColor = UIColor.black
-            self.labelOn.textColor = UIColor.white
+            self.labelOff.textColor = Colors.customSwitchBlackColor
+            self.labelOn.textColor = Colors.customSwitchWhiteColor
         } else {
-            self.labelOff.textColor = UIColor.white
-            self.labelOn.textColor = UIColor.black
+            self.labelOff.textColor = Colors.customSwitchWhiteColor
+            self.labelOn.textColor = Colors.customSwitchBlackColor
         }
     }
     

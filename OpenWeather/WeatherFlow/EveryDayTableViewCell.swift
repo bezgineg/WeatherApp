@@ -6,7 +6,7 @@ class EveryDayTableViewCell: UITableViewCell {
     private let dayLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        label.textColor = .gray
+        label.textColor = Colors.primaryTextGrayColor
         return label
     }()
     
@@ -24,7 +24,7 @@ class EveryDayTableViewCell: UITableViewCell {
     
     private let descriptionLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         return label
@@ -32,7 +32,7 @@ class EveryDayTableViewCell: UITableViewCell {
     
     private let temperatureLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         return label
     }()
@@ -46,7 +46,7 @@ class EveryDayTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .white
+        backgroundColor = Colors.primaryBackgroundWhiteColor
         contentView.backgroundColor = Colors.customBackgroundColor
         contentView.layer.cornerRadius = 5
         

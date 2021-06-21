@@ -6,7 +6,7 @@ class PeriodsOfTimeTableViewCell: UITableViewCell {
     private let periodOfTimeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         return label
     }()
     
@@ -18,14 +18,14 @@ class PeriodsOfTimeTableViewCell: UITableViewCell {
     private let temperatureLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 30, weight: .regular)
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         return label
     }()
     
     private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         return label
     }()
     
@@ -38,14 +38,14 @@ class PeriodsOfTimeTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.text = "По ощущениям"
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         return label
     }()
     
     private let feelsTempLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         return label
     }()
     
@@ -65,14 +65,14 @@ class PeriodsOfTimeTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.text = "Ветер"
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         return label
     }()
     
     private let windInfoLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         return label
     }()
     
@@ -92,14 +92,14 @@ class PeriodsOfTimeTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.text = "Уф индекс"
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         return label
     }()
     
     private let uvInfoLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         return label
     }()
     
@@ -119,14 +119,14 @@ class PeriodsOfTimeTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.text = "Вероятность осадков"
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         return label
     }()
     
     private let precipitationInfoLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         return label
     }()
     
@@ -146,21 +146,21 @@ class PeriodsOfTimeTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.text = "Облачность"
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         return label
     }()
     
     private let cloudinessInfoLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         return label
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .white
+        backgroundColor = Colors.primaryBackgroundWhiteColor
         contentView.layer.cornerRadius = 5
         
         setupLayout()

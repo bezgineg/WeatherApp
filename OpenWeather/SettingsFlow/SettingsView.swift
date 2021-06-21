@@ -34,7 +34,7 @@ class SettingsView: UIView {
     private let settingsLabel: UILabel = {
         let label = UILabel()
         label.text = "Настройки"
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         return label
     }()
@@ -107,7 +107,7 @@ class SettingsView: UIView {
         let button = UIButton(type: .system)
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 10
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(Colors.primaryTextWhiteColor, for: .normal)
         button.setTitle("Установить", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         button.backgroundColor = Colors.buttonColor

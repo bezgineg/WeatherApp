@@ -5,14 +5,14 @@ class HourlyCollectionViewCell: UICollectionViewCell {
     
     private let timeLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .gray
+        label.textColor = Colors.primaryTextGrayColor
         label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         return label
     }()
     
     private let temperatureLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         return label
     }()
@@ -77,18 +77,18 @@ class HourlyCollectionViewCell: UICollectionViewCell {
     
     func configureSelectedItem() {
         contentView.backgroundColor = Colors.mainColor
-        timeLabel.textColor = .white
-        temperatureLabel.textColor = .white
+        timeLabel.textColor = Colors.primaryTextWhiteColor
+        temperatureLabel.textColor = Colors.primaryTextWhiteColor
     }
     
     func configureUnselectedItem() {
-        contentView.backgroundColor = .white
-        timeLabel.textColor = .gray
-        temperatureLabel.textColor = .black
+        contentView.backgroundColor = Colors.primaryBackgroundWhiteColor
+        timeLabel.textColor = Colors.primaryTextGrayColor
+        temperatureLabel.textColor = Colors.primaryTextBlackColor
     }
     
     private func setupCellView() {
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = Colors.primaryBackgroundWhiteColor
         contentView.layer.cornerRadius = 22
         contentView.layer.borderWidth = 0.5
         contentView.layer.borderColor = Colors.hourlyCvBorderColor.cgColor

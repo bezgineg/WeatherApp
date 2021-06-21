@@ -5,7 +5,7 @@ class DayCollectionViewCell: UICollectionViewCell {
     
     private let dateLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         return label
     }()
@@ -37,16 +37,16 @@ class DayCollectionViewCell: UICollectionViewCell {
     
     func configureSelectedItem() {
         contentView.backgroundColor = Colors.mainColor
-        dateLabel.textColor = .white
+        dateLabel.textColor = Colors.primaryTextWhiteColor
     }
     
     func configureUnselectedItem() {
-        contentView.backgroundColor = .white
-        dateLabel.textColor = .black
+        contentView.backgroundColor = Colors.primaryBackgroundWhiteColor
+        dateLabel.textColor = Colors.primaryTextBlackColor
     }
     
     private func setupCellView() {
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = Colors.primaryBackgroundWhiteColor
         contentView.layer.cornerRadius = 5
     }
     

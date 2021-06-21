@@ -10,21 +10,21 @@ class MainInformationView: UIView {
     
     private let dailyTemperatureLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
+        label.textColor = Colors.primaryTextWhiteColor
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         return label
     }()
     
     private let currentTemperatureLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
+        label.textColor = Colors.primaryTextWhiteColor
         label.font = UIFont.systemFont(ofSize: 36, weight: .medium)
         return label
     }()
     
     private let descriptionLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
+        label.textColor = Colors.primaryTextWhiteColor
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         return label
     }()
@@ -37,7 +37,7 @@ class MainInformationView: UIView {
     
     private let cloudyLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
+        label.textColor = Colors.primaryTextWhiteColor
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         return label
     }()
@@ -50,7 +50,7 @@ class MainInformationView: UIView {
     
     private let windSpeedLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
+        label.textColor = Colors.primaryTextWhiteColor
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         return label
     }()
@@ -63,40 +63,40 @@ class MainInformationView: UIView {
     
     private let humidityLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
+        label.textColor = Colors.primaryTextWhiteColor
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         return label
     }()
     
     private let sunriseImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "восход")?.withTintColor(.yellow)
+        imageView.image = UIImage(named: "восход")?.withTintColor(Colors.imageTintYellowColor)
         return imageView
     }()
     
     private let sunriseLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
+        label.textColor = Colors.primaryTextWhiteColor
         label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         return label
     }()
     
     private let sunsetImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "закат")?.withTintColor(.yellow)
+        imageView.image = UIImage(named: "закат")?.withTintColor(Colors.imageTintYellowColor)
         return imageView
     }()
     
     private let sunsetLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
+        label.textColor = Colors.primaryTextWhiteColor
         label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         return label
     }()
     
     private let dateLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .yellow
+        label.textColor = Colors.primaryTextYellowColor
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         return label
     }()

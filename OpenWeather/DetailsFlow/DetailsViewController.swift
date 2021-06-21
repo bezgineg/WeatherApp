@@ -15,7 +15,7 @@ class DetailsViewController: UIViewController {
     
     private let cityLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         return label
     }()
@@ -43,7 +43,7 @@ class DetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = Colors.primaryBackgroundWhiteColor
         cityLabel.text = city
         setupNavigationBar()
         setupTableView()
@@ -64,12 +64,12 @@ class DetailsViewController: UIViewController {
         let backButtonImage = UIImage(systemName: "arrow.left")
         let backButton = UIBarButtonItem(image: backButtonImage, style: .plain, target: self, action: #selector(backToWeather))
         navigationItem.leftBarButtonItem = backButton
-        navigationItem.leftBarButtonItem?.tintColor = .gray
+        navigationItem.leftBarButtonItem?.tintColor = Colors.imageTintGrayColor
         
     }
     
     private func setupTableView() {
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = Colors.primaryBackgroundWhiteColor
         tableView.dataSource = self
         tableView.separatorColor = Colors.dividerColor
         tableView.register(DetailsTableViewCell.self, forCellReuseIdentifier: reuseID)

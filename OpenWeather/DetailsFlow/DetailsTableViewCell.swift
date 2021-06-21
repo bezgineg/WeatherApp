@@ -6,21 +6,21 @@ class DetailsTableViewCell: UITableViewCell {
     private let dayLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         return label
     }()
     
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .gray
+        label.textColor = Colors.primaryTextGrayColor
         return label
     }()
     
     private let temperatureLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         return label
     }()
     
@@ -32,7 +32,7 @@ class DetailsTableViewCell: UITableViewCell {
     private let feelsTemperatureLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         label.text = "По ощущению"
         return label
     }()
@@ -40,7 +40,7 @@ class DetailsTableViewCell: UITableViewCell {
     private let feelsTemperatureInfoLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .gray
+        label.textColor = Colors.primaryTextGrayColor
         return label
     }()
     
@@ -53,7 +53,7 @@ class DetailsTableViewCell: UITableViewCell {
     private let windLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         label.text = "Ветер"
         return label
     }()
@@ -61,7 +61,7 @@ class DetailsTableViewCell: UITableViewCell {
     private let windInfoLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .gray
+        label.textColor = Colors.primaryTextGrayColor
         return label
     }()
     
@@ -74,7 +74,7 @@ class DetailsTableViewCell: UITableViewCell {
     private let precipitationLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         label.text = "Вероятность осадков"
         return label
     }()
@@ -82,7 +82,7 @@ class DetailsTableViewCell: UITableViewCell {
     private let precipitationInfoLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .gray
+        label.textColor = Colors.primaryTextGrayColor
         return label
     }()
     
@@ -95,7 +95,7 @@ class DetailsTableViewCell: UITableViewCell {
     private let cloudsLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         label.text = "Облачность"
         return label
     }()
@@ -103,14 +103,14 @@ class DetailsTableViewCell: UITableViewCell {
     private let cloudsInfoLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .gray
+        label.textColor = Colors.primaryTextGrayColor
         return label
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .white
+        backgroundColor = Colors.primaryBackgroundWhiteColor
         contentView.backgroundColor = Colors.customBackgroundColor
         
         setupLayout()

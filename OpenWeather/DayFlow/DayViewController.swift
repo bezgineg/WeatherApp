@@ -20,7 +20,7 @@ class DayViewController: UIViewController {
     
     private let cityLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = Colors.primaryTextBlackColor
         label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         return label
     }()
@@ -29,7 +29,7 @@ class DayViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = .white
+        cv.backgroundColor = Colors.primaryBackgroundWhiteColor
         cv.register(DayCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: DayCollectionViewCell.self))
         cv.dataSource = self
         cv.delegate = self
@@ -48,7 +48,7 @@ class DayViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = Colors.primaryBackgroundWhiteColor
         cityLabel.text = city
         setupNavigationBar()
         setupTableView()
@@ -93,12 +93,12 @@ class DayViewController: UIViewController {
         let backButtonImage = UIImage(systemName: "arrow.left")
         let backButton = UIBarButtonItem(image: backButtonImage, style: .plain, target: self, action: #selector(backToWeather))
         navigationItem.leftBarButtonItem = backButton
-        navigationItem.leftBarButtonItem?.tintColor = .gray
+        navigationItem.leftBarButtonItem?.tintColor = Colors.imageTintGrayColor
         
     }
     
     private func setupTableView() {
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = Colors.primaryBackgroundWhiteColor
         tableView.dataSource = self
         tableView.delegate = self
         tableView.showsVerticalScrollIndicator = false
@@ -229,7 +229,7 @@ extension DayViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = Colors.primaryBackgroundWhiteColor
         return view
     }
     
