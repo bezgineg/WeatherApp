@@ -38,9 +38,13 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         guard let location = manager.location,
               let coordinates: CLLocationCoordinate2D = manager.location?.coordinate else { return }
         
-        getCityName(for: location) { placemark in
-            guard let placemark = placemark else { return }
-            self.getLocation(coordinates, city: placemark.locality)
+        getCityName(for: location) { result in
+            switch result {
+            case.success(let placemark):
+                self.getLocation(coordinates, city: placemark.locality)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
         }
     }
     
@@ -48,19 +52,17 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         guard let coordinates = coordinate else { return }
         let lat = String(coordinates.latitude)
         let long = String(coordinates.longitude)
-        print(lat, long)
         NetworkManager.shared.fetchWeather(lat: lat, long: long) { weather in
             let timezone = city ?? separate(weather.timezone)
             let cityWeather = CityWeather(current: weather.current, timezone: timezone, hourly: weather.hourly, daily: weather.daily)
             RealmDataProvider.shared.addWeather(cityWeather)
             
         }
-        
         userDefaultStorage.isCityAdded = true
     }
     
     func getCityName(for location: CLLocation,
-                     completion: @escaping (CLPlacemark?) -> Void) {
+                     completion: @escaping (Result<CLPlacemark, LocationError>) -> Void) {
         
         let geocoder = CLGeocoder()
         geocoder.reverseGeocodeLocation(location) { placemarks, error in
@@ -69,9 +71,12 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
                 print(error.localizedDescription)
             }
                 
-            guard let placemark = placemarks?[0] else { return }
+            guard let placemark = placemarks?[0] else {
+                completion(.failure(.cannotFindCity))
+                return
+            }
             
-            completion(placemark)
+            completion(.success(placemark))
         }
     }
 }

@@ -7,4 +7,5 @@ protocol LocationErrorDelegate: class {
 
 enum LocationError: Error {
     case cannotFindCoordinates
+    case cannotFindCity
 }

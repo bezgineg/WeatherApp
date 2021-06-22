@@ -117,6 +117,11 @@ class WeatherCoordinator: Coordinator, NetworkErrorDelegate, LocationErrorDelega
             let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alertController.addAction(okAction)
             navigationController?.present(alertController, animated: false, completion: nil)
+        case .cannotFindCity:
+            let alertController = UIAlertController(title: "Не удалось найти такой город", message: "Проверьте соединение с интернетом или проверьте название города", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(okAction)
+            navigationController?.present(alertController, animated: false, completion: nil)
         }
     }
     
