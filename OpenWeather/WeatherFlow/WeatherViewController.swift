@@ -91,11 +91,11 @@ class WeatherViewController: UIViewController {
     }
     
     private func updateViews() {
-        if UserDefaults.standard.bool(forKey: Keys.isCityAdded.rawValue) {
-            if UserDefaults.standard.bool(forKey: Keys.isFirstAppearance.rawValue) {
+        if userDefaultStorage.isCityAdded {
+            if userDefaultStorage.isFirstAppearance {
                 removePlusView()
                 setupViews()
-                UserDefaults.standard.setValue(false, forKey: Keys.isFirstAppearance.rawValue)
+                userDefaultStorage.isFirstAppearance = false
             }
             guard let weather = weatherStorage else { return }
             mainInformationView.setupDate()
@@ -132,15 +132,15 @@ class WeatherViewController: UIViewController {
     }
     
     func setupViews() {
-        if UserDefaults.standard.bool(forKey: Keys.isCityAdded.rawValue) {
+        if userDefaultStorage.isCityAdded {
             configureMainInformationView(weatherStorage)
             setupEveryDayTableView()
             setupLayout()
-            UserDefaults.standard.setValue(false, forKey: Keys.isFirstAppearance.rawValue)
+            userDefaultStorage.isFirstAppearance = false
         } else {
             setupPlusView()
             onPlusViewTapped()
-            UserDefaults.standard.setValue(true, forKey: Keys.isFirstAppearance.rawValue)
+            userDefaultStorage.isFirstAppearance = true
         }
     }
     

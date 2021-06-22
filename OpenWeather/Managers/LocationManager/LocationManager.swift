@@ -56,7 +56,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
             
         }
         
-        UserDefaults.standard.setValue(true, forKey: Keys.isCityAdded.rawValue)
+        userDefaultStorage.isCityAdded = true
     }
     
     func getCityName(for location: CLLocation,

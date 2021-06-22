@@ -46,7 +46,7 @@ class DetailsCollectionViewCell: UICollectionViewCell {
         
         for i in 0 ..< weather.hourly.count - 1 {
             let data = weather.hourly[i]
-            if UserDefaults.standard.bool(forKey: Keys.isCelsiusChosenBoolKey.rawValue) {
+            if userDefaultStorage.isCelsiusChosenBoolKey {
                 let temp = Int(data.temp)
                 values.append(temp)
             } else {
@@ -57,7 +57,7 @@ class DetailsCollectionViewCell: UICollectionViewCell {
             let time = data.dt
             let date = NSDate(timeIntervalSince1970: TimeInterval(time))
             let formatter = DateFormatter()
-            if UserDefaults.standard.bool(forKey: Keys.is24TimeFormalChosenBoolKey.rawValue) {
+            if userDefaultStorage.is24TimeFormalChosenBoolKey {
                 formatter.dateFormat = "HH:mm"
             } else {
                 formatter.dateFormat = "h:mm a"

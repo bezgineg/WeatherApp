@@ -7,7 +7,7 @@ class MainCoordinator: Coordinator {
     var childCoordinators = [Coordinator]()
     
     func start() {
-        if UserDefaults.standard.bool(forKey: Keys.isOnboardingCompleteBoolKey.rawValue) {
+        if userDefaultStorage.isOnboardingCompleteBoolKey {
             let weatherCoordinator = WeatherCoordinator()
             weatherCoordinator.navigationController = navigationController
             weatherCoordinator.start()

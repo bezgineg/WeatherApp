@@ -105,7 +105,7 @@ class PageViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         navigationItem.rightBarButtonItem = cityButton
         navigationItem.leftBarButtonItem?.tintColor = Colors.imageTintBlackColor
         navigationItem.rightBarButtonItem?.tintColor = Colors.imageTintBlackColor
-        if UserDefaults.standard.bool(forKey: Keys.isTrackingBoolKey.rawValue) {
+        if userDefaultStorage.isTrackingBoolKey {
             navigationItem.rightBarButtonItem?.isEnabled = false
         }
     }

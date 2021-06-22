@@ -42,7 +42,7 @@ class HourlyCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupTemperature(_ object: CachedCurrent) {
-        if UserDefaults.standard.bool(forKey: Keys.isCelsiusChosenBoolKey.rawValue) {
+        if userDefaultStorage.isCelsiusChosenBoolKey {
             temperatureLabel.text = "\(Int(object.temp))°"
         } else {
             temperatureLabel.text = "\(fahrenheitConversion(object.temp))°"
@@ -67,7 +67,7 @@ class HourlyCollectionViewCell: UICollectionViewCell {
     private func setupTimeLabel(time: Int) {
         let date = NSDate(timeIntervalSince1970: TimeInterval(time))
         let formatter = DateFormatter()
-        if UserDefaults.standard.bool(forKey: Keys.is24TimeFormalChosenBoolKey.rawValue) {
+        if userDefaultStorage.is24TimeFormalChosenBoolKey {
             formatter.dateFormat = "HH:mm"
         } else {
             formatter.dateFormat = "h:mm"

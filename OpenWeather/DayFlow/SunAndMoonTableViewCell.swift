@@ -165,7 +165,7 @@ class SunAndMoonTableViewCell: UITableViewCell {
         let sunriseDate = NSDate(timeIntervalSince1970: TimeInterval(sunrise))
         let sunsetDate = NSDate(timeIntervalSince1970: TimeInterval(sunset))
         let formatter = DateFormatter()
-        if UserDefaults.standard.bool(forKey: Keys.is24TimeFormalChosenBoolKey.rawValue) {
+        if userDefaultStorage.is24TimeFormalChosenBoolKey {
             formatter.dateFormat = "HH:mm"
         } else {
             formatter.dateFormat = "h:mm a"
@@ -178,7 +178,7 @@ class SunAndMoonTableViewCell: UITableViewCell {
         let moonriseDate = NSDate(timeIntervalSince1970: TimeInterval(moonrise))
         let moonsetDate = NSDate(timeIntervalSince1970: TimeInterval(moonset))
         let formatter = DateFormatter()
-        if UserDefaults.standard.bool(forKey: Keys.is24TimeFormalChosenBoolKey.rawValue) {
+        if userDefaultStorage.is24TimeFormalChosenBoolKey {
             formatter.dateFormat = "HH:mm"
         } else {
             formatter.dateFormat = "h:mm a"

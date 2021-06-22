@@ -131,7 +131,7 @@ class DetailsTableViewCell: UITableViewCell {
     }
     
     private func setupTemperature(_ object: CachedCurrent) {
-        if UserDefaults.standard.bool(forKey: Keys.isCelsiusChosenBoolKey.rawValue) {
+        if userDefaultStorage.isCelsiusChosenBoolKey {
             temperatureLabel.text = "\(Int(object.temp))°"
             feelsTemperatureInfoLabel.text = "\(Int(object.feelsLike))°"
         } else {
@@ -141,7 +141,7 @@ class DetailsTableViewCell: UITableViewCell {
     }
     
     private func setupWindInfoLabel(_ object: CachedCurrent) {
-        if UserDefaults.standard.bool(forKey: Keys.isKmChosenBoolKey.rawValue) {
+        if userDefaultStorage.isKmChosenBoolKey {
             windInfoLabel.text = "\(Int(object.windSpeed)) м/с \(Double(object.windDeg).direction.rawValue)"
         } else {
             windInfoLabel.text = "\(Int(object.windSpeed * 2.23694)) ми/ч \(Double(object.windDeg).direction.rawValue)"
@@ -159,7 +159,7 @@ class DetailsTableViewCell: UITableViewCell {
     private func setupTimeLabel(time: Int) {
         let date = NSDate(timeIntervalSince1970: TimeInterval(time))
         let formatter = DateFormatter()
-        if UserDefaults.standard.bool(forKey: Keys.is24TimeFormalChosenBoolKey.rawValue) {
+        if userDefaultStorage.is24TimeFormalChosenBoolKey {
             formatter.dateFormat = "HH:mm"
         } else {
             formatter.dateFormat = "h:mm a"

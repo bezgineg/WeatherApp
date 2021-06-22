@@ -133,25 +133,25 @@ class SettingsView: UIView {
     }
     
     private func setupSwitchControls() {
-        if UserDefaults.standard.bool(forKey: Keys.isOnboardingCompleteBoolKey.rawValue) {
-            setupSwitchControlValue(temperatureCustomSwitch, for: Keys.isCelsiusChosenBoolKey.rawValue)
-            setupSwitchControlValue(windSpeedCustomSwitch, for: Keys.isKmChosenBoolKey.rawValue)
-            setupSwitchControlValue(timeFormatCustomSwitch, for: Keys.is24TimeFormalChosenBoolKey.rawValue)
-            setupSwitchControlValue(notificationCustomSwitch, for: Keys.isNotifyBoolKey.rawValue)
+        if userDefaultStorage.isOnboardingCompleteBoolKey {
+            setupSwitchControlValue(temperatureCustomSwitch, for: userDefaultStorage.isCelsiusChosenBoolKey)
+            setupSwitchControlValue(windSpeedCustomSwitch, for: userDefaultStorage.isKmChosenBoolKey)
+            setupSwitchControlValue(timeFormatCustomSwitch, for: userDefaultStorage.is24TimeFormalChosenBoolKey)
+            setupSwitchControlValue(notificationCustomSwitch, for: userDefaultStorage.isNotifyBoolKey)
         } else {
             temperatureCustomSwitch.isOn = true
             windSpeedCustomSwitch.isOn = true
             timeFormatCustomSwitch.isOn = true
             notificationCustomSwitch.isOn = false
-            UserDefaults.standard.setValue(true, forKey: Keys.isCelsiusChosenBoolKey.rawValue)
-            UserDefaults.standard.setValue(true, forKey: Keys.isKmChosenBoolKey.rawValue)
-            UserDefaults.standard.setValue(true, forKey: Keys.is24TimeFormalChosenBoolKey.rawValue)
-            UserDefaults.standard.setValue(false, forKey: Keys.isNotifyBoolKey.rawValue)
+            userDefaultStorage.isCelsiusChosenBoolKey = true
+            userDefaultStorage.isKmChosenBoolKey = true
+            userDefaultStorage.is24TimeFormalChosenBoolKey = true
+            userDefaultStorage.isNotifyBoolKey = false
         }
     }
     
-    private func setupSwitchControlValue(_ switchControl: CustomSwitch, for key: String) {
-        let boolValue = UserDefaults.standard.bool(forKey: key)
+    private func setupSwitchControlValue(_ switchControl: CustomSwitch, for key: Bool) {
+        let boolValue = key
         if boolValue {
             switchControl.isOn = true
         } else {
@@ -168,33 +168,33 @@ class SettingsView: UIView {
     
     @objc private func temperatureSwitchChanged(_ sender: UISwitch) {
         if sender.isOn {
-            UserDefaults.standard.setValue(true, forKey: Keys.isCelsiusChosenBoolKey.rawValue)
+            userDefaultStorage.isCelsiusChosenBoolKey = true
         } else {
-            UserDefaults.standard.setValue(false, forKey: Keys.isCelsiusChosenBoolKey.rawValue)
+            userDefaultStorage.isCelsiusChosenBoolKey = false
         }
     }
     
     @objc private func windSpeedSwitchChanged(_ sender: UISwitch) {
         if sender.isOn {
-            UserDefaults.standard.setValue(true, forKey: Keys.isKmChosenBoolKey.rawValue)
+            userDefaultStorage.isKmChosenBoolKey = true
         } else {
-            UserDefaults.standard.setValue(false, forKey: Keys.isKmChosenBoolKey.rawValue)
+            userDefaultStorage.isKmChosenBoolKey = false
         }
     }
     
     @objc private func timeFormatSwitchChanged(_ sender: UISwitch) {
         if sender.isOn {
-            UserDefaults.standard.setValue(true, forKey: Keys.is24TimeFormalChosenBoolKey.rawValue)
+            userDefaultStorage.is24TimeFormalChosenBoolKey = true
         } else {
-            UserDefaults.standard.setValue(false, forKey: Keys.is24TimeFormalChosenBoolKey.rawValue)
+            userDefaultStorage.is24TimeFormalChosenBoolKey = false
         }
     }
     
     @objc private func notificationSwitchChanged(_ sender: UISwitch) {
         if sender.isOn {
-            UserDefaults.standard.setValue(true, forKey: Keys.isNotifyBoolKey.rawValue)
+            userDefaultStorage.isNotifyBoolKey = true
         } else {
-            UserDefaults.standard.setValue(false, forKey: Keys.isNotifyBoolKey.rawValue)
+            userDefaultStorage.isNotifyBoolKey = true
         }
     }
     

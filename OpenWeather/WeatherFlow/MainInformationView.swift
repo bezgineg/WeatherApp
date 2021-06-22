@@ -124,7 +124,7 @@ class MainInformationView: UIView {
     }
     
     func setupTemperature(with object: CityWeatherCached) {
-        if UserDefaults.standard.bool(forKey: Keys.isCelsiusChosenBoolKey.rawValue) {
+        if userDefaultStorage.isCelsiusChosenBoolKey {
             dailyTemperatureLabel.text = "\(Int(object.daily.first?.temp?.min ?? 0))°/ \(Int(object.daily.first?.temp?.max ?? 0))°"
             currentTemperatureLabel.text = "\(Int(object.current.temp))°"
         } else {
@@ -137,7 +137,7 @@ class MainInformationView: UIView {
     }
     
     func setupWindSpeed(with object: CityWeatherCached) {
-        if UserDefaults.standard.bool(forKey: Keys.isKmChosenBoolKey.rawValue) {
+        if userDefaultStorage.isKmChosenBoolKey {
             windSpeedLabel.text = "\(Int(object.current.windSpeed)) м/c"
         } else {
             windSpeedLabel.text = "\(Int((object.current.windSpeed)*2.23694)) ми/ч"
@@ -148,7 +148,7 @@ class MainInformationView: UIView {
         let sunriseDate = NSDate(timeIntervalSince1970: TimeInterval(sunrise))
         let sunsetDate = NSDate(timeIntervalSince1970: TimeInterval(sunset))
         let formatter = DateFormatter()
-        if UserDefaults.standard.bool(forKey: Keys.is24TimeFormalChosenBoolKey.rawValue) {
+        if userDefaultStorage.is24TimeFormalChosenBoolKey {
             formatter.dateFormat = "HH:mm"
         } else {
             formatter.dateFormat = "h:mm a"
@@ -161,7 +161,7 @@ class MainInformationView: UIView {
         let date = Date()
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ru_RU")
-        if UserDefaults.standard.bool(forKey: Keys.is24TimeFormalChosenBoolKey.rawValue) {
+    if userDefaultStorage.is24TimeFormalChosenBoolKey {
             formatter.dateFormat = "HH:mm, E d MMM"
         } else {
             formatter.dateFormat = "h:mm a, E d MMM"
@@ -174,13 +174,13 @@ class MainInformationView: UIView {
         descriptionLabel.text = "\(object.weathers.first?.weatherDescriptionEnum.rawValue ?? "")".capitalizingFirstLetter()
         cloudyLabel.text = "\(object.clouds)"
         humidityLabel.text = "\(object.humidity)%"
-        if UserDefaults.standard.bool(forKey: Keys.isKmChosenBoolKey.rawValue) {
+        if userDefaultStorage.isKmChosenBoolKey {
             windSpeedLabel.text = "\(Int(object.windSpeed)) м/с"
         } else {
             windSpeedLabel.text = "\(Int(object.windSpeed*2.23694)) ми/ч"
         }
         
-        if UserDefaults.standard.bool(forKey: Keys.isCelsiusChosenBoolKey.rawValue) {
+        if userDefaultStorage.isCelsiusChosenBoolKey {
             currentTemperatureLabel.text = "\(Int(object.temp))°"
         } else {
             let currentTemp = fahrenheitConversion(object.temp)

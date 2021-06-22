@@ -66,7 +66,7 @@ class EveryDayTableViewCell: UITableViewCell {
     }
     
     private func setupTemperature(object: CachedDaily) {
-        if UserDefaults.standard.bool(forKey: Keys.isCelsiusChosenBoolKey.rawValue) {
+        if userDefaultStorage.isCelsiusChosenBoolKey {
             temperatureLabel.text = "\(Int(object.temp?.min ?? 0))°-\(Int(object.temp?.max ?? 0))°"
         } else {
             let minTemp = fahrenheitConversion(object.temp?.min ?? 0)

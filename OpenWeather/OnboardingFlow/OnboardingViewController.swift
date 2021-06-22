@@ -36,9 +36,9 @@ class OnboardingViewController: UIViewController {
         if let coordinator = coordinator {
             onboardingView.onAcceptButtonTap = {
                 LocationManager.shared.getUserLocation()
-                UserDefaults.standard.setValue(true, forKey: Keys.isTrackingBoolKey.rawValue)
+                userDefaultStorage.isTrackingBoolKey = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                    if UserDefaults.standard.bool(forKey: Keys.isOnboardingCompleteBoolKey.rawValue) {
+                    if userDefaultStorage.isOnboardingCompleteBoolKey {
                         Storage.newIndex = 0
                         coordinator.closeOnboardingViewController()
                     } else {
@@ -52,8 +52,8 @@ class OnboardingViewController: UIViewController {
     private func onDeclineButtonTapSetup() {
         if let coordinator = coordinator {
             onboardingView.onDeclineButtonTap = {
-                UserDefaults.standard.setValue(false, forKey: Keys.isTrackingBoolKey.rawValue)
-                if UserDefaults.standard.bool(forKey: Keys.isOnboardingCompleteBoolKey.rawValue) {
+                userDefaultStorage.isTrackingBoolKey = false
+                if userDefaultStorage.isOnboardingCompleteBoolKey {
                     coordinator.closeOnboardingViewController()
                 } else {
                     coordinator.pushSettingsViewController()

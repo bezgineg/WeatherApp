@@ -10,3 +10,4 @@ func separate(_ cityName: String) -> String {
     guard let city = cityNameArray.last else { return cityName }
     return String(city)
 }
+

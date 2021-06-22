@@ -27,11 +27,11 @@ class SettingsViewController: UIViewController {
     private func onSetupButtonTapped() {
         if let coordinator = coordinator {
             settingsView.onSetupButtonTapped = {
-                if UserDefaults.standard.bool(forKey: Keys.isOnboardingCompleteBoolKey.rawValue) {
+                if userDefaultStorage.isOnboardingCompleteBoolKey {
                     coordinator.closeSettingsViewController()
                 } else {
                     coordinator.pushWeatherViewController()
-                    UserDefaults.standard.setValue(true, forKey: Keys.isOnboardingCompleteBoolKey.rawValue)
+                    userDefaultStorage.isOnboardingCompleteBoolKey = true
                 }
             }
         }

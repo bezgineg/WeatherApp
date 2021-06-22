@@ -84,7 +84,7 @@ class WeatherCoordinator: Coordinator, NetworkErrorDelegate, LocationErrorDelega
 
                             RealmDataProvider.shared.addWeather(cityWeather)
             
-                            UserDefaults.standard.setValue(true, forKey: Keys.isCityAdded.rawValue)
+                            userDefaultStorage.isCityAdded = true
                             self.pageViewController.update()
                         }
                     case .failure(let error):
