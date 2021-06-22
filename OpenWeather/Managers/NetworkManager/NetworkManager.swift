@@ -13,7 +13,9 @@ class NetworkManager {
         
         let request = AF.request("https://api.openweathermap.org/data/2.5/onecall?lat=\(lat)&lon=\(long)&exclude=minutely,alerts&units=metric&lang=ru&appid=\(Constants.apiKey)")
         request.responseDecodable(of: WeatherData.self) { response in
-            guard let weather = response.value else { return }
+            guard let weather = response.value else {
+                print(response.debugDescription)
+                return }
             completion(weather)
         }
     }
