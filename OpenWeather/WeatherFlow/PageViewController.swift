@@ -8,9 +8,22 @@ class PageViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     var weather: CityWeatherCached? = nil
     var index: Int? = nil
     var pageControl = UIPageControl()
-
+    
+    let weatherDataProvider: WeatherDataProvider
+    
+    init(weatherDataProvider: WeatherDataProvider) {
+        self.weatherDataProvider = weatherDataProvider
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(notificationReceived), name: Notification.Name("updatePageVC"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -38,7 +51,7 @@ class PageViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         navigationItem.title = title
     }
     
-    func update() {
+    @objc func notificationReceived() {
         setupPageController()
     }
     
@@ -63,14 +76,14 @@ class PageViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[pageController]|", options: [], metrics: nil, views: views))
         
         controllers.removeAll()
-        let weatherStorage = RealmDataProvider.shared.getWeather()
+        let weatherStorage = weatherDataProvider.getWeather()
         if weatherStorage.isEmpty {
-            let vc = WeatherViewController(weatherStorage: weather, index: index)
+            let vc = WeatherViewController(weatherStorage: weather, index: index, weatherDataProvider: weatherDataProvider)
             vc.delegate = self
             controllers.append(vc)
         } else {
             for (index, weather) in weatherStorage.enumerated() {
-                let vc = WeatherViewController(weatherStorage: weather, index: index)
+                let vc = WeatherViewController(weatherStorage: weather, index: index, weatherDataProvider: weatherDataProvider)
                 vc.delegate = self
                 controllers.append(vc)
             }

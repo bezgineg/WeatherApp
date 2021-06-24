@@ -2,18 +2,21 @@
 import Foundation
 import CoreLocation
 
+protocol LocationManagerDelegate: class {
+    func getLocation(_ coordinate: CLLocationCoordinate2D?, city: String?)
+}
+
 class LocationManager: NSObject, CLLocationManagerDelegate {
     
-    weak var delegate: NetworkErrorDelegate?
+    weak var delegate: LocationManagerDelegate?
     
-    static let shared = LocationManager()
     let manager = CLLocationManager()
     
     func getCoordinates(city: String, completion: @escaping (Result<CLLocationCoordinate2D, LocationError>) -> Void) {
         CLGeocoder().geocodeAddressString(city.capitalizingFirstLetter()) { (placemark, error) in
             if let _ = error {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    self.delegate?.showNetworkAlert()
+                    completion(.failure(.cannotFindCoordinates))
                 }
             }
             
@@ -41,24 +44,11 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         getCityName(for: location) { result in
             switch result {
             case.success(let placemark):
-                self.getLocation(coordinates, city: placemark.locality)
+                self.delegate?.getLocation(coordinates, city: placemark.locality)
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
-    }
-    
-    private func getLocation(_ coordinate: CLLocationCoordinate2D?, city: String?) {
-        guard let coordinates = coordinate else { return }
-        let lat = String(coordinates.latitude)
-        let long = String(coordinates.longitude)
-        NetworkManager.shared.fetchWeather(lat: lat, long: long) { weather in
-            let timezone = city ?? separate(weather.timezone)
-            let cityWeather = CityWeather(current: weather.current, timezone: timezone, hourly: weather.hourly, daily: weather.daily)
-            RealmDataProvider.shared.addWeather(cityWeather)
-            
-        }
-        userDefaultStorage.isCityAdded = true
     }
     
     func getCityName(for location: CLLocation,

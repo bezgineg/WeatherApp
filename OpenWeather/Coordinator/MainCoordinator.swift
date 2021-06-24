@@ -8,13 +8,15 @@ class MainCoordinator: Coordinator {
     
     func start() {
         if userDefaultStorage.isOnboardingCompleteBoolKey {
-            let weatherCoordinator = WeatherCoordinator()
+            let weatherDataProvider = WeatherDataProvider()
+            let weatherCoordinator = WeatherCoordinator(weatherDataProvider: weatherDataProvider)
             weatherCoordinator.navigationController = navigationController
             weatherCoordinator.start()
             childCoordinators.append(weatherCoordinator)
             weatherCoordinator.parentCoordinator = self
         } else {
-            let onboardingCoordinator = OnboardingCoordinator()
+            let weatherDataProvider = WeatherDataProvider()
+            let onboardingCoordinator = OnboardingCoordinator(weatherDataProvider: weatherDataProvider)
             onboardingCoordinator.navigationController = navigationController
             onboardingCoordinator.start()
             childCoordinators.append(onboardingCoordinator)

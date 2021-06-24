@@ -1,10 +1,6 @@
 
 import Foundation
 
-protocol NetworkErrorDelegate: class {
-    func showNetworkAlert()
-}
-
-enum NetworkError {
+enum NetworkError: Error {
     case networkConnectionProblem
 }

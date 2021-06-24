@@ -34,6 +34,7 @@ class DayViewController: UIViewController {
         cv.dataSource = self
         cv.delegate = self
         cv.showsHorizontalScrollIndicator = false
+        cv.allowsMultipleSelection = false
         return cv
     }()
     

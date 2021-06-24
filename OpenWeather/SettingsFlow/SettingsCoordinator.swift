@@ -5,8 +5,14 @@ class SettingsCoordinator: Coordinator {
     
     weak var parentCoordinator: Coordinator?
     
+    let weatherDataProvider: WeatherDataProvider
+    
     var navigationController: UINavigationController?
     var childCoordinators = [Coordinator]()
+    
+    init(weatherDataProvider: WeatherDataProvider) {
+        self.weatherDataProvider = weatherDataProvider
+    }
     
     func start() {
         let settingsViewController = SettingsViewController()
@@ -16,7 +22,7 @@ class SettingsCoordinator: Coordinator {
     }
     
     func pushWeatherViewController() {
-        let weatherCoordinator = WeatherCoordinator()
+        let weatherCoordinator = WeatherCoordinator(weatherDataProvider: weatherDataProvider)
         weatherCoordinator.navigationController = navigationController
         weatherCoordinator.parentCoordinator = self
         weatherCoordinator.start()

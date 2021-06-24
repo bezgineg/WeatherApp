@@ -1,21 +1,25 @@
 
 import UIKit
 
-class WeatherCoordinator: Coordinator, NetworkErrorDelegate, LocationErrorDelegate {
+class WeatherCoordinator: Coordinator, WeatherDataProviderDelegate {
     
     weak var parentCoordinator: Coordinator?
+    
+    let weatherDataProvider: WeatherDataProvider
     
     var navigationController: UINavigationController?
     var childCoordinators = [Coordinator]()
     
     private var inputTextField: UITextField?
-    private let pageViewController = PageViewController()
+    
+    init(weatherDataProvider: WeatherDataProvider) {
+        self.weatherDataProvider = weatherDataProvider
+    }
     
     func start() {
-        LocationManager.shared.delegate = self
-        NetworkManager.shared.networkDelegate = self
-        NetworkManager.shared.locationDelegate = self
-        NetworkManager.shared.updateRealm()
+        let pageViewController = PageViewController(weatherDataProvider: weatherDataProvider)
+        weatherDataProvider.delegate = self
+        weatherDataProvider.updateRealm()
         pageViewController.coordinator = self
         guard let navigator = navigationController else { return }
         navigator.show(pageViewController, sender: self)
@@ -26,7 +30,7 @@ class WeatherCoordinator: Coordinator, NetworkErrorDelegate, LocationErrorDelega
     }
     
     func pushSettingsViewController() {
-        let settingsCoordinator = SettingsCoordinator()
+        let settingsCoordinator = SettingsCoordinator(weatherDataProvider: weatherDataProvider)
         settingsCoordinator.navigationController = navigationController
         childCoordinators.append(settingsCoordinator)
         settingsCoordinator.parentCoordinator = self
@@ -34,7 +38,7 @@ class WeatherCoordinator: Coordinator, NetworkErrorDelegate, LocationErrorDelega
     }
     
     func pushOnboardingViewController() {
-        let onboardingCoordinater = OnboardingCoordinator()
+        let onboardingCoordinater = OnboardingCoordinator(weatherDataProvider: weatherDataProvider)
         onboardingCoordinater.navigationController = navigationController
         childCoordinators.append(onboardingCoordinater)
         onboardingCoordinater.parentCoordinator = self
@@ -73,22 +77,15 @@ class WeatherCoordinator: Coordinator, NetworkErrorDelegate, LocationErrorDelega
 
         let addAction = UIAlertAction(title: "Добавить", style: .default) { _ in
             if let cityName = self.inputTextField?.text {
-                LocationManager.shared.getCoordinates(city: cityName) { result in
+                self.weatherDataProvider.getCoordinates(city: cityName) { result in
                     switch result {
-                    case .success(let coordinates):
-                        let lat = String(coordinates.latitude)
-                        let long = String(coordinates.longitude)
-                        NetworkManager.shared.fetchWeather(lat: lat, long: long) { weather in
-                            let timezone = cityName.capitalizingFirstLetter()
-                            let cityWeather = CityWeather(current: weather.current, timezone: timezone, hourly: weather.hourly, daily: weather.daily)
-
-                            RealmDataProvider.shared.addWeather(cityWeather)
-            
+                    case .success(let boolValue):
+                        if boolValue {
                             userDefaultStorage.isCityAdded = true
-                            self.pageViewController.update()
+                            NotificationCenter.default.post(name: Notification.Name("updatePageVC"), object: nil)
                         }
                     case .failure(let error):
-                        self.showLocationAlert(error: error)
+                        self.showAlert(error: error)
                     }
                 }
             }
@@ -103,22 +100,20 @@ class WeatherCoordinator: Coordinator, NetworkErrorDelegate, LocationErrorDelega
         navigationController?.present(alertController, animated: true, completion: nil)
     }
     
-    func showNetworkAlert() {
-        let alertController = UIAlertController(title: "Проверьте интернет соединение", message: "Соединение с интернетом не установлено. Не удалось загрузить данные о погоде", preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alertController.addAction(okAction)
-        navigationController?.present(alertController, animated: false, completion: nil)
-    }
-    
-    func showLocationAlert(error: LocationError) {
+    func showAlert(error: WeatherError) {
         switch error {
-        case .cannotFindCoordinates:
+        case .geocodingError:
             let alertController = UIAlertController(title: "Не удалось установить местоположение", message: "Проверьте соединение с интернетом или разрешите приложению отслеживать ваши действия", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alertController.addAction(okAction)
             navigationController?.present(alertController, animated: false, completion: nil)
-        case .cannotFindCity:
+        case .reverseGeocodingError:
             let alertController = UIAlertController(title: "Не удалось найти такой город", message: "Проверьте соединение с интернетом или проверьте название города", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(okAction)
+            navigationController?.present(alertController, animated: false, completion: nil)
+        case .networkError:
+            let alertController = UIAlertController(title: "Проверьте интернет соединение", message: "Соединение с интернетом не установлено. Не удалось загрузить данные о погоде", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alertController.addAction(okAction)
             navigationController?.present(alertController, animated: false, completion: nil)

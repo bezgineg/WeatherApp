@@ -5,6 +5,8 @@ class OnboardingViewController: UIViewController {
     
     var coordinator: OnboardingCoordinator?
     
+    let weatherDataProvider: WeatherDataProvider
+    
     private let onboardingView: OnboardingView = {
         let view = OnboardingView()
         return view
@@ -15,7 +17,16 @@ class OnboardingViewController: UIViewController {
         scrollView.showsVerticalScrollIndicator = true
         return scrollView
     }()
-
+    
+    init(weatherDataProvider: WeatherDataProvider) {
+        self.weatherDataProvider = weatherDataProvider
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -35,7 +46,7 @@ class OnboardingViewController: UIViewController {
     private func onAcceptButtonTapSetup() {
         if let coordinator = coordinator {
             onboardingView.onAcceptButtonTap = {
-                LocationManager.shared.getUserLocation()
+                self.weatherDataProvider.getUserLocation()
                 userDefaultStorage.isTrackingBoolKey = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                     if userDefaultStorage.isOnboardingCompleteBoolKey {

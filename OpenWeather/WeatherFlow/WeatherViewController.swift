@@ -16,6 +16,8 @@ class WeatherViewController: UIViewController {
     var weatherStorage: CityWeatherCached?
     var index: Int?
     
+    let weatherDataProvider: WeatherDataProvider
+    
     private let everyDayTableView = UITableView(frame: .zero, style: .plain)
     
     private var everyDayReuseID: String {
@@ -55,6 +57,7 @@ class WeatherViewController: UIViewController {
         cv.dataSource = self
         cv.delegate = self
         cv.showsHorizontalScrollIndicator = false
+        cv.allowsMultipleSelection = false
         return cv
     }()
     
@@ -66,9 +69,10 @@ class WeatherViewController: UIViewController {
         return label
     }()
     
-    init(weatherStorage: CityWeatherCached?, index: Int?) {
+    init(weatherStorage: CityWeatherCached?, index: Int?, weatherDataProvider: WeatherDataProvider) {
         self.weatherStorage = weatherStorage
         self.index = index
+        self.weatherDataProvider = weatherDataProvider
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -76,11 +80,12 @@ class WeatherViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = Colors.primaryBackgroundWhiteColor
-        RealmDataProvider.shared.delegate = self
+        weatherDataProvider.changeWeatherDelegate = self
         setupViews()
     }
     
@@ -301,10 +306,10 @@ extension WeatherViewController: UITableViewDelegate {
     }
 }
 
-extension WeatherViewController: DataProviderDelegate {
+extension WeatherViewController: ChangeWeatherDelegate {
     func weatherDidChange() {
         guard let index = index else { return }
-        weatherStorage = RealmDataProvider.shared.getWeather()[index]
+        weatherStorage = weatherDataProvider.getWeather()[index]
         configureMainInformationView(weatherStorage)
         hourlyCollectionView.reloadData()
         everyDayTableView.reloadData()

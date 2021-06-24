@@ -6,8 +6,6 @@ class RealmDataProvider: DataProvider {
     
     weak var delegate: DataProviderDelegate?
     
-    static let shared = RealmDataProvider()
-    
     private var realm: Realm? {
         var config = Realm.Configuration()
         config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("weather.realm")
