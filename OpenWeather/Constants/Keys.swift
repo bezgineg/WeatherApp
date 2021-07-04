@@ -9,6 +9,7 @@ protocol StorageService {
     var isNotifyBoolKey: Bool { get set }
     var isCityAdded: Bool { get set }
     var isFirstAppearance: Bool { get set }
+    var isLocationDisabled: Bool { get set }
 }
 
 class UserDefaultStorage: StorageService {
@@ -21,6 +22,7 @@ class UserDefaultStorage: StorageService {
         case isNotifyBoolKey
         case isCityAdded
         case isFirstAppearance
+        case isLocationDisabled
     }
     
     private let defaults = UserDefaults.standard
@@ -93,6 +95,15 @@ class UserDefaultStorage: StorageService {
         }
         set {
             defaults.setValue(newValue, forKey: Keys.isFirstAppearance.rawValue)
+        }
+    }
+    
+    var isLocationDisabled: Bool {
+        get {
+            return defaults.bool(forKey: Keys.isLocationDisabled.rawValue)
+        }
+        set {
+            defaults.setValue(newValue, forKey: Keys.isLocationDisabled.rawValue)
         }
     }
 }

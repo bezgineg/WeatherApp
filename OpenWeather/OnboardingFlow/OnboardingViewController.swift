@@ -31,8 +31,8 @@ class OnboardingViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = Colors.mainColor
-        NotificationCenter.default.addObserver(self, selector: #selector(notificationReceived), name: Notification.Name("onboardingNavigation"), object: nil)
         
+        setupNotifications()
         setupNavigationBar()
         setupLayout()
         onAcceptButtonTapSetup()
@@ -44,9 +44,18 @@ class OnboardingViewController: UIViewController {
         coordinator?.didFinishOnboarding()
     }
     
+    private func setupNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(openNextViewController), name: Notification.Name("openNextViewController"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(showAlert), name: Notification.Name("showAlert"), object: nil)
+    }
+    
     private func onAcceptButtonTapSetup() {
         onboardingView.onAcceptButtonTap = {
             self.weatherDataProvider.getUserLocation()
+            if userDefaultStorage.isLocationDisabled {
+                self.coordinator?.showSettingsAlert()
+            }
         }
     }
     
@@ -63,13 +72,17 @@ class OnboardingViewController: UIViewController {
         }
     }
     
-    @objc func notificationReceived() {
+    @objc func openNextViewController() {
         if userDefaultStorage.isOnboardingCompleteBoolKey {
             Storage.newIndex = 0
             self.coordinator?.closeOnboardingViewController()
         } else {
             self.coordinator?.pushSettingsViewController()
         }
+    }
+    
+    @objc func showAlert() {
+        coordinator?.showAlert()
     }
     
     private func setupNavigationBar() {

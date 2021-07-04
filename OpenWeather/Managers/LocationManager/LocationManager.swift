@@ -34,26 +34,41 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         if CLLocationManager.locationServicesEnabled() {
             manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             manager.startUpdatingLocation()
-        } else {
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        loadWeather()
+        guard let location = manager.location,
+              let coordinates: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        
+        getCityName(for: location) { result in
+            switch result {
+            case.success(let placemark):
+                self.delegate?.getLocation(coordinates, city: placemark.locality)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
-        case .notDetermined, .restricted:
+        case .restricted:
             userDefaultStorage.isTrackingBoolKey = false
+            userDefaultStorage.isLocationDisabled = true
+        case .notDetermined:
+            userDefaultStorage.isTrackingBoolKey = false
+            userDefaultStorage.isLocationDisabled = false
         case .denied:
-            pushNotification()
+            showAlert()
             userDefaultStorage.isTrackingBoolKey = false
+            userDefaultStorage.isLocationDisabled = true
         case .authorizedAlways, .authorizedWhenInUse:
-            pushNotification()
+            openNextViewController()
             userDefaultStorage.isTrackingBoolKey = true
+            userDefaultStorage.isLocationDisabled = false
         @unknown default:
-            userDefaultStorage.isTrackingBoolKey = false
+            break
         }
     }
     
@@ -76,21 +91,11 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         }
     }
     
-    private func pushNotification() {
-        NotificationCenter.default.post(name: Notification.Name("onboardingNavigation"), object: nil)
+    private func openNextViewController() {
+        NotificationCenter.default.post(name: Notification.Name("openNextViewController"), object: nil)
     }
     
-    private func loadWeather() {
-        guard let location = manager.location,
-              let coordinates: CLLocationCoordinate2D = manager.location?.coordinate else { return }
-        
-        getCityName(for: location) { result in
-            switch result {
-            case.success(let placemark):
-                self.delegate?.getLocation(coordinates, city: placemark.locality)
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
+    private func showAlert() {
+        NotificationCenter.default.post(name: Notification.Name("showAlert"), object: nil)
     }
 }

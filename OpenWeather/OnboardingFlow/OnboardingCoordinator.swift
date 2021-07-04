@@ -45,4 +45,33 @@ class OnboardingCoordinator: Coordinator {
             }
         }
     }
+    
+    func showAlert() {
+        let alertController = UIAlertController(title: "Отслеживание не включено", message: "Чтобы изменить настройки геолокации вам нужно будет перейти в настройки", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .cancel) { _ in
+            if userDefaultStorage.isOnboardingCompleteBoolKey {
+                Storage.newIndex = 0
+                self.closeOnboardingViewController()
+            } else {
+                self.pushSettingsViewController()
+            }
+        }
+        alertController.addAction(okAction)
+        navigationController?.present(alertController, animated: false, completion: nil)
+    }
+    
+    func showSettingsAlert() {
+        let alertController = UIAlertController(title: "Требуется разрешение на местоположение", message: "Пожалуйста, включите разрешения на определение местоположения в настройках.", preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(title: "Настройки", style: .default) { _ in
+                UIApplication.shared.open(URL(string:UIApplication.openSettingsURLString)!)
+            }
+            
+            let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
+            alertController.addAction(cancelAction)
+            
+            alertController.addAction(okAction)
+            
+        navigationController?.present(alertController, animated: true, completion: nil)
+    }
 }
