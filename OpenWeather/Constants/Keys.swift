@@ -25,6 +25,8 @@ class UserDefaultStorage: StorageService {
         case isLocationDisabled
     }
     
+    static let shared = UserDefaultStorage()
+    
     private let defaults = UserDefaults.standard
     
     var isOnboardingCompleteBoolKey: Bool {
@@ -107,6 +109,4 @@ class UserDefaultStorage: StorageService {
         }
     }
 }
-
-let userDefaultStorage = UserDefaultStorage()
 

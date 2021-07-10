@@ -18,7 +18,10 @@ class WeatherDataProvider: DataProviderDelegate, LocationManagerDelegate {
     private let networkManager = NetworkManager()
     private let realm = RealmDataProvider()
     
-    init() {
+    private var storage: StorageService
+    
+    init(storage: StorageService = UserDefaultStorage.shared) {
+        self.storage = storage
         realm.delegate = self
         locationManager.delegate = self
     }
@@ -107,7 +110,7 @@ class WeatherDataProvider: DataProviderDelegate, LocationManagerDelegate {
                 let timezone = city ?? separate(weather.timezone)
                 let cityWeather = CityWeather(current: weather.current, timezone: timezone, hourly: weather.hourly, daily: weather.daily)
                 self.realm.addWeather(cityWeather)
-                userDefaultStorage.isCityAdded = true
+                self.storage.isCityAdded = true
                 NotificationCenter.default.post(name: .updatePageVC, object: nil)
             case .failure(_):
                 self.delegate?.showAlert(error: .reverseGeocodingError)

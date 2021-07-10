@@ -2,6 +2,8 @@ import Charts
 import UIKit
 
 class DetailsCollectionViewCell: UICollectionViewCell {
+    
+    var storage: StorageService?
 
     private let lineChart: LineChartView = {
         let chart = LineChartView()
@@ -41,12 +43,14 @@ class DetailsCollectionViewCell: UICollectionViewCell {
         var icons = [UIImage]()
         
         
-        guard let weatherStorage = Storage.weatherStorage.first else { return }
-        guard let weather = weatherStorage else { return }
+        guard let weatherStorage = Storage.weatherStorage.first,
+              let weather = weatherStorage,
+              let storage = storage else { return }
+
         
         for i in 0 ..< weather.hourly.count - 1 {
             let data = weather.hourly[i]
-            if userDefaultStorage.isCelsiusChosenBoolKey {
+            if storage.isCelsiusChosenBoolKey {
                 let temp = Int(data.temp)
                 values.append(temp)
             } else {
@@ -57,7 +61,7 @@ class DetailsCollectionViewCell: UICollectionViewCell {
             let time = data.dt
             let date = NSDate(timeIntervalSince1970: TimeInterval(time))
             let formatter = DateFormatter()
-            if userDefaultStorage.is24TimeFormalChosenBoolKey {
+            if storage.is24TimeFormalChosenBoolKey {
                 formatter.dateFormat = "HH:mm"
             } else {
                 formatter.dateFormat = "h:mm a"

@@ -8,6 +8,7 @@ class DayViewController: UIViewController {
     var index: Int?
     var weatherStorage: CityWeatherCached?
     
+    private var storage: StorageService
     private let tableView = UITableView(frame: .zero, style: .plain)
     
     private var periodsOfTimeReuseID: String {
@@ -38,8 +39,12 @@ class DayViewController: UIViewController {
         return cv
     }()
     
-    init(weatherStorage: CityWeatherCached?) {
+    init(
+        weatherStorage: CityWeatherCached?,
+        storage: StorageService = UserDefaultStorage.shared
+    ) {
         self.weatherStorage = weatherStorage
+        self.storage = storage
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -209,14 +214,17 @@ extension DayViewController: UITableViewDataSource {
         switch indexPath.section {
         case 0:
             let cell: PeriodsOfTimeTableViewCell = tableView.dequeueReusableCell(withIdentifier: periodsOfTimeReuseID, for: indexPath) as! PeriodsOfTimeTableViewCell
+            cell.storage = storage
             cell.configureDay(with: detailsDay)
             return cell
         case 1:
             let cell: PeriodsOfTimeTableViewCell = tableView.dequeueReusableCell(withIdentifier: periodsOfTimeReuseID, for: indexPath) as! PeriodsOfTimeTableViewCell
+            cell.storage = storage
             cell.configureNight(with: detailsDay)
             return cell
         case 2:
             let cell: SunAndMoonTableViewCell = tableView.dequeueReusableCell(withIdentifier: sunAndMoonReuseId, for: indexPath) as! SunAndMoonTableViewCell
+            cell.storage = storage
             cell.configure(with: detailsDay)
             return cell
         default:

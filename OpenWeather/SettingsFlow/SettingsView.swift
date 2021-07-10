@@ -4,6 +4,7 @@ import UIKit
 class SettingsView: UIView {
     
     var onSetupButtonTapped: (() -> Void)?
+    var storage: StorageService?
     
     private let settingsView: UIView = {
         let view = UIView()
@@ -117,11 +118,11 @@ class SettingsView: UIView {
         return button
     }()
     
-    override init(frame: CGRect) {
+     override init(frame: CGRect) {
         super.init(frame: frame)
         
         backgroundColor = Colors.mainColor
-        
+        storage = UserDefaultStorage.shared
         setupSwitchControls()
         setupThumbLabelColor()
         setupLayout()
@@ -133,20 +134,21 @@ class SettingsView: UIView {
     }
     
     private func setupSwitchControls() {
-        if userDefaultStorage.isOnboardingCompleteBoolKey {
-            setupSwitchControlValue(temperatureCustomSwitch, for: userDefaultStorage.isCelsiusChosenBoolKey)
-            setupSwitchControlValue(windSpeedCustomSwitch, for: userDefaultStorage.isKmChosenBoolKey)
-            setupSwitchControlValue(timeFormatCustomSwitch, for: userDefaultStorage.is24TimeFormalChosenBoolKey)
-            setupSwitchControlValue(notificationCustomSwitch, for: userDefaultStorage.isNotifyBoolKey)
+        guard var storage = storage else { return }
+        if storage.isOnboardingCompleteBoolKey {
+            setupSwitchControlValue(temperatureCustomSwitch, for: storage.isCelsiusChosenBoolKey)
+            setupSwitchControlValue(windSpeedCustomSwitch, for: storage.isKmChosenBoolKey)
+            setupSwitchControlValue(timeFormatCustomSwitch, for: storage.is24TimeFormalChosenBoolKey)
+            setupSwitchControlValue(notificationCustomSwitch, for: storage.isNotifyBoolKey)
         } else {
             temperatureCustomSwitch.isOn = true
             windSpeedCustomSwitch.isOn = true
             timeFormatCustomSwitch.isOn = true
             notificationCustomSwitch.isOn = false
-            userDefaultStorage.isCelsiusChosenBoolKey = true
-            userDefaultStorage.isKmChosenBoolKey = true
-            userDefaultStorage.is24TimeFormalChosenBoolKey = true
-            userDefaultStorage.isNotifyBoolKey = false
+            storage.isCelsiusChosenBoolKey = true
+            storage.isKmChosenBoolKey = true
+            storage.is24TimeFormalChosenBoolKey = true
+            storage.isNotifyBoolKey = false
         }
     }
     
@@ -168,33 +170,33 @@ class SettingsView: UIView {
     
     @objc private func temperatureSwitchChanged(_ sender: UISwitch) {
         if sender.isOn {
-            userDefaultStorage.isCelsiusChosenBoolKey = true
+            storage?.isCelsiusChosenBoolKey = true
         } else {
-            userDefaultStorage.isCelsiusChosenBoolKey = false
+            storage?.isCelsiusChosenBoolKey = false
         }
     }
     
     @objc private func windSpeedSwitchChanged(_ sender: UISwitch) {
         if sender.isOn {
-            userDefaultStorage.isKmChosenBoolKey = true
+            storage?.isKmChosenBoolKey = true
         } else {
-            userDefaultStorage.isKmChosenBoolKey = false
+            storage?.isKmChosenBoolKey = false
         }
     }
     
     @objc private func timeFormatSwitchChanged(_ sender: UISwitch) {
         if sender.isOn {
-            userDefaultStorage.is24TimeFormalChosenBoolKey = true
+            storage?.is24TimeFormalChosenBoolKey = true
         } else {
-            userDefaultStorage.is24TimeFormalChosenBoolKey = false
+            storage?.is24TimeFormalChosenBoolKey = false
         }
     }
     
     @objc private func notificationSwitchChanged(_ sender: UISwitch) {
         if sender.isOn {
-            userDefaultStorage.isNotifyBoolKey = true
+            storage?.isNotifyBoolKey = true
         } else {
-            userDefaultStorage.isNotifyBoolKey = true
+            storage?.isNotifyBoolKey = true
         }
     }
     

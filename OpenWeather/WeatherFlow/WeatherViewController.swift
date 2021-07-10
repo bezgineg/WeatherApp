@@ -18,6 +18,7 @@ class WeatherViewController: UIViewController {
     
     let weatherDataProvider: WeatherDataProvider
     
+    private var storage: StorageService
     private let everyDayTableView = UITableView(frame: .zero, style: .plain)
     
     private var everyDayReuseID: String {
@@ -69,10 +70,16 @@ class WeatherViewController: UIViewController {
         return label
     }()
     
-    init(weatherStorage: CityWeatherCached?, index: Int?, weatherDataProvider: WeatherDataProvider) {
+    init(
+        weatherStorage: CityWeatherCached?,
+        index: Int?,
+        weatherDataProvider: WeatherDataProvider,
+        storage: StorageService = UserDefaultStorage.shared
+    ) {
         self.weatherStorage = weatherStorage
         self.index = index
         self.weatherDataProvider = weatherDataProvider
+        self.storage = storage
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -96,11 +103,11 @@ class WeatherViewController: UIViewController {
     }
     
     private func updateViews() {
-        if userDefaultStorage.isCityAdded {
-            if userDefaultStorage.isFirstAppearance {
+        if storage.isCityAdded {
+            if storage.isFirstAppearance {
                 removePlusView()
                 setupViews()
-                userDefaultStorage.isFirstAppearance = false
+                storage.isFirstAppearance = false
             }
             guard let weather = weatherStorage else { return }
             mainInformationView.setupDate()
@@ -137,15 +144,15 @@ class WeatherViewController: UIViewController {
     }
     
     func setupViews() {
-        if userDefaultStorage.isCityAdded {
+        if storage.isCityAdded {
             configureMainInformationView(weatherStorage)
             setupEveryDayTableView()
             setupLayout()
-            userDefaultStorage.isFirstAppearance = false
+            storage.isFirstAppearance = false
         } else {
             setupPlusView()
             onPlusViewTapped()
-            userDefaultStorage.isFirstAppearance = true
+            storage.isFirstAppearance = true
         }
     }
     
@@ -220,6 +227,7 @@ extension WeatherViewController: UICollectionViewDataSource {
         
         let current: CachedCurrent = weather.hourly[indexPath.item]
         
+        cell.storage = storage
         cell.configure(with: current)
         cell.configureUnselectedItem()
         
@@ -280,6 +288,7 @@ extension WeatherViewController: UITableViewDataSource {
         let everyDayCell: EveryDayTableViewCell = tableView.dequeueReusableCell(withIdentifier: everyDayReuseID, for: indexPath) as! EveryDayTableViewCell
         
         let daily: CachedDaily = weather.daily[indexPath.section]
+        everyDayCell.storage = storage
         everyDayCell.configure(with: daily)
         return everyDayCell
     }

@@ -12,6 +12,12 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     
     let manager = CLLocationManager()
     
+    private var storage: StorageService
+    
+    init(storage: StorageService = UserDefaultStorage.shared) {
+        self.storage = storage
+    }
+    
     func getCoordinates(city: String, completion: @escaping (Result<CLLocationCoordinate2D, LocationError>) -> Void) {
         CLGeocoder().geocodeAddressString(city.capitalizingFirstLetter()) { (placemark, error) in
             if let _ = error {
@@ -54,19 +60,19 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
         case .restricted:
-            userDefaultStorage.isTrackingBoolKey = false
-            userDefaultStorage.isLocationDisabled = true
+            storage.isTrackingBoolKey = false
+            storage.isLocationDisabled = true
         case .notDetermined:
-            userDefaultStorage.isTrackingBoolKey = false
-            userDefaultStorage.isLocationDisabled = false
+            storage.isTrackingBoolKey = false
+            storage.isLocationDisabled = false
         case .denied:
             showAlert()
-            userDefaultStorage.isTrackingBoolKey = false
-            userDefaultStorage.isLocationDisabled = true
+            storage.isTrackingBoolKey = false
+            storage.isLocationDisabled = true
         case .authorizedAlways, .authorizedWhenInUse:
             openNextViewController()
-            userDefaultStorage.isTrackingBoolKey = true
-            userDefaultStorage.isLocationDisabled = false
+            storage.isTrackingBoolKey = true
+            storage.isLocationDisabled = false
         @unknown default:
             break
         }

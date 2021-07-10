@@ -3,6 +3,8 @@ import UIKit
 
 class SunAndMoonTableViewCell: UITableViewCell {
     
+    var storage: StorageService?
+    
     private let mainLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
@@ -162,10 +164,11 @@ class SunAndMoonTableViewCell: UITableViewCell {
     }
     
     private func setupSunriseAndSunsetTime(sunrise: Int, sunset: Int) {
+        guard let storage = storage else { return }
         let sunriseDate = NSDate(timeIntervalSince1970: TimeInterval(sunrise))
         let sunsetDate = NSDate(timeIntervalSince1970: TimeInterval(sunset))
         let formatter = DateFormatter()
-        if userDefaultStorage.is24TimeFormalChosenBoolKey {
+        if storage.is24TimeFormalChosenBoolKey {
             formatter.dateFormat = "HH:mm"
         } else {
             formatter.dateFormat = "h:mm a"
@@ -175,10 +178,12 @@ class SunAndMoonTableViewCell: UITableViewCell {
     }
     
     private func setupMoonriseAndMoonsetTime(moonrise: Int, moonset: Int) {
+        guard let storage = storage else { return }
+
         let moonriseDate = NSDate(timeIntervalSince1970: TimeInterval(moonrise))
         let moonsetDate = NSDate(timeIntervalSince1970: TimeInterval(moonset))
         let formatter = DateFormatter()
-        if userDefaultStorage.is24TimeFormalChosenBoolKey {
+        if storage.is24TimeFormalChosenBoolKey {
             formatter.dateFormat = "HH:mm"
         } else {
             formatter.dateFormat = "h:mm a"

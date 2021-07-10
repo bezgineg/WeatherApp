@@ -2,6 +2,8 @@
 import UIKit
 
 class PeriodsOfTimeTableViewCell: UITableViewCell {
+    
+    var storage: StorageService?
 
     private let periodOfTimeLabel: UILabel = {
         let label = UILabel()
@@ -198,7 +200,9 @@ class PeriodsOfTimeTableViewCell: UITableViewCell {
     }
     
     private func setupWindInfoLabel(_ object: CachedDaily) {
-        if userDefaultStorage.isKmChosenBoolKey {
+        guard let storage = storage else { return }
+
+        if storage.isKmChosenBoolKey {
             windInfoLabel.text = "\(Int(object.windSpeed)) м/с \(Double(object.windDeg).direction.rawValue)"
         } else {
             windInfoLabel.text = "\(Int(object.windSpeed * 2.23694)) ми/ч \(Double(object.windDeg).direction.rawValue)"
@@ -206,7 +210,9 @@ class PeriodsOfTimeTableViewCell: UITableViewCell {
     }
     
     private func setupDayTemperature(_ object: CachedDaily) {
-        if userDefaultStorage.isCelsiusChosenBoolKey {
+        guard let storage = storage else { return }
+
+        if storage.isCelsiusChosenBoolKey {
             temperatureLabel.text = "\(Int(object.temp?.day ?? 0))°"
             feelsTempLabel.text = "\(Int(object.feelsLike?.day ?? 0))°"
         } else {
@@ -216,7 +222,9 @@ class PeriodsOfTimeTableViewCell: UITableViewCell {
     }
     
     private func setupNightTemperature(_ object: CachedDaily) {
-        if userDefaultStorage.isCelsiusChosenBoolKey {
+        guard let storage = storage else { return }
+
+        if storage.isCelsiusChosenBoolKey {
             temperatureLabel.text = "\(Int(object.temp?.night ?? 0))°"
             feelsTempLabel.text = "\(Int(object.feelsLike?.night ?? 0))°"
         } else {

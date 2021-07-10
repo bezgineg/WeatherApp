@@ -2,6 +2,8 @@ import UIKit
 
 class MainInformationView: UIView {
     
+    var storage: StorageService?
+    
     private let arcImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "arc")
@@ -104,6 +106,7 @@ class MainInformationView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        storage = UserDefaultStorage.shared
         backgroundColor = Colors.mainColor
         setupLayout()
         
@@ -124,7 +127,8 @@ class MainInformationView: UIView {
     }
     
     func setupTemperature(with object: CityWeatherCached) {
-        if userDefaultStorage.isCelsiusChosenBoolKey {
+        guard let storage = storage else { return }
+        if storage.isCelsiusChosenBoolKey {
             dailyTemperatureLabel.text = "\(Int(object.daily.first?.temp?.min ?? 0))°/ \(Int(object.daily.first?.temp?.max ?? 0))°"
             currentTemperatureLabel.text = "\(Int(object.current.temp))°"
         } else {
@@ -137,7 +141,8 @@ class MainInformationView: UIView {
     }
     
     func setupWindSpeed(with object: CityWeatherCached) {
-        if userDefaultStorage.isKmChosenBoolKey {
+        guard let storage = storage else { return }
+        if storage.isKmChosenBoolKey {
             windSpeedLabel.text = "\(Int(object.current.windSpeed)) м/c"
         } else {
             windSpeedLabel.text = "\(Int((object.current.windSpeed)*2.23694)) ми/ч"
@@ -145,10 +150,11 @@ class MainInformationView: UIView {
     }
     
     func setupSunriseAndSunsetDate(sunrise: Int, sunset: Int) {
+        guard let storage = storage else { return }
         let sunriseDate = NSDate(timeIntervalSince1970: TimeInterval(sunrise))
         let sunsetDate = NSDate(timeIntervalSince1970: TimeInterval(sunset))
         let formatter = DateFormatter()
-        if userDefaultStorage.is24TimeFormalChosenBoolKey {
+        if storage.is24TimeFormalChosenBoolKey {
             formatter.dateFormat = "HH:mm"
         } else {
             formatter.dateFormat = "h:mm a"
@@ -158,10 +164,11 @@ class MainInformationView: UIView {
     }
     
    func setupDate() {
+    guard let storage = storage else { return }
         let date = Date()
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ru_RU")
-    if userDefaultStorage.is24TimeFormalChosenBoolKey {
+    if storage.is24TimeFormalChosenBoolKey {
             formatter.dateFormat = "HH:mm, E d MMM"
         } else {
             formatter.dateFormat = "h:mm a, E d MMM"
@@ -170,17 +177,18 @@ class MainInformationView: UIView {
     }
     
     func update(with object: CachedCurrent) {
+        guard let storage = storage else { return }
         currentTemperatureLabel.text = "\(Int(object.temp))°"
         descriptionLabel.text = "\(object.weathers.first?.weatherDescriptionEnum.rawValue ?? "")".capitalizingFirstLetter()
         cloudyLabel.text = "\(object.clouds)"
         humidityLabel.text = "\(object.humidity)%"
-        if userDefaultStorage.isKmChosenBoolKey {
+        if storage.isKmChosenBoolKey {
             windSpeedLabel.text = "\(Int(object.windSpeed)) м/с"
         } else {
             windSpeedLabel.text = "\(Int(object.windSpeed*2.23694)) ми/ч"
         }
         
-        if userDefaultStorage.isCelsiusChosenBoolKey {
+        if storage.isCelsiusChosenBoolKey {
             currentTemperatureLabel.text = "\(Int(object.temp))°"
         } else {
             let currentTemp = fahrenheitConversion(object.temp)

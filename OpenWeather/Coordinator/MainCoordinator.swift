@@ -6,8 +6,14 @@ class MainCoordinator: Coordinator {
     var navigationController: UINavigationController?
     var childCoordinators = [Coordinator]()
     
+    private var storage: StorageService
+    
+    init(storage: StorageService = UserDefaultStorage.shared) {
+        self.storage = storage
+    }
+    
     func start() {
-        if userDefaultStorage.isOnboardingCompleteBoolKey {
+        if storage.isOnboardingCompleteBoolKey {
             let weatherDataProvider = WeatherDataProvider()
             let weatherCoordinator = WeatherCoordinator(weatherDataProvider: weatherDataProvider)
             weatherCoordinator.navigationController = navigationController

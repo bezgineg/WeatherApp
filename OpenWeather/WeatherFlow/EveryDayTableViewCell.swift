@@ -3,6 +3,8 @@ import UIKit
 
 class EveryDayTableViewCell: UITableViewCell {
     
+    var storage: StorageService?
+    
     private let dayLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
@@ -66,7 +68,9 @@ class EveryDayTableViewCell: UITableViewCell {
     }
     
     private func setupTemperature(object: CachedDaily) {
-        if userDefaultStorage.isCelsiusChosenBoolKey {
+        guard let storage = storage else { return }
+
+        if storage.isCelsiusChosenBoolKey {
             temperatureLabel.text = "\(Int(object.temp?.min ?? 0))°-\(Int(object.temp?.max ?? 0))°"
         } else {
             let minTemp = fahrenheitConversion(object.temp?.min ?? 0)

@@ -2,6 +2,8 @@
 import UIKit
 
 class DetailsTableViewCell: UITableViewCell {
+    
+    var storage: StorageService?
 
     private let dayLabel: UILabel = {
         let label = UILabel()
@@ -131,7 +133,9 @@ class DetailsTableViewCell: UITableViewCell {
     }
     
     private func setupTemperature(_ object: CachedCurrent) {
-        if userDefaultStorage.isCelsiusChosenBoolKey {
+        guard let storage = storage else { return }
+
+        if storage.isCelsiusChosenBoolKey {
             temperatureLabel.text = "\(Int(object.temp))°"
             feelsTemperatureInfoLabel.text = "\(Int(object.feelsLike))°"
         } else {
@@ -141,7 +145,9 @@ class DetailsTableViewCell: UITableViewCell {
     }
     
     private func setupWindInfoLabel(_ object: CachedCurrent) {
-        if userDefaultStorage.isKmChosenBoolKey {
+        guard let storage = storage else { return }
+
+        if storage.isKmChosenBoolKey {
             windInfoLabel.text = "\(Int(object.windSpeed)) м/с \(Double(object.windDeg).direction.rawValue)"
         } else {
             windInfoLabel.text = "\(Int(object.windSpeed * 2.23694)) ми/ч \(Double(object.windDeg).direction.rawValue)"
@@ -157,9 +163,11 @@ class DetailsTableViewCell: UITableViewCell {
     }
     
     private func setupTimeLabel(time: Int) {
+        guard let storage = storage else { return }
+
         let date = NSDate(timeIntervalSince1970: TimeInterval(time))
         let formatter = DateFormatter()
-        if userDefaultStorage.is24TimeFormalChosenBoolKey {
+        if storage.is24TimeFormalChosenBoolKey {
             formatter.dateFormat = "HH:mm"
         } else {
             formatter.dateFormat = "h:mm a"

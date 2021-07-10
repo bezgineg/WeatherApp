@@ -11,8 +11,14 @@ class PageViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     
     let weatherDataProvider: WeatherDataProvider
     
-    init(weatherDataProvider: WeatherDataProvider) {
+    private var storage: StorageService
+    
+    init(
+        weatherDataProvider: WeatherDataProvider,
+        storage: StorageService = UserDefaultStorage.shared
+    ) {
         self.weatherDataProvider = weatherDataProvider
+        self.storage = storage
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -123,7 +129,7 @@ class PageViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         navigationItem.rightBarButtonItem = cityButton
         navigationItem.leftBarButtonItem?.tintColor = Colors.imageTintBlackColor
         navigationItem.rightBarButtonItem?.tintColor = Colors.imageTintBlackColor
-        if userDefaultStorage.isTrackingBoolKey {
+        if storage.isTrackingBoolKey {
             navigationItem.rightBarButtonItem?.isEnabled = false
         }
     }

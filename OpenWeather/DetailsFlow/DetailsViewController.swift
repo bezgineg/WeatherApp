@@ -7,6 +7,7 @@ class DetailsViewController: UIViewController {
     var city: String?
     var weatherStorage: CityWeatherCached?
     
+    private var storage: StorageService
     private let tableView = UITableView(frame: .zero, style: .plain)
     
     private var reuseID: String {
@@ -32,8 +33,12 @@ class DetailsViewController: UIViewController {
         return cv
     }()
     
-    init(weatherStorage: CityWeatherCached?) {
+    init(
+        weatherStorage: CityWeatherCached?,
+        storage: StorageService = UserDefaultStorage.shared
+    ) {
         self.weatherStorage = weatherStorage
+        self.storage = storage
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -109,6 +114,7 @@ extension DetailsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DetailsCollectionViewCell.self), for: indexPath) as! DetailsCollectionViewCell
+        cell.storage = storage
         
         return cell
     }
@@ -142,6 +148,7 @@ extension DetailsViewController: UITableViewDataSource {
         
         let current: CachedCurrent = weather.hourly[indexPath.row]
         cell.configure(with: current)
+        cell.storage = storage
         
         return cell
     }

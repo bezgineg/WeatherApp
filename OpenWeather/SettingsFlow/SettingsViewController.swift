@@ -5,14 +5,24 @@ class SettingsViewController: UIViewController {
 
     var coordinator: SettingsCoordinator?
     
+    private var storage: StorageService
+    
     private let settingsView: SettingsView = {
         let view = SettingsView()
         return view
     }()
-
+    
+    init(storage: StorageService = UserDefaultStorage.shared) {
+        self.storage = storage
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupNavigationBar()
         setupLayout()
         onSetupButtonTapped()
@@ -27,11 +37,11 @@ class SettingsViewController: UIViewController {
     private func onSetupButtonTapped() {
         if let coordinator = coordinator {
             settingsView.onSetupButtonTapped = {
-                if userDefaultStorage.isOnboardingCompleteBoolKey {
+                if self.storage.isOnboardingCompleteBoolKey {
                     coordinator.closeSettingsViewController()
                 } else {
                     coordinator.pushWeatherViewController()
-                    userDefaultStorage.isOnboardingCompleteBoolKey = true
+                    self.storage.isOnboardingCompleteBoolKey = true
                 }
             }
         }

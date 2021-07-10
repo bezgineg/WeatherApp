@@ -3,6 +3,8 @@ import UIKit
 
 class HourlyCollectionViewCell: UICollectionViewCell {
     
+    var storage: StorageService?
+    
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.textColor = Colors.primaryTextGrayColor
@@ -42,7 +44,8 @@ class HourlyCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupTemperature(_ object: CachedCurrent) {
-        if userDefaultStorage.isCelsiusChosenBoolKey {
+        guard let storage = storage else { return }
+        if storage.isCelsiusChosenBoolKey {
             temperatureLabel.text = "\(Int(object.temp))°"
         } else {
             temperatureLabel.text = "\(fahrenheitConversion(object.temp))°"
@@ -65,9 +68,11 @@ class HourlyCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupTimeLabel(time: Int) {
+        guard let storage = storage else { return }
+
         let date = NSDate(timeIntervalSince1970: TimeInterval(time))
         let formatter = DateFormatter()
-        if userDefaultStorage.is24TimeFormalChosenBoolKey {
+        if storage.is24TimeFormalChosenBoolKey {
             formatter.dateFormat = "HH:mm"
         } else {
             formatter.dateFormat = "h:mm"

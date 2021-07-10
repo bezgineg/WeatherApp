@@ -10,10 +10,15 @@ class WeatherCoordinator: Coordinator, WeatherDataProviderDelegate {
     var navigationController: UINavigationController?
     var childCoordinators = [Coordinator]()
     
+    private var storage: StorageService
     private var inputTextField: UITextField?
     
-    init(weatherDataProvider: WeatherDataProvider) {
+    init(
+        weatherDataProvider: WeatherDataProvider,
+        storage: StorageService = UserDefaultStorage.shared
+    ) {
         self.weatherDataProvider = weatherDataProvider
+        self.storage = storage
     }
     
     func start() {
@@ -81,7 +86,7 @@ class WeatherCoordinator: Coordinator, WeatherDataProviderDelegate {
                     switch result {
                     case .success(let boolValue):
                         if boolValue {
-                            userDefaultStorage.isCityAdded = true
+                            self.storage.isCityAdded = true
                             NotificationCenter.default.post(name: .updatePageVC, object: nil)
                         }
                     case .failure(let error):

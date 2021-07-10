@@ -6,12 +6,17 @@ class OnboardingCoordinator: Coordinator {
     weak var parentCoordinator: Coordinator?
     
     let weatherDataProvider: WeatherDataProvider
+    private var storage: StorageService
     
     var navigationController: UINavigationController?
     var childCoordinators = [Coordinator]()
     
-    init(weatherDataProvider: WeatherDataProvider) {
+    init(
+        weatherDataProvider: WeatherDataProvider,
+        storage: StorageService = UserDefaultStorage.shared
+    ) {
         self.weatherDataProvider = weatherDataProvider
+        self.storage = storage
     }
     
     func start() {
@@ -49,7 +54,7 @@ class OnboardingCoordinator: Coordinator {
     func showAlert() {
         let alertController = UIAlertController(title: "Отслеживание не включено", message: "Чтобы изменить настройки геолокации вам нужно будет перейти в настройки", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .cancel) { _ in
-            if userDefaultStorage.isOnboardingCompleteBoolKey {
+            if self.storage.isOnboardingCompleteBoolKey {
                 Storage.newIndex = 0
                 self.closeOnboardingViewController()
             } else {

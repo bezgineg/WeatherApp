@@ -7,6 +7,8 @@ class OnboardingViewController: UIViewController {
     
     let weatherDataProvider: WeatherDataProvider
     
+    private var storage: StorageService
+    
     private let onboardingView: OnboardingView = {
         let view = OnboardingView()
         return view
@@ -18,8 +20,12 @@ class OnboardingViewController: UIViewController {
         return scrollView
     }()
     
-    init(weatherDataProvider: WeatherDataProvider) {
+    init(
+        weatherDataProvider: WeatherDataProvider,
+        storage: StorageService = UserDefaultStorage.shared
+    ) {
         self.weatherDataProvider = weatherDataProvider
+        self.storage = storage
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -63,7 +69,7 @@ class OnboardingViewController: UIViewController {
     private func onAcceptButtonTapSetup() {
         onboardingView.onAcceptButtonTap = {
             self.weatherDataProvider.getUserLocation()
-            if userDefaultStorage.isLocationDisabled {
+            if self.storage.isLocationDisabled {
                 self.coordinator?.showSettingsAlert()
             }
         }
@@ -72,8 +78,8 @@ class OnboardingViewController: UIViewController {
     private func onDeclineButtonTapSetup() {
         if let coordinator = coordinator {
             onboardingView.onDeclineButtonTap = {
-                userDefaultStorage.isTrackingBoolKey = false
-                if userDefaultStorage.isOnboardingCompleteBoolKey {
+                self.storage.isTrackingBoolKey = false
+                if self.storage.isOnboardingCompleteBoolKey {
                     coordinator.closeOnboardingViewController()
                 } else {
                     coordinator.pushSettingsViewController()
@@ -83,7 +89,7 @@ class OnboardingViewController: UIViewController {
     }
     
     @objc func openNextViewController() {
-        if userDefaultStorage.isOnboardingCompleteBoolKey {
+        if storage.isOnboardingCompleteBoolKey {
             Storage.newIndex = 0
             self.coordinator?.closeOnboardingViewController()
         } else {
