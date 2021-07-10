@@ -108,7 +108,7 @@ class WeatherDataProvider: DataProviderDelegate, LocationManagerDelegate {
                 let cityWeather = CityWeather(current: weather.current, timezone: timezone, hourly: weather.hourly, daily: weather.daily)
                 self.realm.addWeather(cityWeather)
                 userDefaultStorage.isCityAdded = true
-                NotificationCenter.default.post(name: Notification.Name("updatePageVC"), object: nil)
+                NotificationCenter.default.post(name: .updatePageVC, object: nil)
             case .failure(_):
                 self.delegate?.showAlert(error: .reverseGeocodingError)
             }

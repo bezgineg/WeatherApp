@@ -23,7 +23,12 @@ class PageViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(notificationReceived), name: Notification.Name("updatePageVC"), object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(notificationReceived),
+            name: .updatePageVC,
+            object: nil
+        )
     }
     
     override func viewWillAppear(_ animated: Bool) {

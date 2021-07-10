@@ -92,10 +92,10 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     }
     
     private func openNextViewController() {
-        NotificationCenter.default.post(name: Notification.Name("openNextViewController"), object: nil)
+        NotificationCenter.default.post(name: .openNextViewController, object: nil)
     }
     
     private func showAlert() {
-        NotificationCenter.default.post(name: Notification.Name("showAlert"), object: nil)
+        NotificationCenter.default.post(name: .showAlert, object: nil)
     }
 }

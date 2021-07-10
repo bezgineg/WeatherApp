@@ -45,9 +45,19 @@ class OnboardingViewController: UIViewController {
     }
     
     private func setupNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(openNextViewController), name: Notification.Name("openNextViewController"), object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(openNextViewController)
+            , name: .openNextViewController,
+            object: nil
+        )
         
-        NotificationCenter.default.addObserver(self, selector: #selector(showAlert), name: Notification.Name("showAlert"), object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(showAlert),
+            name: .showAlert,
+            object: nil
+        )
     }
     
     private func onAcceptButtonTapSetup() {

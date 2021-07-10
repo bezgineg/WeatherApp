@@ -82,7 +82,7 @@ class WeatherCoordinator: Coordinator, WeatherDataProviderDelegate {
                     case .success(let boolValue):
                         if boolValue {
                             userDefaultStorage.isCityAdded = true
-                            NotificationCenter.default.post(name: Notification.Name("updatePageVC"), object: nil)
+                            NotificationCenter.default.post(name: .updatePageVC, object: nil)
                         }
                     case .failure(let error):
                         self.showAlert(error: error)

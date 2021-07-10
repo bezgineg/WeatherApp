@@ -54,6 +54,7 @@
 		A344EDBA26454FC800BD7307 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A344EDB926454FC700BD7307 /* Constants.swift */; };
 		A344EDBF2645505100BD7307 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A344EDBE2645505100BD7307 /* NetworkManager.swift */; };
 		A344EDC32645579200BD7307 /* WeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A344EDC22645579200BD7307 /* WeatherData.swift */; };
+		A34D2F472699A6B7008AA0A8 /* Notification.Name+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34D2F462699A6B7008AA0A8 /* Notification.Name+Extensions.swift */; };
 		A3C9D99F267DD4E100E2578D /* LocationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C9D99E267DD4E100E2578D /* LocationError.swift */; };
 		BB924320264BF36D0053C6F2 /* PeriodsOfTimeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB92431F264BF36D0053C6F2 /* PeriodsOfTimeTableViewCell.swift */; };
 		BB924323264BF9490053C6F2 /* DayCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB924322264BF9490053C6F2 /* DayCollectionViewCell.swift */; };
@@ -115,6 +116,7 @@
 		A344EDB926454FC700BD7307 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A344EDBE2645505100BD7307 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		A344EDC22645579200BD7307 /* WeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherData.swift; sourceTree = "<group>"; };
+		A34D2F462699A6B7008AA0A8 /* Notification.Name+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Extensions.swift"; sourceTree = "<group>"; };
 		A3C9D99E267DD4E100E2578D /* LocationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationError.swift; sourceTree = "<group>"; };
 		BB92431F264BF36D0053C6F2 /* PeriodsOfTimeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodsOfTimeTableViewCell.swift; sourceTree = "<group>"; };
 		BB924322264BF9490053C6F2 /* DayCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -292,6 +294,7 @@
 				A3348592265075D500FA7A76 /* UIImageExtension.swift */,
 				A33485952650761900FA7A76 /* LineChartFormatter.swift */,
 				A33485BE2658159200FA7A76 /* Helpers.swift */,
+				A34D2F462699A6B7008AA0A8 /* Notification.Name+Extensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -523,6 +526,7 @@
 				A3348544264FC44300FA7A76 /* DetailsCollectionViewCell.swift in Sources */,
 				A3348535264C6C3500FA7A76 /* SunAndMoonTableViewCell.swift in Sources */,
 				A344ED65263D2FFC00BD7307 /* SettingsView.swift in Sources */,
+				A34D2F472699A6B7008AA0A8 /* Notification.Name+Extensions.swift in Sources */,
 				A344ED68263D300D00BD7307 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
