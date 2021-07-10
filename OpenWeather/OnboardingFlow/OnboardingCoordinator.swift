@@ -64,7 +64,8 @@ class OnboardingCoordinator: Coordinator {
         let alertController = UIAlertController(title: "Требуется разрешение на местоположение", message: "Пожалуйста, включите разрешения на определение местоположения в настройках.", preferredStyle: .alert)
             
             let okAction = UIAlertAction(title: "Настройки", style: .default) { _ in
-                UIApplication.shared.open(URL(string:UIApplication.openSettingsURLString)!)
+                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                UIApplication.shared.open(url)
             }
             
             let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
