@@ -4,6 +4,7 @@ import UIKit
 class DetailsCollectionViewCell: UICollectionViewCell {
     
     var storage: StorageService?
+    var weatherStorage: [CityWeatherCached?] = []
 
     private let lineChart: LineChartView = {
         let chart = LineChartView()
@@ -28,6 +29,8 @@ class DetailsCollectionViewCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        weatherStorage = Storage.weatherStorage
+        storage = UserDefaultStorage.shared
         contentView.backgroundColor = Colors.customBackgroundColor
         setupLineChart()
         setupLayout()
@@ -43,9 +46,11 @@ class DetailsCollectionViewCell: UICollectionViewCell {
         var icons = [UIImage]()
         
         
-        guard let weatherStorage = Storage.weatherStorage.first,
+        guard let weatherStorage = weatherStorage.first,
               let weather = weatherStorage,
-              let storage = storage else { return }
+              let storage = storage else {
+            print("1")
+            return }
 
         
         for i in 0 ..< weather.hourly.count - 1 {
