@@ -118,15 +118,13 @@ class SettingsView: UIView {
         return button
     }()
     
-     override init(frame: CGRect) {
-        super.init(frame: frame)
-        
+    init(storage: StorageService = UserDefaultStorage.shared) {
+        super.init(frame: .zero)
+        self.storage = storage
         backgroundColor = Colors.mainColor
-        storage = UserDefaultStorage.shared
         setupSwitchControls()
         setupThumbLabelColor()
         setupLayout()
-        
     }
     
     required init?(coder: NSCoder) {

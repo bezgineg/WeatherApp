@@ -103,10 +103,9 @@ class MainInformationView: UIView {
         return label
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        storage = UserDefaultStorage.shared
+    init(storage: StorageService = UserDefaultStorage.shared) {
+        super.init(frame: .zero)
+        self.storage = storage
         backgroundColor = Colors.mainColor
         setupLayout()
         
