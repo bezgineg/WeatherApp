@@ -39,7 +39,7 @@ class HourlyCollectionViewCell: UICollectionViewCell {
     func configure(with object: CachedCurrent) {
         setupTemperature(object)
         setupTimeLabel(time: object.dt)
-        setupWeatherImage(weather: object.weathers.first?.mainEnum.rawValue)
+        setupWeatherImage(weather: object.weathers.first?.main.rawValue)
         configureUnselectedItem()
     }
     

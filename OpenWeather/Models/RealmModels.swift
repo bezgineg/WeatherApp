@@ -93,10 +93,10 @@ class CityWeatherCached {
 
 class CachedWeatherDetails: Object {
     @objc dynamic var mainRaw = CachedMain.clear.rawValue
-    var mainEnum: CachedMain {
+    var main: CachedMain {
         get {
-            for mainEnum in CachedMain.allCases where mainRaw == mainEnum.rawValue {
-                return mainEnum
+            for main in CachedMain.allCases where mainRaw == main.rawValue {
+                return main
             }
             return .clear
         }
@@ -106,10 +106,10 @@ class CachedWeatherDetails: Object {
     }
     
     @objc dynamic var weatherDescriptionRaw = CachedDescription.clearSky.rawValue
-    var weatherDescriptionEnum: CachedDescription {
+    var weatherDescription: CachedDescription {
         get {
-            for weatherDescriptionEnum in CachedDescription.allCases where weatherDescriptionRaw == weatherDescriptionEnum.rawValue {
-                return weatherDescriptionEnum
+            for weatherDescription in CachedDescription.allCases where weatherDescriptionRaw == weatherDescription.rawValue {
+                return weatherDescription
             }
             return .clearSky
         }

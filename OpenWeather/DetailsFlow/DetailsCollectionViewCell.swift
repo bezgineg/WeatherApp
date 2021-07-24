@@ -74,7 +74,7 @@ class DetailsCollectionViewCell: UICollectionViewCell {
             let newTime = formatter.string(from: date as Date)
             times.append(newTime)
             
-            let mainWeather = weather.hourly[i].weathers.first?.mainEnum.rawValue
+            let mainWeather = weather.hourly[i].weathers.first?.main.rawValue
             let image = setupWeatherImage(weather: mainWeather)
             
             if let image = image {

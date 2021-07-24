@@ -175,9 +175,9 @@ class PeriodsOfTimeTableViewCell: UITableViewCell {
     func configureDay(with object: CachedDaily) {
         contentView.backgroundColor = Colors.customBackgroundColor
         periodOfTimeLabel.text = "День"
-        setupWeatherImage(weather: object.weathers.first?.mainEnum.rawValue)
+        setupWeatherImage(weather: object.weathers.first?.main.rawValue)
         setupDayTemperature(object)
-        descriptionLabel.text = "\(object.weathers.first?.weatherDescriptionEnum.rawValue.capitalizingFirstLetter() ?? "")"
+        descriptionLabel.text = "\(object.weathers.first?.weatherDescription.rawValue.capitalizingFirstLetter() ?? "")"
         feelsImage.image = object.feelsLike?.day ?? 0 >= 0 ? UIImage(named: "temp") : UIImage(named: "tempCold")
         windInfoLabel.text = "\(Int(object.windSpeed)) м/с \(Double(object.windDeg).direction.rawValue)"
         uvInfoLabel.text = "\(Int(object.uvi))(\(setupUvLabel(uv: object.uvi)))"
@@ -189,9 +189,9 @@ class PeriodsOfTimeTableViewCell: UITableViewCell {
     func configureNight(with object: CachedDaily) {
         contentView.backgroundColor = Colors.customBackgroundColor
         periodOfTimeLabel.text = "Ночь"
-        setupWeatherImage(weather: object.weathers.first?.mainEnum.rawValue)
+        setupWeatherImage(weather: object.weathers.first?.main.rawValue)
         setupNightTemperature(object)
-        descriptionLabel.text = "\(object.weathers.first?.weatherDescriptionEnum.rawValue.capitalizingFirstLetter() ?? "")"
+        descriptionLabel.text = "\(object.weathers.first?.weatherDescription.rawValue.capitalizingFirstLetter() ?? "")"
         feelsImage.image = object.feelsLike?.day ?? 0 >= 0 ? UIImage(named: "temp") : UIImage(named: "tempCold")
         uvInfoLabel.text = "\(Int(object.uvi))(\(setupUvLabel(uv: object.uvi)))"
         precipitationInfoLabel.text = "\(Int(object.pop))%"

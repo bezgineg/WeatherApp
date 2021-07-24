@@ -116,7 +116,7 @@ class MainInformationView: UIView {
     }
     
     func configure(with object: CityWeatherCached) {
-        descriptionLabel.text = "\(object.current.weathers.first?.weatherDescriptionEnum.rawValue ?? "")".capitalizingFirstLetter()
+        descriptionLabel.text = "\(object.current.weathers.first?.weatherDescription.rawValue ?? "")".capitalizingFirstLetter()
         cloudyLabel.text = "\(object.current.clouds)"
         humidityLabel.text = "\(object.current.humidity)%"
         setupTemperature(with: object)
@@ -178,7 +178,7 @@ class MainInformationView: UIView {
     func update(with object: CachedCurrent) {
         guard let storage = storage else { return }
         currentTemperatureLabel.text = "\(Int(object.temp))°"
-        descriptionLabel.text = "\(object.weathers.first?.weatherDescriptionEnum.rawValue ?? "")".capitalizingFirstLetter()
+        descriptionLabel.text = "\(object.weathers.first?.weatherDescription.rawValue ?? "")".capitalizingFirstLetter()
         cloudyLabel.text = "\(object.clouds)"
         humidityLabel.text = "\(object.humidity)%"
         if storage.isKmChosenBoolKey {

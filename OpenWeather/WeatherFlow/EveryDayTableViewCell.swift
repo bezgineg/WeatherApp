@@ -63,8 +63,8 @@ class EveryDayTableViewCell: UITableViewCell {
         setupDayLabel(day: object.dt)
         setupTemperature(object: object)
         humidityLabel.text = "\(object.humidity)%"
-        setupWeatherImage(weather: object.weathers.first?.mainEnum.rawValue)
-        descriptionLabel.text = "\(object.weathers.first?.weatherDescriptionEnum.rawValue ?? "")".capitalizingFirstLetter()
+        setupWeatherImage(weather: object.weathers.first?.main.rawValue)
+        descriptionLabel.text = "\(object.weathers.first?.weatherDescription.rawValue ?? "")".capitalizingFirstLetter()
     }
     
     private func setupTemperature(object: CachedDaily) {
