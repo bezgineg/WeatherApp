@@ -1,10 +1,10 @@
-protocol DataProviderDelegate: class {
+protocol DataProviderDelegate: AnyObject {
     func weatherDidChange()
 }
 
-protocol DataProvider: class {
+protocol DataProvider: AnyObject {
     var delegate: DataProviderDelegate? { get set }
-    func getWeather() -> [CityWeatherCached]
+    func getWeather() -> [CityWeather]
     func addWeather(_ weather: CityWeather)
-    func updateWeather(_ weather: CityWeather, index: Int)
+    func updateWeather(_ weather: CityWeather, id: String)
 }

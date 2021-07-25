@@ -3,10 +3,10 @@ import UIKit
 class DayViewController: UIViewController {
     
     var coordinator: DayCoordinator?
-    var detailsDay: CachedDaily?
+    var detailsDay: Daily?
     var city: String?
     var index: Int?
-    var weatherStorage: CityWeatherCached?
+    var weatherStorage: CityWeather?
     
     private var storage: StorageService
     private let tableView = UITableView(frame: .zero, style: .plain)
@@ -40,7 +40,7 @@ class DayViewController: UIViewController {
     }()
     
     init(
-        weatherStorage: CityWeatherCached?,
+        weatherStorage: CityWeather?,
         storage: StorageService = UserDefaultStorage.shared
     ) {
         self.weatherStorage = weatherStorage
@@ -151,7 +151,7 @@ extension DayViewController: UICollectionViewDataSource {
         guard let weather = weatherStorage else { return UICollectionViewCell() }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DayCollectionViewCell.self), for: indexPath) as! DayCollectionViewCell
         
-        let daily: CachedDaily = weather.daily[indexPath.item]
+        let daily: Daily = weather.daily[indexPath.item]
         
         cell.configure(with: daily)
         

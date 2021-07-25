@@ -50,7 +50,7 @@ class WeatherCoordinator: Coordinator, WeatherDataProviderDelegate {
         onboardingCoordinater.start()
     }
     
-    func pushDayViewController(day: CachedDaily, title: String, index: Int, weatherStorage: CityWeatherCached?) {
+    func pushDayViewController(day: Daily, title: String, index: Int, weatherStorage: CityWeather?) {
         let dayCoordinator = DayCoordinator()
         dayCoordinator.navigationController = navigationController
         childCoordinators.append(dayCoordinator)
@@ -62,7 +62,7 @@ class WeatherCoordinator: Coordinator, WeatherDataProviderDelegate {
         dayCoordinator.start()
     }
     
-    func pushDetailsViewController(title: String, weatherStorage: CityWeatherCached?) {
+    func pushDetailsViewController(title: String, weatherStorage: CityWeather?) {
         let detailsCoordinator = DetailsCoordinator()
         detailsCoordinator.navigationController = navigationController
         childCoordinators.append(detailsCoordinator)

@@ -5,7 +5,7 @@ class PageViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     var coordinator: WeatherCoordinator?
     var pageController: UIPageViewController!
     var controllers = [UIViewController]()
-    var weather: CityWeatherCached? = nil
+    var weather: CityWeather? = nil
     var index: Int? = nil
     var pageControl = UIPageControl()
     
@@ -43,14 +43,14 @@ class PageViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         setupPageController()
     }
     
-    func pushDayViewController(day: CachedDaily, index: Int, weatherStorage: CityWeatherCached?) {
+    func pushDayViewController(day: Daily, index: Int, weatherStorage: CityWeather?) {
         coordinator?.pushDayViewController(day: day,
                                            title: navigationItem.title ?? "",
                                            index: index,
                                            weatherStorage: weatherStorage)
     }
     
-    func pushDetailsViewController(_ weatherStorage: CityWeatherCached?) {
+    func pushDetailsViewController(_ weatherStorage: CityWeather?) {
         coordinator?.pushDetailsViewController(title: navigationItem.title ?? "", weatherStorage: weatherStorage)
     }
     

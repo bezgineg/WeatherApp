@@ -172,13 +172,13 @@ class PeriodsOfTimeTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureDay(with object: CachedDaily) {
+    func configureDay(with object: Daily) {
         contentView.backgroundColor = Colors.customBackgroundColor
         periodOfTimeLabel.text = "День"
-        setupWeatherImage(weather: object.weathers.first?.main.rawValue)
+        setupWeatherImage(weather: object.weather.first?.main.rawValue)
         setupDayTemperature(object)
-        descriptionLabel.text = "\(object.weathers.first?.weatherDescription.rawValue.capitalizingFirstLetter() ?? "")"
-        feelsImage.image = object.feelsLike?.day ?? 0 >= 0 ? UIImage(named: "temp") : UIImage(named: "tempCold")
+        descriptionLabel.text = "\(object.weather.first?.weatherDescription.rawValue.capitalizingFirstLetter() ?? "")"
+        feelsImage.image = object.feelsLike.day >= 0 ? UIImage(named: "temp") : UIImage(named: "tempCold")
         windInfoLabel.text = "\(Int(object.windSpeed)) м/с \(Double(object.windDeg).direction.rawValue)"
         uvInfoLabel.text = "\(Int(object.uvi))(\(setupUvLabel(uv: object.uvi)))"
         precipitationInfoLabel.text = "\(Int(object.pop))%"
@@ -186,20 +186,20 @@ class PeriodsOfTimeTableViewCell: UITableViewCell {
         setupWindInfoLabel(object)
     }
     
-    func configureNight(with object: CachedDaily) {
+    func configureNight(with object: Daily) {
         contentView.backgroundColor = Colors.customBackgroundColor
         periodOfTimeLabel.text = "Ночь"
-        setupWeatherImage(weather: object.weathers.first?.main.rawValue)
+        setupWeatherImage(weather: object.weather.first?.main.rawValue)
         setupNightTemperature(object)
-        descriptionLabel.text = "\(object.weathers.first?.weatherDescription.rawValue.capitalizingFirstLetter() ?? "")"
-        feelsImage.image = object.feelsLike?.day ?? 0 >= 0 ? UIImage(named: "temp") : UIImage(named: "tempCold")
+        descriptionLabel.text = "\(object.weather.first?.weatherDescription.rawValue.capitalizingFirstLetter() ?? "")"
+        feelsImage.image = object.feelsLike.day >= 0 ? UIImage(named: "temp") : UIImage(named: "tempCold")
         uvInfoLabel.text = "\(Int(object.uvi))(\(setupUvLabel(uv: object.uvi)))"
         precipitationInfoLabel.text = "\(Int(object.pop))%"
         cloudinessInfoLabel.text = "\(object.clouds)%"
         setupWindInfoLabel(object)
     }
     
-    private func setupWindInfoLabel(_ object: CachedDaily) {
+    private func setupWindInfoLabel(_ object: Daily) {
         guard let storage = storage else { return }
 
         if storage.isKmChosenBoolKey {
@@ -209,27 +209,27 @@ class PeriodsOfTimeTableViewCell: UITableViewCell {
         }
     }
     
-    private func setupDayTemperature(_ object: CachedDaily) {
+    private func setupDayTemperature(_ object: Daily) {
         guard let storage = storage else { return }
 
         if storage.isCelsiusChosenBoolKey {
-            temperatureLabel.text = "\(Int(object.temp?.day ?? 0))°"
-            feelsTempLabel.text = "\(Int(object.feelsLike?.day ?? 0))°"
+            temperatureLabel.text = "\(Int(object.temp.day ))°"
+            feelsTempLabel.text = "\(Int(object.feelsLike.day ))°"
         } else {
-            temperatureLabel.text = "\(fahrenheitConversion(object.temp?.day ?? 0))°"
-            feelsTempLabel.text = "\(fahrenheitConversion(object.feelsLike?.day ?? 0))°"
+            temperatureLabel.text = "\(fahrenheitConversion(object.temp.day ))°"
+            feelsTempLabel.text = "\(fahrenheitConversion(object.feelsLike.day ))°"
         }
     }
     
-    private func setupNightTemperature(_ object: CachedDaily) {
+    private func setupNightTemperature(_ object: Daily) {
         guard let storage = storage else { return }
 
         if storage.isCelsiusChosenBoolKey {
-            temperatureLabel.text = "\(Int(object.temp?.night ?? 0))°"
-            feelsTempLabel.text = "\(Int(object.feelsLike?.night ?? 0))°"
+            temperatureLabel.text = "\(Int(object.temp.night ))°"
+            feelsTempLabel.text = "\(Int(object.feelsLike.night ))°"
         } else {
-            temperatureLabel.text = "\(fahrenheitConversion(object.temp?.night ?? 0))°"
-            feelsTempLabel.text = "\(fahrenheitConversion(object.feelsLike?.night ?? 0))°"
+            temperatureLabel.text = "\(fahrenheitConversion(object.temp.night ))°"
+            feelsTempLabel.text = "\(fahrenheitConversion(object.feelsLike.night ))°"
         }
     }
     

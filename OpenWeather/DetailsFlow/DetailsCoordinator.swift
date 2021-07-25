@@ -7,7 +7,7 @@ class DetailsCoordinator: Coordinator {
     var navigationController: UINavigationController?
     var childCoordinators = [Coordinator]()
     var title: String?
-    var weatherStorage: CityWeatherCached?
+    var weatherStorage: CityWeather?
     
     func start() {
         let detailsViewController = DetailsViewController(weatherStorage: weatherStorage)

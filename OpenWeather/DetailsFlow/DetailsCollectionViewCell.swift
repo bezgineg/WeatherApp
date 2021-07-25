@@ -4,7 +4,7 @@ import UIKit
 class DetailsCollectionViewCell: UICollectionViewCell {
     
     var storage: StorageService?
-    var weatherStorage: [CityWeatherCached?] = []
+    var weatherStorage: [CityWeather?] = []
 
     private let lineChart: LineChartView = {
         let chart = LineChartView()
@@ -48,9 +48,7 @@ class DetailsCollectionViewCell: UICollectionViewCell {
         
         guard let weatherStorage = weatherStorage.first,
               let weather = weatherStorage,
-              let storage = storage else {
-            print("1")
-            return }
+              let storage = storage else { return }
 
         
         for i in 0 ..< weather.hourly.count - 1 {
@@ -74,7 +72,7 @@ class DetailsCollectionViewCell: UICollectionViewCell {
             let newTime = formatter.string(from: date as Date)
             times.append(newTime)
             
-            let mainWeather = weather.hourly[i].weathers.first?.main.rawValue
+            let mainWeather = weather.hourly[i].weather.first?.main.rawValue
             let image = setupWeatherImage(weather: mainWeather)
             
             if let image = image {

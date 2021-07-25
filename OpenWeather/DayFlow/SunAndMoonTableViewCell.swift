@@ -154,7 +154,7 @@ class SunAndMoonTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with object: CachedDaily) {
+    func configure(with object: Daily) {
         contentView.backgroundColor = Colors.primaryBackgroundWhiteColor
         setupMoonPhase(moonphase: object.moonPhase)
         setupDayDurationLabel(sunrise: object.sunrise, sunset: object.sunset)

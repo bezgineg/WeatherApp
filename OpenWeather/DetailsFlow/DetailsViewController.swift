@@ -5,7 +5,7 @@ class DetailsViewController: UIViewController {
     
     var coordinator: DetailsCoordinator?
     var city: String?
-    var weatherStorage: CityWeatherCached?
+    var weatherStorage: CityWeather?
     
     private var storage: StorageService
     private let tableView = UITableView(frame: .zero, style: .plain)
@@ -34,7 +34,7 @@ class DetailsViewController: UIViewController {
     }()
     
     init(
-        weatherStorage: CityWeatherCached?,
+        weatherStorage: CityWeather?,
         storage: StorageService = UserDefaultStorage.shared
     ) {
         self.weatherStorage = weatherStorage
@@ -146,7 +146,7 @@ extension DetailsViewController: UITableViewDataSource {
         
         let cell: DetailsTableViewCell = tableView.dequeueReusableCell(withIdentifier: reuseID, for: indexPath) as! DetailsTableViewCell
         
-        let current: CachedCurrent = weather.hourly[indexPath.row]
+        let current: Current = weather.hourly[indexPath.row]
         cell.configure(with: current)
         cell.storage = storage
         

@@ -7,10 +7,10 @@ class DayCoordinator: Coordinator {
     
     var navigationController: UINavigationController?
     var childCoordinators = [Coordinator]()
-    var day: CachedDaily?
+    var day: Daily?
     var title: String?
     var index: Int?
-    var weatherStorage: CityWeatherCached?
+    var weatherStorage: CityWeather?
     
     func start() {
         let dayViewController = DayViewController(weatherStorage: weatherStorage)

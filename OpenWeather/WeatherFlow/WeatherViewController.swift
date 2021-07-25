@@ -2,10 +2,10 @@
 import UIKit
 import RealmSwift
 
-protocol WeatherViewControllerDelegate: class {
+protocol WeatherViewControllerDelegate: AnyObject {
     func addCity()
-    func pushDetailsViewController(_ weatherStorage: CityWeatherCached?)
-    func pushDayViewController(day: CachedDaily, index: Int, weatherStorage: CityWeatherCached?)
+    func pushDetailsViewController(_ weatherStorage: CityWeather?)
+    func pushDayViewController(day: Daily, index: Int, weatherStorage: CityWeather?)
     func changeTitle(title: String)
 }
 
@@ -13,7 +13,7 @@ class WeatherViewController: UIViewController {
 
     weak var delegate: WeatherViewControllerDelegate?
     var coordinator: WeatherCoordinator?
-    var weatherStorage: CityWeatherCached?
+    var weatherStorage: CityWeather?
     var index: Int?
     
     let weatherDataProvider: WeatherDataProvider
@@ -71,7 +71,7 @@ class WeatherViewController: UIViewController {
     }()
     
     init(
-        weatherStorage: CityWeatherCached?,
+        weatherStorage: CityWeather?,
         index: Int?,
         weatherDataProvider: WeatherDataProvider,
         storage: StorageService = UserDefaultStorage.shared
@@ -111,7 +111,10 @@ class WeatherViewController: UIViewController {
             }
             guard let weather = weatherStorage else { return }
             mainInformationView.setupDate()
-            mainInformationView.setupSunriseAndSunsetDate(sunrise: weather.current.sunrise , sunset: weather.current.sunset )
+            mainInformationView.setupSunriseAndSunsetDate(
+                sunrise: weather.current.sunrise ?? 0,
+                sunset: weather.current.sunset ?? 0
+            )
             mainInformationView.setupWindSpeed(with: weather)
             mainInformationView.setupTemperature(with: weather)
             hourlyCollectionView.reloadData()
@@ -126,7 +129,7 @@ class WeatherViewController: UIViewController {
         }
     }
     
-    private func configureMainInformationView(_ weatherStorage: CityWeatherCached?) {
+    private func configureMainInformationView(_ weatherStorage: CityWeather?) {
         guard let weather = weatherStorage else { return }
         mainInformationView.configure(with: weather)
     }
@@ -225,7 +228,7 @@ extension WeatherViewController: UICollectionViewDataSource {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: HourlyCollectionViewCell.self), for: indexPath) as! HourlyCollectionViewCell
         
-        let current: CachedCurrent = weather.hourly[indexPath.item]
+        let current: Current = weather.hourly[indexPath.item]
         
         cell.storage = storage
         cell.configure(with: current)
@@ -287,7 +290,7 @@ extension WeatherViewController: UITableViewDataSource {
         
         let everyDayCell: EveryDayTableViewCell = tableView.dequeueReusableCell(withIdentifier: everyDayReuseID, for: indexPath) as! EveryDayTableViewCell
         
-        let daily: CachedDaily = weather.daily[indexPath.section]
+        let daily: Daily = weather.daily[indexPath.section]
         everyDayCell.storage = storage
         everyDayCell.configure(with: daily)
         return everyDayCell

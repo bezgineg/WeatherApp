@@ -1,11 +1,11 @@
 import UIKit
 import CoreLocation
 
-protocol WeatherDataProviderDelegate: class {
+protocol WeatherDataProviderDelegate: AnyObject {
     func showAlert(error: WeatherError)
 }
 
-protocol ChangeWeatherDelegate: class {
+protocol ChangeWeatherDelegate: AnyObject {
     func weatherDidChange()
 }
 
@@ -30,7 +30,7 @@ class WeatherDataProvider: DataProviderDelegate, LocationManagerDelegate {
         changeWeatherDelegate?.weatherDidChange()
     }
     
-    func getWeather() -> [CityWeatherCached]{
+    func getWeather() -> [CityWeather]{
         let storage = realm.getWeather()
         return storage
     }
@@ -70,20 +70,21 @@ class WeatherDataProvider: DataProviderDelegate, LocationManagerDelegate {
     
     func updateRealm() {
         let realmStorage = realm.getWeather()
-        for (index, city) in realmStorage.enumerated() {
+        for city in realmStorage {
             let cityName = city.timezone
+            let cityId = city.id
+            print(cityId)
             locationManager.getCoordinates(city: cityName) { result in
                 switch result {
                 case .success(let coordinates):
                     let lat = String(coordinates.latitude)
                     let long = String(coordinates.longitude)
-                    
                     self.networkManager.fetchWeather(lat: lat, long: long) { networkResult in
                         switch networkResult {
                         case .success(let weather):
                             let timezone = cityName
-                            let cityWeather = CityWeather(current: weather.current, timezone: timezone, hourly: weather.hourly, daily: weather.daily)
-                            self.realm.updateWeather(cityWeather, index: index)
+                            let cityWeather = CityWeather(id: cityId, current: weather.current, timezone: timezone, hourly: weather.hourly, daily: weather.daily)
+                            self.realm.updateWeather(cityWeather, id: cityId)
                         case .failure(_):
                             self.delegate?.showAlert(error: .networkError)
                         }

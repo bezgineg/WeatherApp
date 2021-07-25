@@ -12,15 +12,17 @@ class RealmDataProvider: DataProvider {
         return try? Realm(configuration: config)
     }
     
-    func getWeather() -> [CityWeatherCached] {
-        var storage = [CityWeatherCached]()
+    func getWeather() -> [CityWeather] {
+        var storage = [CityWeather]()
         guard let weatherStorage = realm?.objects(CachedWeather.self) else { return [] }
         for weather in weatherStorage {
             guard let timezone = weather.timezone,
-                  let current = weather.current else { return [] }
-            let daily = weather.daily
-            let hourly = weather.hourly
-            storage.append(CityWeatherCached(current: current, timezone: timezone, hourly: hourly, daily: daily))
+                  let cachedCurrent = weather.current,
+                  let id = weather.id else { return [] }
+            let current = getCurrent(cachedCurrent)
+            let daily = getDaily(weather.daily)
+            let hourly = getHourly(weather.hourly)
+            storage.append(CityWeather(id: id, current: current, timezone: timezone, hourly: hourly, daily: daily))
         }
         return storage
     }
@@ -50,18 +52,20 @@ class RealmDataProvider: DataProvider {
         }
     }
     
-    func updateWeather(_ weather: CityWeather, index: Int) {
-        guard let cachedWeather = realm?.objects(CachedWeather.self)[index] else { return }
-        
+    func updateWeather(_ weather: CityWeather, id: String) {
+
+        guard let cachedWeather = realm?.objects(CachedWeather.self).filter("id = %@", id) else {
+            return }
         let newWeather = getNewWeather(weather)
-        
-        try? realm?.write {
-            cachedWeather.current = newWeather.current
-            cachedWeather.daily.removeAll()
-            cachedWeather.daily.append(objectsIn: newWeather.daily)
-            cachedWeather.hourly.removeAll()
-            cachedWeather.hourly.append(objectsIn: newWeather.hourly)
-            cachedWeather.timezone = newWeather.timezone
+        if let weather = cachedWeather.first {
+            try? realm?.write {
+                weather.current = newWeather.current
+                weather.daily.removeAll()
+                weather.daily.append(objectsIn: newWeather.daily)
+                weather.hourly.removeAll()
+                weather.hourly.append(objectsIn: newWeather.hourly)
+                weather.timezone = newWeather.timezone
+            }
         }
         
         delegate?.weatherDidChange()
@@ -183,5 +187,61 @@ class RealmDataProvider: DataProvider {
             cachedDays.append(cachedDay)
         }
         return cachedDays
+    }
+    
+    private func getCurrent(_ cachedCurrent: CachedCurrent) -> Current {
+        var currentWeather = [Weather]()
+        for el in cachedCurrent.weathers {
+            guard let main = Main(rawValue: el.mainRaw),
+                  let descr = Description(rawValue: el.weatherDescriptionRaw) else {
+                return Current(dt: 0, humidity: 0, sunrise: 0, sunset: 0, temp: 0, feelsLike: 0, windSpeed: 0, uvi: 0, windDeg: 0, clouds: 0, weather: [], pop: 0)
+            }
+            let newEl = Weather(main: main, weatherDescription: descr)
+            currentWeather.append(newEl)
+        }
+        let current = Current(dt: cachedCurrent.dt, humidity: cachedCurrent.humidity, sunrise: cachedCurrent.sunrise, sunset: cachedCurrent.sunrise, temp: cachedCurrent.temp, feelsLike: cachedCurrent.feelsLike, windSpeed: cachedCurrent.windSpeed, uvi: cachedCurrent.uvi, windDeg: cachedCurrent.windDeg, clouds: cachedCurrent.clouds, weather: currentWeather, pop: cachedCurrent.pop)
+        return current
+    }
+    
+    private func getDaily(_ daily: List<CachedDaily>) -> [Daily] {
+        var dailyWeather = [Daily]()
+        for el in daily {
+            guard let temp = el.temp,
+                  let feelsLike = el.feelsLike else { return [Daily(dt: 0, sunrise: 0, sunset: 0, moonrise: 0, moonset: 0, moonPhase: 0, temp: Temp(day: 0, min: 0, max: 0, night: 0), feelsLike: FeelsLike(day: 0, night: 0), humidity: 0, windSpeed: 0, windDeg: 0, weather: [Weather](), clouds: 0, pop: 0, uvi: 0)]
+                
+            }
+            let newTemp = Temp(day: temp.day, min: temp.min, max: temp.max, night: temp.night)
+            let newFeelsLike = FeelsLike(day: feelsLike.day, night: feelsLike.night)
+            var newWeather = [Weather]()
+            for el in el.weathers {
+                guard let main = Main(rawValue: el.mainRaw),
+                      let descr = Description(rawValue: el.weatherDescriptionRaw) else {
+                    return [Daily(dt: 0, sunrise: 0, sunset: 0, moonrise: 0, moonset: 0, moonPhase: 0, temp: Temp(day: 0, min: 0, max: 0, night: 0), feelsLike: FeelsLike(day: 0, night: 0), humidity: 0, windSpeed: 0, windDeg: 0, weather: [Weather](), clouds: 0, pop: 0, uvi: 0)]
+                }
+                let newEl = Weather(main: main, weatherDescription: descr)
+                newWeather.append(newEl)
+            }
+            let newEl = Daily(dt: el.dt, sunrise: el.sunrise, sunset: el.sunset, moonrise: el.moonrise, moonset: el.moonset, moonPhase: el.moonPhase, temp: newTemp, feelsLike: newFeelsLike, humidity: 0, windSpeed: 0, windDeg: 0, weather: newWeather, clouds: 0, pop: 0, uvi: 0)
+            dailyWeather.append(newEl)
+        }
+        return dailyWeather
+    }
+    
+    private func getHourly(_ hourly: List<CachedCurrent>) -> [Current] {
+        var currentArr = [Current]()
+        for el in hourly {
+            var currentWeather = [Weather]()
+            for el in el.weathers {
+                guard let main = Main(rawValue: el.mainRaw),
+                      let descr = Description(rawValue: el.weatherDescriptionRaw) else {
+                    return [Current(dt: 0, humidity: 0, sunrise: 0, sunset: 0, temp: 0, feelsLike: 0, windSpeed: 0, uvi: 0, windDeg: 0, clouds: 0, weather: [], pop: 0)]
+                }
+                let newEl = Weather(main: main, weatherDescription: descr)
+                currentWeather.append(newEl)
+            }
+            let current = Current(dt: el.dt, humidity: el.humidity, sunrise: el.sunrise, sunset: el.sunrise, temp: el.temp, feelsLike: el.feelsLike, windSpeed: el.windSpeed, uvi: el.uvi, windDeg: el.windDeg, clouds: el.clouds, weather: currentWeather, pop: el.pop)
+            currentArr.append(current)
+        }
+        return currentArr
     }
 }
